@@ -33,3 +33,13 @@ The main benefits are:
 - Out of the box privacy compliance functionality.
 
 More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://piiano.com/docs/).
+
+- [Vault Typescript SDK](./sdk/README.md)
+- [Vault Typescript Examples](./sdk/README.md)
+
+Related links:
+
+- [Vault Docs](https://piiano.com/docs/)
+- [Vault REST API](https://piiano.com/docs/api/)
+- [Vault Java SDK](https://github.com/piiano/vault-java)
+- [Vault Python SDK](https://github.com/piiano/vault-java)
