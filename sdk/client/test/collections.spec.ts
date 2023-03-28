@@ -50,7 +50,6 @@ describe('collections',  function () {
 
 });
 
-
 async function addTestCollection(testCollectionName: string) {
   const collection = await CollectionsService.addCollection({
     name: testCollectionName,

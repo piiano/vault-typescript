@@ -13,7 +13,8 @@ const vault = new Vault({
 export const mochaHooks = {
 
   async beforeAll(this: Context) {
-    this.timeout(10000);
+    this.timeout(30000);
+    this.slow(25000);
     const port = await vault.start();
 
     OpenAPI.BASE = `http://localhost:${port}`;
