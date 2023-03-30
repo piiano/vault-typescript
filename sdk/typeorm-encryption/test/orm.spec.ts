@@ -1,5 +1,22 @@
-import {Collection, CollectionsService} from "../";
 import {expect} from "chai";
+import "reflect-metadata"
+
+import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from "typeorm"
+import {CollectionsService} from "@piiano/vault-client";
+
+@Entity()
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number
+
+
+  @Column({nullable: true})
+  name: string
+
+  @Column()
+  email: string
+}
+
 
 describe('collections',  function () {
 
@@ -14,24 +31,24 @@ describe('collections',  function () {
   });
 
   it('should be able to get a collection', async function () {
-    const collection = await CollectionsService.getCollection(testCollectionName);
-    expect(collection.name).to.equal(testCollectionName);
-    expect(collection.type).to.equal(Collection.type.PERSONS);
-    expect(collection.properties).to.have.lengthOf(2);
+    const user = new User()
+    user.name = "John Doe"
+    user.email = "johndoe@example.com"
+    await user.save()
   });
 
   it('should be able to list collections', async function () {
     const collections = await CollectionsService.listCollections();
     expect(collections).to.have.lengthOf(1);
     expect(collections[0].name).to.equal(testCollectionName);
-    expect(collections[0].type).to.equal(Collection.type.PERSONS);
+    expect(collections[0].type).to.equal('PERSONS');
     expect(collections[0].properties).to.have.lengthOf(2);
   });
 
   it('should be able to update a collection', async function () {
     await CollectionsService.updateCollection(testCollectionName, {
       name: testCollectionName,
-      type: Collection.type.PERSONS,
+      type: 'PERSONS',
       properties: [
         {
           name: 'phone',

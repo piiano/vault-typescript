@@ -106,12 +106,12 @@ jobs:
         run: yarn --cwd ${{ matrix.package }} test
         env:
           PVAULT_SERVICE_LICENSE: ${{ secrets.PVAULT_SERVICE_LICENSE }}
-
-      - name: Publish @piiano/${{ steps.package.outputs.name }}:${{ steps.bump-version.outputs.new_version }}
-        if: steps.package.outputs.changed == 'true' && github.ref == 'refs/heads/main'
-        run: |
-          cat <<EOF >.npmrc
-          //registry.npmjs.org/:_authToken=${{ secrets.NPM_REGISTRY_TOKEN }}
-          EOF
-          
-          yarn --cwd ${{ matrix.package }} publish --access=public
+#
+#      - name: Publish @piiano/${{ steps.package.outputs.name }}:${{ steps.bump-version.outputs.new_version }}
+#        if: steps.package.outputs.changed == 'true' && github.ref == 'refs/heads/main'
+#        run: |
+#          cat <<EOF >.npmrc
+#          //registry.npmjs.org/:_authToken=${{ secrets.NPM_REGISTRY_TOKEN }}
+#          EOF
+#
+#          yarn --cwd ${{ matrix.package }} publish --access=public

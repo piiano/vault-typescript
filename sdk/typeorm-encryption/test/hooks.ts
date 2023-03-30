@@ -1,7 +1,17 @@
+import "reflect-metadata"
 import {Vault} from "@piiano/testcontainers-vault";
 import type {Context} from "mocha";
-import {OpenAPI} from "../";
 
+
+import mysqlSetup from '@databases/mysql-test/jest/globalSetup';
+import mysqlTeardown from '@databases/mysql-test/jest/globalTeardown';
+import {OpenAPI} from "@piiano/vault-client";
+
+async function test() {
+  await mysqlSetup();
+  // ... run you tests ...
+  await mysqlTeardown();
+}
 
 const vault = new Vault({
   env: {
