@@ -8,16 +8,20 @@
   </a>
 </p>
 
-_Piiano Vault: The secure home for sensitive personal data_
+# Piiano Vault
 
-*Safely store sensitive personal data in your own cloud environment with automated compliance controls.*
+**The secure home for sensitive personal data**
 
-Piiano Vault Typescript
-============================================
+Safely store sensitive personal data in your own cloud environment with automated compliance controls. [More details](#about-piiano-vault)
+
+## Vault-Typescript
 
 The code in this repository contains source code for Vault typescript packages and examples of use.
 
-## Background
+- [Vault Typescript SDK](./sdk/README.md)
+- [Vault Typescript Examples](./sdk/README.md)
+
+## About Piiano Vault
 
 Piiano Vault is the secure home for sensitive personal data. It allows you to safely store sensitive personal data in your own cloud environment with automated compliance controls.
 
@@ -33,13 +37,3 @@ The main benefits are:
 - Out of the box privacy compliance functionality.
 
 More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://piiano.com/docs/).
-
-- [Vault Typescript SDK](./sdk/README.md)
-- [Vault Typescript Examples](./sdk/README.md)
-
-Related links:
-
-- [Vault Docs](https://piiano.com/docs/)
-- [Vault REST API](https://piiano.com/docs/api/)
-- [Vault Java SDK](https://github.com/piiano/vault-java)
-- [Vault Python SDK](https://github.com/piiano/vault-java)
