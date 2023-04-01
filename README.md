@@ -18,8 +18,8 @@ Safely store sensitive personal data in your own cloud environment with automate
 
 The code in this repository contains source code for Vault typescript packages and examples of use.
 
-- [Vault TypeScript SDK](./sdk/README.md)
-- [Vault TypeScript Examples](./sdk/README.md)
+- [Vault TypeScript SDK](./sdk)
+- [Vault TypeScript Examples](./examples)
 
 ## About Piiano Vault
 
