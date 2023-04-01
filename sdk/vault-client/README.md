@@ -49,6 +49,22 @@ const defaultOptions = {
 }
 ```
 
+## Usage Example
+
+To get the version of the running Vault: 
+```javascript
+const version = await this.vaultClient.system.getVaultVersion();
+console.log(version);
+```
+
+Expected output:
+```javascript
+{
+  vault_id: '165147695309533184',
+  vault_version: '1.2.2.4420853466-g3a086a1',
+  db_schema_version: 20230314205727
+}
+```
 ## API
 
 The `VaultClient` class includes members for the following specific API categories:
