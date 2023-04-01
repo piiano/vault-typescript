@@ -4,6 +4,7 @@ node_modules/
 
 dist
 openapi.yaml
+*.db
 
 # IDEs and editors
 .idea

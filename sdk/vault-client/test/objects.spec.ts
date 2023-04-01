@@ -1,7 +1,10 @@
-import {expect} from "chai";
+import {expect, use} from "chai";
 import {Collection} from "../";
 import {addTestCollection} from "./collections.spec";
 import {Reason} from "../src";
+import chaiAsPromised from "chai-as-promised";
+
+use(chaiAsPromised)
 
 describe('crypto',  function () {
 
@@ -22,28 +25,22 @@ describe('crypto',  function () {
     });
   });
 
-  it('should be able encrypt and decrypt', async function () {
+  it('should be able work with objects', async function () {
     const defaults: { collection: string, reason: Reason } = {
       collection: testCollection.name,
-      reason: 'AppFunctionality',
+      reason: 'AppFunctionality' as Reason,
     }
 
-    const objectToAdd = {
-      name: 'John Doe',
-      email: 'johndoe@example.com',
-    };
+    const name = 'John Doe';
+    const email = 'johndoe@example.com';
+    const objectToAdd = { name, email };
 
-    const newObject = await this.vaultClient.objects.addObject({
-      ...defaults,
-      requestBody: objectToAdd,
-    });
+    const { id } = await this.vaultClient.objects.addObject({ ...defaults, requestBody: objectToAdd });
 
-    expect(newObject).to.have.property('id');
+    expect(id).to.be.a('string').not.empty;
 
     const getEntireObject = await this.vaultClient.objects.getObjectById({
-      ...defaults,
-      id: newObject.id,
-      options: ['unsafe', 'show_builtins'],
+      ...defaults, id, options: ['unsafe', 'show_builtins'],
     });
 
     expect(getEntireObject).to.have.property('id');
@@ -52,6 +49,39 @@ describe('crypto',  function () {
     expect(getEntireObject.email).to.equal(objectToAdd.email);
     expect(Date.parse(getEntireObject._creation_time!)).to.be.within(Date.now() - 1000, Date.now());
     expect(Date.parse(getEntireObject._modification_time!)).to.be.within(Date.now() - 1000, Date.now());
+
+
+    const newEmail = 'john@example.com';
+
+    await this.vaultClient.objects.updateObjectById({
+      ...defaults, id,
+      requestBody: {
+        email: newEmail,
+      }
+    });
+
+    const updatedObject = await this.vaultClient.objects.getObjectById({
+      ...defaults, id,
+      options: ['unsafe'],
+    });
+
+    expect(updatedObject).to.deep.equal({ id, name, email: newEmail });
+
+    await this.vaultClient.objects.deleteObjectById({...defaults, id });
+
+    const getObjectPromise = this.vaultClient.objects.getObjectById({...defaults, id, options: ['unsafe'] });
+
+    await expect(getObjectPromise).to.be.rejected;
+
+    const error = await getObjectPromise.catch(e => e);
+
+    // access the Vault error response
+    expect(error).to.have.property('body').deep.equal({
+      error_code: 'PV3005',
+      message: `One or more Objects is not found: ${id}.`,
+      context: {
+        ids: id,
+      }
+    });
   });
 });
-

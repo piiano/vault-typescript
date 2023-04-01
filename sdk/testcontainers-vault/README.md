@@ -1,6 +1,6 @@
 # @piiano/testcontainers-vault
 
-Testcontainers-vault helps you run a Piiano Vault container for testing purposes directly from your Typescript tests.
+Testcontainers-vault helps you run a Piiano Vault container for testing purposes directly from your TypeScript tests.
 
 ## Requirements
 

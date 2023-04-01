@@ -1,0 +1,42 @@
+diff --git a/sdk/vault-client/src/generated/core/ApiError.ts b/sdk/vault-client/src/generated/core/ApiError.ts
+index 41a9605..d1d94de 100644
+--- a/sdk/vault-client/src/generated/core/ApiError.ts
++++ b/sdk/vault-client/src/generated/core/ApiError.ts
+@@ -12,7 +12,7 @@ export class ApiError extends Error {
+   public readonly request: ApiRequestOptions;
+ 
+   constructor(request: ApiRequestOptions, response: ApiResult, message: string) {
+-    super(message);
++    super(formatErrorMessage(message, response.body));
+ 
+     this.name = 'ApiError';
+     this.url = response.url;
+@@ -22,3 +22,28 @@ export class ApiError extends Error {
+     this.request = request;
+   }
+ }
++
++function formatErrorMessage(message: string, body: unknown): string {
++  if (!isVaultHTTPError(body)) {
++    return message;
++  }
++
++  const { error_code, message: vaultMessage, context } = body;
++
++  return `${message}
++${error_code}: ${vaultMessage}
++Context: ${JSON.stringify(context, null, 2)}`;
++}
++
++type VaultError = {
++  error_code: string;
++  message: string;
++  context: Record<string, string>;
++}
++
++function isVaultHTTPError(body: unknown): body is VaultError {
++  return typeof body === 'object' && body !== null &&
++    'error_code' in body && typeof body.error_code === 'string' &&
++    'message' in body && typeof body.message === 'string' &&
++    'context' in body && typeof body.context === 'object' && body.context !== null;
++}

@@ -1,0 +1,182 @@
+# @piiano/vault-client
+
+This is a TypeScript client for working with a Piiano Vault server. It provides an easy-to-use API for accessing the various resources exposed by the Vault REST API.
+
+Installation
+
+To install the package using `npm`:
+
+```bash
+npm install @piiano/vault-client
+```
+
+To install the package using `yarn`:
+
+```bash
+yarn add @piiano/vault-client
+```
+
+## Usage
+
+To use the `VaultClient` class, first import it into your project:
+
+```javascript
+const { VaultClient } = require('@piiano/vault-client');
+```
+
+Or if you are using TypeScript:
+
+```typescript
+import { VaultClient } from '@piiano/vault-client';
+```
+
+Then create a new instance of the client:
+
+```javascript
+const client = new VaultClient({
+  vaultURL: 'https://vault.example.com:8123',
+  apiKey: 'vaultApiKey',
+});
+```
+
+Note that the `VaultClient` options have default values for the `vaultURL` and `apiKey` properties:
+
+```javascript
+const defaultOptions = {
+  vaultURL: "http://localhost:8123",
+  apiKey: "pvaultauth",
+}
+```
+
+## API
+
+The `VaultClient` class includes members for the following specific API categories:
+
+```javascript
+
+const vaultClient = new VaultClient();
+
+vaultClient.collections // client for working with collections
+vaultClient.collectionProperties // client for working with collection properties
+vaultClient.objects // client for working with objects
+vaultClient.crypto // client for working with crypto operations
+vaultClient.tokens // client for working with tokens
+vaultClient.system // client for working with system operations
+vaultClient.iam // client for working with IAM
+vaultClient.configVars // client for working with config vars
+vaultClient.dataTypes // client for working with data types
+vaultClient.bundles // client for working with bundles
+```
+
+These correspond to the various resources exposed by the Piiano Vault REST API.
+Each member provides methods for interacting with the corresponding resource.
+
+### `VaultClient.collections`
+
+This Piiano Vault resource enables you to create, retrieve, update, and delete the collections that hold sensitive data.
+  
+- `VaultClient.collections.listCollections()`
+- `VaultClient.collections.addCollection()`
+- `VaultClient.collections.getCollection()`
+- `VaultClient.collections.updateCollection()`
+- `VaultClient.collections.deleteCollection()`
+
+### `VaultClient.collectionProperties`
+
+description: This Piiano Vault resource enables you to create, retrieve, list, update, and delete the collection properties that define the stored data values.
+
+- `VaultClient.collectionProperties.listCollectionProperties()`
+- `VaultClient.collectionProperties.addCollectionProperty()`
+- `VaultClient.collectionProperties.getCollectionProperty()`
+- `VaultClient.collectionProperties.updateCollectionProperty()`
+- `VaultClient.collectionProperties.deleteCollectionProperty()`
+
+### `VaultClient.bundles`
+
+This <strong>beta</strong> Piiano Vault resource enables you to create, retrieve, list, update, and delete bundles that export functions used by custom data types.
+
+- `VaultClient.bundles.listBundles()`
+- `VaultClient.bundles.addBundle()`
+- `VaultClient.bundles.getBundle()`
+- `VaultClient.bundles.updateBundle()`
+- `VaultClient.bundles.deleteBundle()`
+
+### `VaultClient.dataTypes`
+
+This <strong>beta</strong> Piiano Vault resource enables you to create, retrieve, list, and delete data types that can be used as property types.
+
+- `VaultClient.dataTypes.listDataTypes()`
+- `VaultClient.dataTypes.addDataType()`
+- `VaultClient.dataTypes.getDataType()`
+- `VaultClient.dataTypes.deleteDataType()`
+
+### `VaultClient.objects`
+
+This Piiano Vault resource enables you to create, retrieve, search, update, and delete collection objects and their data.
+
+- `VaultClient.objects.listObjects()`
+- `VaultClient.objects.addObject()`
+- `VaultClient.objects.getObjectById()`
+- `VaultClient.objects.updateObjectById()`
+- `VaultClient.objects.deleteObjectById()`
+- `VaultClient.objects.addObjects()`
+- `VaultClient.objects.updateObjects()`
+- `VaultClient.objects.deleteObjects()`
+- `VaultClient.objects.searchObjects()`
+
+### `VaultClient.crypto`
+
+This <strong>beta</strong> Piiano Vault resource enables you to encrypt, decrypt, and update encrypted blobs.
+
+- `VaultClient.crypto.encrypt()`
+- `VaultClient.crypto.updateEncrypted()`
+- `VaultClient.crypto.decrypt()`
+- `VaultClient.crypto.hashObjects()`
+
+### `VaultClient.tokens`
+
+This Piiano Vault resource enables you to tokenize, detokenize, update, rotate, search, and delete tokens.
+
+- `VaultClient.tokens.tokenize()`
+- `VaultClient.tokens.detokenize()`
+- `VaultClient.tokens.deleteTokens()`
+- `VaultClient.tokens.updateTokens()`
+- `VaultClient.tokens.rotateTokens()`
+- `VaultClient.tokens.searchTokens()`
+
+
+### `VaultClient.iam`
+
+This Piiano Vault resource enables you to set and retrieve the IAM configuration and regenerate user API keys.
+
+- `VaultClient.iam.getIamConf()`
+- `VaultClient.iam.setIamConf()`
+- `VaultClient.iam.regenerateUserApiKey()`
+
+### `VaultClient.configVars`
+
+This Piiano Vault resource enables you to set and retrieve the dynamic configuration variables that control the behavior of your Vault.
+
+- `VaultClient.configVars.clearAllConfVars()`
+- `VaultClient.configVars.getConfVar()`
+- `VaultClient.configVars.setConfVar()`
+
+### `VaultClient.system`
+
+This Piiano Vault resource enables you to retrieve details about the status of system components and the Vault version.
+
+- `VaultClient.system.dataHealth()`
+- `VaultClient.system.controlHealth()`
+- `VaultClient.system.getClusterInfo()`
+- `VaultClient.system.garbageCollection()`
+- `VaultClient.system.triggerError()`
+- `VaultClient.system.getConfiguration()`
+- `VaultClient.system.getLicense()`
+- `VaultClient.system.getVaultVersion()`
+- `VaultClient.system.rotateKeys()`
+- `VaultClient.system.getKms()`
+
+## License
+
+This package is licensed under the MIT License.
+See the [LICENSE](../../LICENSE) file for more information.

@@ -3,6 +3,14 @@ import {AsyncFunc, Context} from "mocha";
 import {Collection} from "../";
 
 
+it('coll', async function () {
+
+  console.log(Object.entries(this.vaultClient).
+  filter(([k, v]) => k !== 'request').
+  map(([k, v]) =>
+    `# ${k}\n\n${Object.getOwnPropertyNames(Object.getPrototypeOf(v)).filter(n => n !== 'constructor').join('\n')}`).join('\n\n'));
+});
+
 describe('collections',  function () {
 
   const testCollection: Collection = {
@@ -21,6 +29,7 @@ describe('collections',  function () {
       collection: testCollection.name
     });
   });
+
 
   it('should be able to get a collection', async function () {
     const collection = await this.vaultClient.collections.getCollection({
@@ -45,8 +54,8 @@ describe('collections',  function () {
       collection: testCollection.name,
       requestBody: {
         name: testCollection.name,
-          type: 'PERSONS',
-          properties: [
+        type: 'PERSONS',
+        properties: [
           {
             name: 'phone',
             is_encrypted: true,
