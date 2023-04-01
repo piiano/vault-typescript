@@ -3,18 +3,6 @@ import {expect} from "chai";
 describe('system',  function () {
 
   it('check vault health', async function () {
-    this.vaultClient.collections
-    this.vaultClient.collectionProperties
-    this.vaultClient.objects
-    this.vaultClient.system
-    this.vaultClient.iam
-    this.vaultClient.bundles
-    this.vaultClient.dataTypes
-    this.vaultClient.tokens
-    this.vaultClient.configVars
-    this.vaultClient.crypto
-
-
     const dataHealth = await this.vaultClient.system.dataHealth()
     const controlHealth = await this.vaultClient.system.controlHealth()
 
