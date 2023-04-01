@@ -142,10 +142,10 @@
   dependencies:
     testcontainers "^9.3.0"
 
-"@piiano/vault-client@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@piiano/vault-client/-/vault-client-1.0.0.tgz"
-  integrity sha512-d0gdmo3B4Ku3OUUHof60klcHibBm9JOtmqQSvyaX1Oiki+KPYSzQc3Ait7fzsnOPR0TrHxN+iI/T9Rn/+yWycA==
+"@piiano/vault-client@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.1.tgz#7d9b290d1250ba194742156ed0e22a80f06a76ff"
+  integrity sha512-6D+M2reb/E7Cabct7rdwh9IXfsMXU77SKPR9NN8ajiRe/Q3zfi+crYxkxzFtpjTl353smh9NMDwZniQsBTdSFw==
   dependencies:
     axios "^1.3.4"
     form-data "^4.0.0"

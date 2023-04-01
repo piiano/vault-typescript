@@ -1,62 +1,29 @@
 import "reflect-metadata";
-import { AppDataSource } from "./data-source";
 import { Customer } from "./entity/Customer";
-
+import {expect} from "chai";
 
 describe('orm',  function () {
 
   it('should be able to encrypt and decrypt data using typeorm-encryption', async function () {
 
-    const dataSource = await AppDataSource.initialize();
-    const customerRepository = dataSource.getRepository(Customer);
+    const customerToAdd: Customer = new Customer();
 
-    const customer: Customer = new Customer();
+    customerToAdd.name = 'John'
+    customerToAdd.email = 'JohnA@gmail.com'
+    customerToAdd.phone = '+972-54-1234567'
+    customerToAdd.ssn = '078-05-1120'
+    // TODO: Fix this issue with Date type
+    // customerToAdd.dob = new Date('2023-03-21')
+    customerToAdd.state = 'IL'
 
-    customer.name = 'John'
-    customer.email = 'JohnA@gmail.com'
-    customer.phone = '+972-54-1234567'
-    customer.ssn = '078-05-1120'
-    customer.dob = new Date('2023-03-21')
-    customer.state = 'IL'
+    const addedCustomer = await customerToAdd.save();
 
-    await customer.save()
+    console.log(addedCustomer)
 
+    const customer = await Customer.findOneBy({
+      id: addedCustomer.id
+    })
+    console.log(addedCustomer);
 
-
-    // const dataSource = await AppDataSource.initialize();
-    // const userRepository = dataSource.getRepository(User);
-    //
-    // // Create a new user
-    // const user = userRepository.create({
-    //
-    // });
-    // await userRepository.save(user);
-    //
-    // // Get all users
-    // const users = await userRepository.find();
-    //
-    // // Get a user by ID
-    // const user = await userRepository.findOne({
-    //   where: {
-    //     id: Number('1'),
-    //   },
-    // });
-    //
-    // // Update a user by ID
-    // const user = await userRepository.findOne({
-    //   where: {
-    //     id: Number('1'),
-    //   },
-    // });
-    // userRepository.merge(user, {});
-    // await userRepository.save(user);
-    //
-    // // Delete a user by ID
-    // const user = await userRepository.findOne({
-    //   where: {
-    //     id: Number(req.params.id),
-    //   },
-    // });
-    // await userRepository.remove(user);
   })
 });

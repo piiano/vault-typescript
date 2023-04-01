@@ -18,8 +18,9 @@ export class Customer extends BaseEntity {
   @Column({encrypt: true})
   ssn: string;
 
-  @Column({encrypt: true})
-  dob: Date;
+  // TODO: Fix this issue with Date type
+  // @Column({encrypt: true})
+  // dob: Date;
 
   @Column()
   state: string;
