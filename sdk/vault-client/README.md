@@ -65,6 +65,16 @@ Expected output:
   db_schema_version: 20230314205727
 }
 ```
+
+## Development
+
+To build and test the project:
+```commandLine
+yarn
+yarn build
+yarn test
+```
+
 ## API
 
 The `VaultClient` class includes members for the following specific API categories:
