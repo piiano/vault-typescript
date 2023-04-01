@@ -88,6 +88,15 @@ export class Customer extends BaseEntity {
 
 In the example above, the `name`, `email`, `phone`, and `ssn` properties will be encrypted and decrypted automatically.
 
+## Development
+
+To build and test the project:
+```commandLine
+yarn
+yarn build
+yarn test
+```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](../../LICENSE) file for details
