@@ -1,8 +1,8 @@
 # @piiano/vault-client
 
-This is a TypeScript client for working with a Piiano Vault server. It provides an easy-to-use API for accessing the various resources exposed by the Vault REST API.
+This is a TypeScript client to connect to a Piiano Vault. It provides an easy-to-use API for accessing the various resources exposed by the Vault [REST API](https://piiano.com/docs/api).
 
-Installation
+## Installation
 
 To install the package using `npm`:
 
@@ -39,7 +39,8 @@ const client = new VaultClient({
 });
 ```
 
-Note that the `VaultClient` options have default values for the `vaultURL` and `apiKey` properties:
+ℹ️ Note that the `VaultClient` options have default values for the `vaultURL` and `apiKey` properties.  
+These match the defaults of a local Vault installation in development mode.
 
 ```javascript
 const defaultOptions = {
