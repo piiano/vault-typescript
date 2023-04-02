@@ -7,6 +7,7 @@ import {CreateDecryptionSubscriber} from "./subscribers";
 import {saveFunc} from "./save";
 import {updateFunc} from "./update";
 
+import "typeorm/decorator/options/ColumnCommonOptions"
 
 declare module "typeorm/decorator/options/ColumnCommonOptions" {
   interface ColumnCommonOptions {
