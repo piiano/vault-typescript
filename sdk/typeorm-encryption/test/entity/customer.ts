@@ -1,9 +1,9 @@
-import '../../src'; // required for extending typeorm types
+import '../../'; // required for extending typeorm types
 import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from "typeorm";
 
 @Entity()
 export class Customer extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({encrypt: true})
@@ -12,7 +12,7 @@ export class Customer extends BaseEntity {
   @Column({encrypt: true})
   email: string;
 
-  @Column({encrypt: true})
+  @Column({encrypt: true, vaultField: 'phone_number'})
   phone: string;
 
   @Column({encrypt: true})

@@ -2,9 +2,10 @@ import "reflect-metadata"
 import {Vault} from "@piiano/testcontainers-vault";
 import type {Context} from "mocha";
 import {DataSource} from "typeorm";
-import {Customer} from "./entity/Customer";
-import registerVaultEncryption from "../src";
-import {VaultClient} from "@piiano/vault-client";
+import registerVaultEncryption from "../";
+import {Collection, VaultClient} from "@piiano/vault-client";
+import {Customer} from "./entity/customer";
+import {Buyer, Seller} from "./entity/commerce";
 
 
 // Create a local test Vault server
@@ -29,30 +30,19 @@ export const mochaHooks = {
 
     const vaultClient = new VaultClient(options);
 
-    // Create customers collection in Vault
-    await vaultClient.collections.addCollection({
-      requestBody: {
-        name: "customers",
-        type: "PERSONS",
-        properties: [
-          {name: 'name', data_type_name: 'NAME'},
-          {name: 'email', data_type_name: 'EMAIL'},
-          {name: 'phone', data_type_name: 'PHONE_NUMBER'},
-          {name: 'address', data_type_name: 'ADDRESS'},
-          {name: 'ssn', data_type_name: 'SSN'},
-          // TODO: Fix this issue with Date type
-          // {name: 'dob', data_type_name: 'STRING'}
-          // {name: 'dob', data_type_name: 'DATE_OF_BIRTH'}
-        ]
-      },
-    });
+    for (const collection of collections) {
+      await vaultClient.collections.addCollection({
+        requestBody: collection
+      });
+    }
 
     const dataSource = new DataSource({
       type: "sqlite",
       synchronize: true,
       logging: false,
+      dropSchema: true,
       database: "app.db",
-      entities: [Customer],
+      entities: [Customer, Buyer, Seller],
     });
 
     registerVaultEncryption(dataSource, options);
@@ -63,7 +53,41 @@ export const mochaHooks = {
   async afterAll(this: Context) {
     this.timeout(10000);
     await vault.stop();
-    await this.dataSource.dropDatabase();
+    // await this.dataSource.dropDatabase();
     await this.dataSource.destroy();
   }
 };
+
+const collections: Array<Collection> = [
+  {
+    name: "customer",
+    type: "PERSONS",
+    properties: [
+      {name: 'name', data_type_name: 'NAME'},
+      {name: 'email', data_type_name: 'EMAIL'},
+      {name: 'phone_number', data_type_name: 'PHONE_NUMBER'},
+      {name: 'address', data_type_name: 'ADDRESS'},
+      {name: 'ssn', data_type_name: 'SSN'},
+    ]
+  },
+  {
+    name: "buyer",
+    type: "PERSONS",
+    properties: [
+      {name: 'name', data_type_name: 'NAME'},
+      {name: 'email', data_type_name: 'EMAIL'},
+      {name: 'cardNumber', data_type_name: 'CC_NUMBER'},
+      {name: 'cardHolderName', data_type_name: 'CC_HOLDER_NAME'},
+      {name: 'cardExpiration', data_type_name: 'CC_EXPIRATION_STRING'},
+    ]
+  },
+  {
+    name: "seller",
+    type: "PERSONS",
+    properties: [
+      {name: 'name', data_type_name: 'NAME'},
+      {name: 'email', data_type_name: 'EMAIL'},
+      {name: 'bankAccount', data_type_name: 'BAN'},
+    ]
+  },
+]
