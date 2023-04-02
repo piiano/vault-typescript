@@ -1,6 +1,3 @@
-on:
-  workflow_dispatch: # Manually trigger the workflow
-
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
