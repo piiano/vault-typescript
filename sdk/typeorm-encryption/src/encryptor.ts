@@ -29,17 +29,18 @@ export class Encryptor {
     const encryptedProps = await this.vaultClient.crypto.encrypt({
       requestBody: fields
         .map(field => ({
-          object: {
-            fields: {
-              [field.name]: entity[field.propertyName],
-            }
-          },
+          // use deterministic encryption to allow searching by encrypted value
+          type: 'deterministic',
           props: [field.name],
+          object: {
+            fields: { [field.name]: entity[field.propertyName] }
+          },
         })),
       reason: 'AppFunctionality',
       collection,
     });
 
+    // clone entity to avoid mutating original object
     const clonedEntity = clone(entity);
 
     encryptedProps.forEach(({ciphertext}, index) => {

@@ -2,7 +2,7 @@ import "reflect-metadata"
 import {Vault} from "@piiano/testcontainers-vault";
 import type {Context} from "mocha";
 import {DataSource} from "typeorm";
-import registerVaultEncryption from "../";
+import registerVaultEncryption from "../src";
 import {Collection, VaultClient} from "@piiano/vault-client";
 import {Customer} from "./entity/customer";
 import {Buyer, Seller} from "./entity/commerce";
@@ -53,7 +53,7 @@ export const mochaHooks = {
   async afterAll(this: Context) {
     this.timeout(10000);
     await vault.stop();
-    // await this.dataSource.dropDatabase();
+    await this.dataSource.dropDatabase();
     await this.dataSource.destroy();
   }
 };

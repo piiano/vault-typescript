@@ -3,8 +3,43 @@ import {expect} from "chai";
 import {Buyer, Seller} from "./entity/commerce";
 import {BaseEntity, DataSource, EntityManager, ObjectLiteral, ObjectType} from "typeorm";
 import {DeepPartial} from "typeorm/common/DeepPartial";
+import {findSourceMap} from "module";
 
 describe('typeorm encryption',  function () {
+  it('should work with entity manager 2', async function () {
+    const [test] = testCases()
+    const { modifications, entityToAdd, entityClass,
+      normalizedEntityToAdd, normalizedModifications, findByProp  } = test;
+
+    const manager: EntityManager = this.dataSource.manager;
+
+    const added = await manager.save(entityToAdd);
+
+    expect(added).to.have.property('id');
+
+    const { id } = added;
+
+    const entity = await manager.findOneBy(entityClass, { id });
+    expect(entity).to.deep.equal({ ...entityToAdd, ...normalizedEntityToAdd, id });
+
+    const updateEntityResult = await manager.update(entityClass, { id }, modifications);
+
+    expect(updateEntityResult.affected).to.equal(1);
+
+    const updatedEntity = await manager.findOneBy(entityClass, { id });
+
+    expect(updatedEntity).to.deep.equal({ ...entity, ...modifications, ...normalizedModifications, id });
+
+    const found = await manager.find(entityClass, {
+      select: ['email.mask'],
+      // where: {
+      //   [findByProp]: updatedEntity[findByProp]
+      // },
+    });
+
+    console.log(found);
+  });
+
   it('should work with entity manager', async function () {
     const tests = testCases()
 
@@ -19,20 +54,26 @@ describe('typeorm encryption',  function () {
 
       const { modifications, entityToAdd, entityClass,
         normalizedEntityToAdd, normalizedModifications  } = tests[i];
-      const { id } = added[i];
 
-      const entity = await manager.findOneBy(entityClass, { id });
+      const addedWithInsertResult = await manager.insert(entityClass, { ...entityToAdd });
 
-      expect(entity).to.deep.equal({ ...entityToAdd, ...normalizedEntityToAdd, id });
+      expect(addedWithInsertResult).to.have.property('identifiers').with.lengthOf(1);
+      expect(addedWithInsertResult.identifiers[0]).to.have.property('id');
 
-      const updateEntityResult = await manager.update(entityClass, { id }, modifications);
+      for (const id of [added[i].id, addedWithInsertResult.identifiers[0].id]) {
 
-      expect(updateEntityResult.affected).to.equal(1);
+        const entity = await manager.findOneBy(entityClass, { id });
 
-      const updatedEntity = await manager.findOneBy(entityClass, { id });
+        expect(entity).to.deep.equal({ ...entityToAdd, ...normalizedEntityToAdd, id });
 
-      expect(updatedEntity).to.deep.equal({ ...entity, ...modifications, ...normalizedModifications, id });
+        const updateEntityResult = await manager.update(entityClass, { id }, modifications);
 
+        expect(updateEntityResult.affected).to.equal(1);
+
+        const updatedEntity = await manager.findOneBy(entityClass, { id });
+
+        expect(updatedEntity).to.deep.equal({ ...entity, ...modifications, ...normalizedModifications, id });
+      }
     }
   });
 
@@ -41,27 +82,37 @@ describe('typeorm encryption',  function () {
 
     for (let i = 0; i < tests.length; i++) {
       const { modifications, entityToAdd, entityClass,
-        normalizedEntityToAdd, normalizedModifications  } = tests[i];
+        normalizedEntityToAdd, normalizedModifications, findByProp  } = tests[i];
 
       const repository = (this.dataSource as DataSource).getRepository(entityClass);
 
-      const addedEntity = await repository.save(entityToAdd);
+      const addedEntityWithSave = await repository.save(entityToAdd);
 
-      expect(addedEntity).to.have.property('id');
+      expect(addedEntityWithSave).to.have.property('id');
 
-      const { id } = addedEntity;
+      const { id, ...entityToAddWithInsert } = addedEntityWithSave;
 
-      const entity = await repository.findOneBy({ id });
+      const addedEntityWithInsertResult = await repository.insert(entityToAddWithInsert);
 
-      expect(entity).to.deep.equal({ ...entityToAdd, ...normalizedEntityToAdd, id });
+      expect(addedEntityWithInsertResult).to.have.property('identifiers').with.lengthOf(1);
+      expect(addedEntityWithInsertResult.identifiers[0]).to.have.property('id');
 
-      const updateEntityResult = await repository.update({ id }, modifications);
+      const ids = [id, addedEntityWithInsertResult.identifiers[0].id];
+      for (const addedEntityID of ids) {
+        const id = addedEntityID;
 
-      expect(updateEntityResult.affected).to.equal(1);
+        const entity = await repository.findOneBy({ id });
 
-      const updatedEntity = await repository.findOneBy({ id });
+        expect(entity).to.deep.equal({ ...entityToAdd, ...normalizedEntityToAdd, id });
 
-      expect(updatedEntity).to.deep.equal({ ...entity, ...modifications, ...normalizedModifications, id });
+        const updateEntityResult = await repository.update({ id }, modifications);
+
+        expect(updateEntityResult.affected).to.equal(1);
+
+        const updatedEntity = await repository.findOneBy({ id });
+
+        expect(updatedEntity).to.deep.equal({ ...entity, ...modifications, ...normalizedModifications, id });
+      }
     }
   });
 
@@ -72,7 +123,7 @@ describe('typeorm encryption',  function () {
       const { modifications, entityToAdd, entityClass,
         normalizedEntityToAdd, normalizedModifications  } = tests[i];
 
-      const addedEntity = await entityToAdd.save()
+      const addedEntity = await entityToAdd.save();
 
       expect(addedEntity).to.have.property('id');
 
@@ -111,7 +162,8 @@ function testCases(): Array<EncryptionTest> {
       },
       modifications: {
         email: 'johndoe@example.com',
-      }
+      },
+      findByProp: 'email',
     },
     {
       name: 'entity with inheritance (buyers)',
@@ -132,7 +184,8 @@ function testCases(): Array<EncryptionTest> {
       },
       normalizedModifications: {
         cardNumber: '370000000000002',
-      }
+      },
+      findByProp: 'cardNumber',
     },
     {
       name: 'entity with inheritance (sellers)',
@@ -144,7 +197,8 @@ function testCases(): Array<EncryptionTest> {
       }),
       modifications: {
         bankAccount: '0987654321'
-      }
+      },
+      findByProp: 'bankAccount',
     },
   ];
 }
@@ -156,4 +210,5 @@ type EncryptionTest<Entity extends ObjectLiteral & BaseEntity = any> = {
   normalizedEntityToAdd?: DeepPartial<Entity>;
   modifications: DeepPartial<Entity>;
   normalizedModifications?: DeepPartial<Entity>;
+  findByProp: string;
 }

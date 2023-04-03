@@ -1,4 +1,3 @@
-import '../../'; // required for extending typeorm types
 import {Entity, PrimaryGeneratedColumn, Column, BaseEntity} from "typeorm";
 
 @Entity()
