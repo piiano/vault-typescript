@@ -6,6 +6,8 @@ import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 type EntityInserter = EntityManager['insert'];
 
 export function insertFunc(manager: EntityManager, encryptor: Encryptor): EntityInserter {
+  const insert = manager.insert.bind(manager);
+
   return async function <Entity extends ObjectLiteral>(
     target: EntityTarget<Entity>,
     entity:
@@ -14,12 +16,8 @@ export function insertFunc(manager: EntityManager, encryptor: Encryptor): Entity
   ): Promise<InsertResult> {
     if (InstanceChecker.isEntitySchema(target)) target = target.options.name;
 
-    const newEntity = await encryptor.encrypt(target as Function | string, entity);
+    const encryptedEntity = await encryptor.encrypt(target as Function | string, entity);
 
-    return manager.createQueryBuilder()
-      .insert()
-      .into(target)
-      .values(newEntity)
-      .execute()
+    return insert(target, encryptedEntity);
   };
 }

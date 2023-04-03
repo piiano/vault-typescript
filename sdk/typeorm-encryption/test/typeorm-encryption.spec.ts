@@ -3,42 +3,8 @@ import {expect} from "chai";
 import {Buyer, Seller} from "./entity/commerce";
 import {BaseEntity, DataSource, EntityManager, ObjectLiteral, ObjectType} from "typeorm";
 import {DeepPartial} from "typeorm/common/DeepPartial";
-import {findSourceMap} from "module";
 
 describe('typeorm encryption',  function () {
-  it('should work with entity manager 2', async function () {
-    const [test] = testCases()
-    const { modifications, entityToAdd, entityClass,
-      normalizedEntityToAdd, normalizedModifications, findByProp  } = test;
-
-    const manager: EntityManager = this.dataSource.manager;
-
-    const added = await manager.save(entityToAdd);
-
-    expect(added).to.have.property('id');
-
-    const { id } = added;
-
-    const entity = await manager.findOneBy(entityClass, { id });
-    expect(entity).to.deep.equal({ ...entityToAdd, ...normalizedEntityToAdd, id });
-
-    const updateEntityResult = await manager.update(entityClass, { id }, modifications);
-
-    expect(updateEntityResult.affected).to.equal(1);
-
-    const updatedEntity = await manager.findOneBy(entityClass, { id });
-
-    expect(updatedEntity).to.deep.equal({ ...entity, ...modifications, ...normalizedModifications, id });
-
-    const found = await manager.find(entityClass, {
-      select: ['email.mask'],
-      // where: {
-      //   [findByProp]: updatedEntity[findByProp]
-      // },
-    });
-
-    console.log(found);
-  });
 
   it('should work with entity manager', async function () {
     const tests = testCases()

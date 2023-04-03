@@ -29,25 +29,6 @@ export default function registerVaultEncryption(dataSource: DataSource, options?
   dataSource.manager.update = updateFunc(dataSource.manager, encryptor);
   dataSource.manager.insert = insertFunc(dataSource.manager, encryptor);
 
-  const createQueryBuilder = dataSource.createQueryBuilder.bind(dataSource);
-  dataSource.createQueryBuilder = function (...args: any): any {
-    const queryBuilder = createQueryBuilder(...args);
-
-    // @ts-ignore
-    const executeEntitiesAndRawResults = queryBuilder.executeEntitiesAndRawResults.bind(queryBuilder)
-
-    // @ts-ignore
-    queryBuilder.executeEntitiesAndRawResults = function (...args: any): any {
-      //
-      // const a = inspect(this.expressionMap, {depth: 10, colors: true, compact: true})
-      // console.log(a);
-      // console.log(a.includes('email.mask'));
-      // @ts-ignore
-      return executeEntitiesAndRawResults(...args);
-    }
-    return queryBuilder;
-  }
-
   if (Array.isArray(dataSource.options.subscribers)) {
     dataSource.setOptions({
       subscribers: [DecryptionSubscriber, ...dataSource.options.subscribers],

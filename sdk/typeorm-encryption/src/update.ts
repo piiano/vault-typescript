@@ -9,18 +9,10 @@ import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 type EntityUpdater = EntityManager['update'];
 
 export function updateFunc(manager: EntityManager, encryptor: Encryptor): EntityUpdater {
+  const update = manager.update.bind(manager);
   return async function <Entity extends ObjectLiteral>(
     target: EntityTarget<Entity>,
-    criteria:
-      | string
-      | string[]
-      | number
-      | number[]
-      | Date
-      | Date[]
-      | ObjectID
-      | ObjectID[]
-      | any,
+    criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | any,
     partialEntity: QueryDeepPartialEntity<Entity>,
   ): Promise<UpdateResult> {
     // if user passed empty criteria or empty list of criterias, then throw an error
@@ -41,23 +33,6 @@ export function updateFunc(manager: EntityManager, encryptor: Encryptor): Entity
 
     partialEntity = await encryptor.encrypt(target as Function | string, partialEntity)
 
-    if (
-      typeof criteria === "string" ||
-      typeof criteria === "number" ||
-      criteria instanceof Date ||
-      Array.isArray(criteria)
-    ) {
-      return manager.createQueryBuilder()
-        .update(target)
-        .set(partialEntity)
-        .whereInIds(criteria)
-        .execute()
-    } else {
-      return manager.createQueryBuilder()
-        .update(target)
-        .set(partialEntity)
-        .where(criteria)
-        .execute()
-    }
+    return update(target, criteria, partialEntity);
   }
 }
