@@ -1,22 +1,26 @@
-import { AppDataSource } from "./data-source";
-import { User } from "./entity/User";
-import express, { Request, Response } from "express";
-import { FindOneOptions, FindOptionsWhere } from "typeorm";
+import initDataSource from "./data-source";
+import {User} from "./entity/User";
+import express, {Request, Response} from "express";
+import {Config} from "./config";
+import {Server} from "http";
+import {DataSource} from "typeorm";
 
-const app = express();
-app.use(express.json());
-const port = process.env.PORT || 8080;
+export default async function main(config: Config): Promise<{
+  server: Server;
+  dataSource: DataSource;
+}> {
+  const app = express();
+  app.use(express.json());
 
-async function main() {
-  const dataSource = await AppDataSource.initialize();
+  const dataSource = await initDataSource(config);
   const userRepository = dataSource.getRepository(User);
 
   // Create a new user
   app.post("/users", async (req: Request, res: Response) => {
     try {
       const user = userRepository.create(req.body);
-      await userRepository.save(user);
-      res.status(201).send(user);
+      const addedUser = await userRepository.save(user);
+      res.status(201).send(addedUser);
     } catch (error: any) {
       res.status(400).send(error);
     }
@@ -93,9 +97,12 @@ async function main() {
     }
   });
 
-  app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
+  const server = app.listen(config.port, () => {
+    console.log(`[server]: Server is running at http://localhost:${config.port}`);
   });
-}
 
-main();
+  return {
+    server,
+    dataSource,
+  };
+}

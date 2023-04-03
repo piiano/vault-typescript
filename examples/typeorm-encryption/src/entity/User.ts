@@ -5,20 +5,17 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({encrypt: true})
   name: string;
 
-  @Column()
+  @Column({encrypt: true})
   email: string;
 
-  @Column()
+  @Column({encrypt: true, vaultField: "phone_number"})
   phone: string;
 
-  @Column()
+  @Column({encrypt: true})
   ssn: string;
-
-  @Column()
-  dob: Date;
 
   @Column()
   state: string;

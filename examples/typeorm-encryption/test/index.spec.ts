@@ -1,22 +1,18 @@
-import { TestDataSource } from "../src/data-source";
-import { User } from "../src/entity/User";
-import { DataSource, Repository } from "typeorm";
-import { after, before, describe } from "mocha";
-import { expect, use } from "chai";
+import {User} from "../src/entity/User";
+import {Repository} from "typeorm";
+import {before, describe} from "mocha";
+import {expect} from "chai";
 
 describe("collections", function () {
-  let dataSource: DataSource;
   let userRepository: Repository<User>;
 
-  before(async () => {
-    dataSource = await TestDataSource.initialize();
-    userRepository = TestDataSource.getRepository(User);
-
-    await userRepository.clear();
+  before(async function () {
+    userRepository = this.dataSource.getRepository(User);
   });
 
-  after(async () => {
-    await dataSource.destroy();
+  afterEach(async function () {
+    // clear the database after each test
+    await userRepository.clear();
   });
 
   it("demonstration", async function () {
@@ -69,11 +65,6 @@ describe("collections", function () {
       state: "MA",
     });
 
-    console.log("Search customer by name=john --> expecting 2 results");
-    const johnUsers = await userRepository.findBy({ name: "john" });
-    expect(johnUsers.length).to.equal(2);
-    console.log(johnUsers);
-
     console.log("Get all customers --> Expecting 4 results");
     const allUsers = await userRepository.find();
     expect(allUsers.length).to.equal(4);
@@ -82,6 +73,6 @@ describe("collections", function () {
     console.log(
       "Showing encrypted data in db (note all columns are encrypted except the 'state' columns)"
     );
-    console.log(await dataSource.query("SELECT * FROM user"));
+    console.log(await this.dataSource.query("SELECT * FROM user"));
   });
 });
