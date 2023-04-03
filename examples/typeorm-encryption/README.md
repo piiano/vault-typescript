@@ -1,3 +1,13 @@
+<p>
+  <a href="https://piiano.com/pii-data-privacy-vault/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://piiano.com/docs/img/logo-developers-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://piiano.com/wp-content/uploads/piiano-logo-developers.png">
+      <img alt="Piiano Vault" src="https://piiano.com/wp-content/uploads/piiano-logo-developers.png" height="40" />
+    </picture>
+  </a>
+</p>
+
 # TypeORM encryption example
 
 This example application demonstrates how a simple express app with TypeORM can use the [@piiano/typeorm-encryption](https://www.npmjs.com/package/@piiano/typeorm-encryption)   package to automatically encrypt and decrypt Personally Identifiable Information (PII) in your database.
@@ -71,6 +81,21 @@ You can also query the database directly to see the encrypted data:
 sqlite3 app.db -readonly 'SELECT * FROM user;'
 ```
 
+The output should be similar to (the actual values will be different due to the encryption):
+
+```json
+[
+  {
+    "id": 1,
+    "name": "AgAB8yJuC4StPSFytrH0hY0LoTrztPsdjPSP3BJMxNAfdvE/qjP7NMIc95UQet6aYfPimahHGdoSc3VuKcsUapHbpF/NOFNX44t+sJS+wZ09AjtpFpI02tR2PQ==",
+    "email": "AgAB8yJuCwSPZJO6ZUs8uUsLQi+JNFAIsghsJ9bSole62fVyp3Ts3a4PsJfrrYU/nzYK/KerGOH+YiCzYyuPWK6P7Sw0GcdlsSuv1wQ3CHateGTwu7rJgl4dJt9BdkgZPhwXhJFvvAxE",
+    "phone": "AgAB8yJuCw3Ti+oUTrLlDDsrAqzu1L7MuVTVgH3QN7OWvfr+lMPKcW58R3YHacDAUb/NBAXDn2A7v9uV41iQFEgdrQII5JOHzBEFVYLyxFTRwH9F3C8bjOjq448g75HgvpndxwIrmIQHT3jXHShx/Q==",
+    "ssn": "AgAB8yJuC0Pgy4/54YId7N5G0bJB4juARu9lZ7MU+N0Fp8fKRQ7pgqw+MYpdZYTX1azXA1OXjyXalDvapTVxOSqNvBj0h7/0hMNrCh0fZAQQf62OvwXbgu9DuOLty744",
+    "state": "CA"
+  }
+]
+```
+
 ## How it works
 
 This example app utilizes a simple express app with TypeORM to store and retrieve data from a database.
@@ -78,6 +103,14 @@ This example app utilizes a simple express app with TypeORM to store and retriev
 To encrypt and decrypt data, the `@piiano/typeorm-encryption` package is used.
 
 The package is configured to work with the Piiano Vault server to encrypt and decrypt fields annotated with `@Column({ encrypted: true })`.
+
+> **⚠️ Note:**
+> 
+> We used a local instance of the Piiano Vault dev server for this example.
+> 
+> This instance is not suitable for production use as it does not persist the encryption keys which means that the data will be lost when the server is restarted.
+> 
+> To read more about how to deploy Piiano Vault in production, please refer to the [Piiano Vault documentation](https://piiano.com/docs/).
 
 ## About Piiano Vault
 
@@ -95,3 +128,7 @@ The main benefits are:
 - Out of the box privacy compliance functionality.
 
 More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://piiano.com/docs/).
+
+## Issues and Feedback
+
+If you encounter any issues or have feedback, please feel free to open an issue on this GitHub repository. We appreciate your contributions and suggestions for improvement!
