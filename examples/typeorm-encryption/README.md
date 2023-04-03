@@ -16,9 +16,17 @@ This example application demonstrates how a simple express app with TypeORM can 
 
 To run the example app, please follow these steps:
 
-1. Clone the repository
-2. Set the `PVAULT_SERVICE_LICENSE` environment variable to a valid Piiano Vault license key. You can obtain a free trial license key [here](https://piiano.com/docs/getting-started/).
-3. Run `run-vault.sh`. This will download and launch a local instance of the Piiano Vault server using Docker and will start the example app.
+1. Clone the repository and navigate to this directory.
+   ```bash
+   git clone https://github.com/piiano/vault-typescript.git
+   cd vault-typescript/examples/typeorm-encryption
+   ```
+2. Set the `PVAULT_SERVICE_LICENSE` environment variable to a valid Piiano Vault license key.
+   
+   You can obtain a free trial license key [here](https://piiano.com/docs/getting-started/).
+3. Run `run-vault.sh`.
+
+   This will download and launch a local instance of the Piiano Vault dev server using Docker and will start the example app.
 
 After completing the above steps, you can interact with the example app's API to create and retrieve users.
 
