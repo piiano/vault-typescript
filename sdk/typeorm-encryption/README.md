@@ -119,7 +119,8 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 ## Known Limitations
 
 - Encryption is supported only for string columns.
-- Search queries are not supported on encrypted columns. Support for search queries is planned for a future release.
+- Search queries are not supported on encrypted columns. Coming soon 🔜
+- Masking is not yet supported. Coming soon 🔜
 
 ## About Piiano Vault
 
