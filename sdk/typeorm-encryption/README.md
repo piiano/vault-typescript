@@ -121,8 +121,6 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 - Encryption is supported only for string columns.
 - Search queries are not supported on encrypted columns. Support for search queries is planned for a future release.
 
-```typescript
-
 ## About Piiano Vault
 
 Piiano Vault is the secure home for sensitive personal data. It allows you to safely store sensitive personal data in your own cloud environment with automated compliance controls.
