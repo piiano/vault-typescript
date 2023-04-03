@@ -86,7 +86,7 @@ The output should be:
 You can also query the database directly to see the encrypted data:
 
 ```bash
-sqlite3 app.db -readonly 'SELECT * FROM user;'
+sqlite3 app.db -readonly -json 'SELECT * FROM user;'
 ```
 
 The output should be similar to (the actual values will be different due to the encryption):
