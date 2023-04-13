@@ -20,7 +20,6 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
-    "@piiano/testcontainers-vault": "^1.0.0",
     "@piiano/typeorm-encryption": "^1.0.2",
     "@piiano/vault-client": "^1.0.1",
     "express": "^4.18.2",
@@ -29,6 +28,7 @@
     "typeorm": "0.3.12"
   },
   "devDependencies": {
+    "@piiano/testcontainers-vault": "^1.0.0",
     "@types/chai": "^4.3.4",
     "@types/express": "^4.17.17",
     "@types/mocha": "^10.0.1",

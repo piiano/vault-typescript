@@ -1,7 +1,7 @@
 /// <reference types="typeorm" />
 
 import {VaultClient, VaultClientOptions as Options} from "@piiano/vault-client";
-import {DataSource, InstanceChecker, ObjectLiteral, QueryRunner, SelectQueryBuilder, TypeORMError} from "typeorm";
+import {DataSource} from "typeorm";
 import {Encryptor} from "./encryptor";
 import {CreateDecryptionSubscriber} from "./subscriber";
 import {saveFunc} from "./save";
@@ -9,9 +9,6 @@ import {updateFunc} from "./update";
 
 import "typeorm/decorator/options/ColumnCommonOptions"
 import {insertFunc} from "./insert";
-import {EntityTarget} from "typeorm/common/EntityTarget";
-import {DriverUtils} from "typeorm/driver/DriverUtils";
-import {inspect} from "util";
 
 declare module "typeorm/decorator/options/ColumnCommonOptions" {
   interface ColumnCommonOptions {
@@ -19,6 +16,7 @@ declare module "typeorm/decorator/options/ColumnCommonOptions" {
     vaultField?: string;
   }
 }
+
 
 
 export default function registerVaultEncryption(dataSource: DataSource, options?: Options): DataSource {

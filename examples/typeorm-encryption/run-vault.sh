@@ -56,7 +56,7 @@ user PERSONS (
 )"
 
 # Install dependencies
-npm install --no-package-lock
+npm ci
 
 # Run the example
 npm start
