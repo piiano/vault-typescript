@@ -1,17 +1,19 @@
-diff --git a/sdk/vault-client/src/generated/core/ApiError.ts b/sdk/vault-client/src/generated/core/ApiError.ts
-index 41a9605..d1d94de 100644
---- a/sdk/vault-client/src/generated/core/ApiError.ts
-+++ b/sdk/vault-client/src/generated/core/ApiError.ts
-@@ -12,7 +12,7 @@ export class ApiError extends Error {
+diff --git b/sdk/vault-client/src/generated/core/ApiError.ts a/sdk/vault-client/src/generated/core/ApiError.ts
+index 41a9605..6210a37 100644
+--- b/sdk/vault-client/src/generated/core/ApiError.ts
++++ a/sdk/vault-client/src/generated/core/ApiError.ts
+@@ -12,7 +12,9 @@ export class ApiError extends Error {
    public readonly request: ApiRequestOptions;
  
    constructor(request: ApiRequestOptions, response: ApiResult, message: string) {
 -    super(message);
 +    super(formatErrorMessage(message, response.body));
++    // because we are extending a built-in class
++    Object.setPrototypeOf(this, ApiError.prototype);
  
      this.name = 'ApiError';
      this.url = response.url;
-@@ -22,3 +22,28 @@ export class ApiError extends Error {
+@@ -22,3 +24,28 @@ export class ApiError extends Error {
      this.request = request;
    }
  }
