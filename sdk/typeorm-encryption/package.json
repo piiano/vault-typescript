@@ -17,7 +17,7 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@piiano/vault-client": "^1.0.1"
+    "@piiano/vault-client": "^1.0.2"
   },
   "devDependencies": {
     "@databases/mysql-test": "^4.0.2",
