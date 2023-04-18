@@ -1,9 +1,6 @@
-import {EntityManager, InstanceChecker, ObjectID, ObjectLiteral, TypeORMError, UpdateResult} from "typeorm";
+import {EntityManager, InstanceChecker, ObjectId, ObjectLiteral, TypeORMError, UpdateResult} from "typeorm";
 import {Encryptor} from "./encryptor";
-import {DeepPartial} from "typeorm/common/DeepPartial";
 import {EntityTarget} from "typeorm/common/EntityTarget";
-import {SaveOptions} from "typeorm/repository/SaveOptions";
-import {EntityPersistExecutor} from "typeorm/persistence/EntityPersistExecutor";
 import {QueryDeepPartialEntity} from "typeorm/query-builder/QueryPartialEntity";
 
 type EntityUpdater = EntityManager['update'];
@@ -12,7 +9,7 @@ export function updateFunc(manager: EntityManager, encryptor: Encryptor): Entity
   const update = manager.update.bind(manager);
   return async function <Entity extends ObjectLiteral>(
     target: EntityTarget<Entity>,
-    criteria: string | string[] | number | number[] | Date | Date[] | ObjectID | ObjectID[] | any,
+    criteria: string | string[] | number | number[] | Date | Date[] | ObjectId | ObjectId[] | any,
     partialEntity: QueryDeepPartialEntity<Entity>,
   ): Promise<UpdateResult> {
     // if user passed empty criteria or empty list of criterias, then throw an error

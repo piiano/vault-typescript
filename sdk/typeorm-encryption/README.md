@@ -103,9 +103,60 @@ export class Customer extends BaseEntity {
 
 In the example above, the `name`, `email`, `phone`, and `ssn` properties will be encrypted and decrypted automatically.
 
+### Querying encrypted properties
+
+Querying on encrypted properties is handled automatically when identifying encrypted properties in a `where` clause without the need to decrypt the data first.
+
+The encryption algorithm used by the Piiano Vault server is **deterministic**, meaning that the same value will always be encrypted to the same ciphertext in the database which makes querying possible.
+
+> **Note**
+> 
+> Using this approach, limits the ability to query on encrypted properties to the `=` and `!=` operators.
+> Other operators such as `>`, `<`, `>=`, `<=`, `LIKE`, `BETWEEN`, etc. are not supported.
+
+For example, the following query will work as expected on the encrypted `email` property:
+
+```javascript
+const customers = await Customer.find({
+  where: {
+    email: 'shawnkemp@example.com',
+  }
+});
+```
+
+### Using Vault transformations
+
+The Piiano Vault server supports the use of [transformations](https://piiano.com/docs/data-security/transformations/).
+
+Transformations provide a mechanism to present sensitive data in a way that reduces data exposure.
+
+For example, the `email` property in the example above could be masked using the `mask` transformation to return `s********@example.com` instead of the actual email address.
+
+To use a transformation, append the transformation name to the column name in the `select` clause:
+
+Vault transformation is performed on the Vault server and the result is returned to the client meaning the sensitive data never leaves the Vault server but only the transformed result. 
+
+```javascript
+import {withTransformations} from '@piiano/typeorm-encryption';
+
+const customers = await withTransformations(Customer).find({
+  select: ['email.mask'],
+});
+
+// returns:
+// [
+//   { 'email.mask': 's********@example.com' },
+// ]
+```
+
+> **Note**
+> The `withTransformations` function is a wrapper that extends the type of the given entity class to allow selecting on the transformation properties.
+> It is not required to use the `withTransformations` function but it is recommended to allow proper type checking.
+
 ## Development
 
 To build and test the project:
+
 ```commandLine
 yarn
 yarn build

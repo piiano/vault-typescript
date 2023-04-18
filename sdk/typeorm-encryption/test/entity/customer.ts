@@ -8,7 +8,7 @@ export class Customer extends BaseEntity {
   @Column({encrypt: true})
   name: string;
 
-  @Column({encrypt: true})
+  @Column({encrypt: true, name: 'email_address', vaultField: 'email_field'})
   email: string;
 
   @Column({encrypt: true, vaultField: 'phone_number'})

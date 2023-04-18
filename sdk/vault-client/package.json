@@ -25,7 +25,7 @@
     "form-data": "^4.0.0"
   },
   "devDependencies": {
-    "@piiano/testcontainers-vault": "^1.0.0",
+    "@piiano/testcontainers-vault": "^1.0.1",
     "@types/chai": "^4.3.4",
     "@types/chai-as-promised": "^7.1.5",
     "@types/mocha": "^10.0.1",

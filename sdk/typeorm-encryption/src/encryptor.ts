@@ -1,47 +1,33 @@
-import {DataSource, getMetadataArgsStorage, ObjectLiteral} from 'typeorm';
+import {DataSource, ObjectLiteral} from 'typeorm';
 import {VaultClient} from "@piiano/vault-client";
 import {DeepPartial} from "typeorm/common/DeepPartial";
 
-type VaultFieldMetadata = {
-  name: string;
-  propertyName: string;
-}
-
-type VaultMetadata = {
-  collection: string;
-  fields: Array<VaultFieldMetadata>
-}
-
 export class Encryptor {
-
-  private readonly metadata = getMetadataArgsStorage();
-  private readonly entityVaultMetadataMap = new Map<Function | string, VaultMetadata>;
-
   constructor(
     private readonly dataSource: DataSource,
     private readonly vaultClient: VaultClient) {
   }
 
   async encrypt<T extends DeepPartial<ObjectLiteral>>(target: Function | string, entity: T): Promise<T> {
-    let {collection, fields} = this.getVaultMetadata(target);
-    fields = fields.filter(field => entity[field.propertyName] !== undefined)
+    const {tableName, columns} = this.dataSource.getMetadata(target);
+    const fields = columns.filter(column => entity[column.propertyName] !== undefined && column.isEncrypted);
 
     const encryptedProps = await this.vaultClient.crypto.encrypt({
       requestBody: fields
         .map(field => ({
           // use deterministic encryption to allow searching by encrypted value
           type: 'deterministic',
-          props: [field.name],
+          props: [field.vaultFieldName],
           object: {
-            fields: { [field.name]: entity[field.propertyName] }
+            fields: { [field.vaultFieldName]: entity[field.propertyName] }
           },
         })),
       reason: 'AppFunctionality',
-      collection,
+      collection: tableName,
     });
 
     // clone entity to avoid mutating original object
-    const clonedEntity = clone(entity);
+    const clonedEntity = Object.assign(Object.create(entity), entity);
 
     encryptedProps.forEach(({ciphertext}, index) => {
       const {propertyName} = fields[index];
@@ -52,59 +38,37 @@ export class Encryptor {
   }
 
 
-  async decrypt(target: Function | string, entity: DeepPartial<ObjectLiteral>): Promise<void> {
-    const {collection, fields} = this.getVaultMetadata(target);
+  async decrypt(target: Function | string, transformations: { [key: string]: string[] }, ...entities: DeepPartial<ObjectLiteral>[]): Promise<void> {
+    const {name, tableName, columns} = this.dataSource.getMetadata(target);
+
+    const selectedEncryptedFields = columns.filter(column =>
+      column.isEncrypted && (!transformations || (name + '.' + column.propertyName) in transformations));
 
     const decryptedProps = await this.vaultClient.crypto.decrypt({
-      requestBody: fields.map(field => ({
+      requestBody: entities.map(entity => selectedEncryptedFields.map(field => ({
         encrypted_object: {
           ciphertext: entity[field.propertyName],
         },
-      })),
+        ...(transformations ? { props: transformations[name + '.' + field.propertyName] } : {}),
+      }))).flat(),
       reason: 'AppFunctionality',
-      collection,
+      collection: tableName,
     });
 
     decryptedProps.forEach((decryptedProp, index) => {
-      const {propertyName, name} = fields[index];
-      const value = decryptedProp.fields[name] || decryptedProp.fields[name.toLowerCase()]
-      if (value === undefined || value === null) {
-        return;
+      const entityIndex = Math.floor(index / selectedEncryptedFields.length);
+      const selectedEncryptedIndex = index % selectedEncryptedFields.length;
+
+      const entity = entities[entityIndex];
+      const selectedEncryptedField = selectedEncryptedFields[selectedEncryptedIndex];
+
+      delete entity[selectedEncryptedField.propertyName];
+
+      for (const decryptedField in decryptedProp.fields) {
+        const dotIndex = decryptedField.indexOf('.');
+        entity[selectedEncryptedField.propertyName + (dotIndex === -1 ? '' : decryptedField.slice(dotIndex))] = decryptedProp.fields[decryptedField];
       }
-      entity[propertyName] = value;
     });
   }
-
-  getVaultMetadata<Entity extends ObjectLiteral>(target: Function | string): VaultMetadata {
-    const entityVaultMetadata = this.entityVaultMetadataMap.get(target);
-    if (entityVaultMetadata) {
-      return entityVaultMetadata;
-    }
-
-    const entityMetadata = this.dataSource.getMetadata(target);
-
-    const collection = entityMetadata.tableName;
-    const fields = entityMetadata.inheritanceTree.map(this.getTargetEncryptedColumns.bind(this)).flat();
-
-    const vaultMetadata = {collection, fields};
-
-    this.entityVaultMetadataMap.set(target, vaultMetadata);
-
-    return vaultMetadata;
-  }
-
-  getTargetEncryptedColumns<Entity extends ObjectLiteral>(target: Function | string): Array<VaultFieldMetadata> {
-    return this.metadata.filterColumns(target)
-      .filter((columnMetadata) => (
-        columnMetadata.options?.encrypt &&
-        columnMetadata.mode === "regular"
-      )).map(({propertyName, options}) => ({
-        propertyName,
-        name: options.vaultField || options.name || propertyName,
-      }));
-  }
 }
 
-export function clone<T extends object>(obj: T): T {
-  return Object.assign(Object.create(obj), obj);
-}

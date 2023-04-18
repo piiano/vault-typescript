@@ -64,7 +64,7 @@ const collections: Array<Collection> = [
     type: "PERSONS",
     properties: [
       {name: 'name', data_type_name: 'NAME'},
-      {name: 'email', data_type_name: 'EMAIL'},
+      {name: 'email_field', data_type_name: 'EMAIL'},
       {name: 'phone_number', data_type_name: 'PHONE_NUMBER'},
       {name: 'address', data_type_name: 'ADDRESS'},
       {name: 'ssn', data_type_name: 'SSN'},

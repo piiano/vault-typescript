@@ -1,9 +1,9 @@
 import {GenericContainer, Wait} from "testcontainers";
 import {VaultOptions} from "./options";
 import {StartedTestContainer} from "testcontainers/dist/src/test-container";
-import {AbstractWaitStrategy} from "testcontainers/dist/src/wait-strategy";
 import {Container} from "dockerode";
 import {BoundPorts} from "testcontainers/dist/src/bound-ports";
+import {AbstractWaitStrategy} from "testcontainers/dist/src/wait-strategy/wait-strategy";
 
 const vaultPort = 8123;
 
@@ -29,10 +29,10 @@ export class Vault {
     const vars = Object.entries(env).reduce((acc: Record<string, string>, [key, value]) => {
       acc[key] = String(value);
       return acc;
-    }, { PVAULT_SERVICE_LICENSE: license });
+    }, {PVAULT_SERVICE_LICENSE: license});
 
     this.container = new GenericContainer(`piiano/pvault-dev:${version}`)
-      .withExposedPorts(port ? { container: vaultPort, host: port } : vaultPort)
+      .withExposedPorts(port ? {container: vaultPort, host: port} : vaultPort)
       .withEnvironment(vars)
       .withWaitStrategy(new VaultWaitStrategy());
   }
