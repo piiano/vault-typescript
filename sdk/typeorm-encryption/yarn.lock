@@ -135,12 +135,12 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@piiano/testcontainers-vault@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@piiano/testcontainers-vault/-/testcontainers-vault-1.0.0.tgz#8ae843d8842e68305b8a3005e6c7c13e1e4ec26e"
-  integrity sha512-P28a2pvxjYQNqkscgi5ds2xySpAI6UG2KN8P0YwcOSKWV3OXFMJZ0QZWDxZN2anNfvVZwvhmHA0uabiAgdAHvg==
+"@piiano/testcontainers-vault@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@piiano/testcontainers-vault/-/testcontainers-vault-1.0.1.tgz#824eee36ba689d9ff1f21779b989094c991347ab"
+  integrity sha512-wLElnXwPLBP0o7e7eIs2MQArMebBklDVoVclfX4UnEzjGzb5Do4B+rWSnfU2f83ALAUGjg/e4lRKr7sZGo+EOg==
   dependencies:
-    testcontainers "^9.3.0"
+    testcontainers "^9.5.0"
 
 "@piiano/vault-client@^1.0.3":
   version "1.0.3"
@@ -2180,7 +2180,7 @@ tar@^6.0.2, tar@^6.1.11, tar@^6.1.2:
     mkdirp "^1.0.3"
     yallist "^4.0.0"
 
-testcontainers@^9.3.0:
+testcontainers@^9.5.0:
   version "9.5.0"
   resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.5.0.tgz#a2163ac803dec3944fdc6d433f8005f61274562e"
   integrity sha512-XdLZec7CN8/eXfT/A0zR03J2bNIpwLM3O3kLbp1OZPpZTNtjnR1zsdhS688o2qAx5+FS+xZ8nHL+vm3UBMnfHg==
