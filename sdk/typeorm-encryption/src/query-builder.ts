@@ -53,6 +53,16 @@ function buildSelect<Entity extends ObjectLiteral>(this: SelectQueryBuilder<Enti
       throw new EntityPropertyNotFoundError(propertyPath, metadata)
 
     if (encryptedColumn) {
+      if (typeof select[key] === 'object') {
+        this.buildSelect(
+          select[key] as FindOptionsSelect<any>,
+          metadata,
+          alias,
+          propertyPath,
+        )
+        continue ;
+      }
+
       if (!this.transformations) {
         this.transformations = {};
       }

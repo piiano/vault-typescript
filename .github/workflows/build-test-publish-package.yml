@@ -1,0 +1,108 @@
+name: Build, Test and Publish
+run-name: ${{ github.workflow }} (${{ github.head_ref || github.ref_name }})
+
+on:
+  workflow_call:
+    inputs:
+      path:
+        description: 'Path to package.json'
+        required: true
+        type: string
+      bump:
+        description: |-
+          How to bump the package version:
+          - `none` - do not bump version and do not publish
+          - `patch` - bump patch version
+          - `minor` - bump minor version
+          - `major` - bump major version
+        required: false
+        default: none
+        type: string
+    secrets:
+      PVAULT_SERVICE_LICENSE:
+        description: 'Vault license for testing'
+        required: true
+      NPM_REGISTRY_TOKEN:
+        description: 'Token for NPM registry'
+        required: true
+
+jobs:
+  build-test-publish:
+    name: Build, Test & Publish ${{ inputs.path }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+          cache-dependency-path: ${{ inputs.path }}/yarn.lock
+
+      - name: Bump version
+        id: bump
+        if: inputs.bump != 'none'
+        run: |
+          yarn --cwd ${{ inputs.path }} version \
+            --no-git-tag-version \
+            --no-commit-hooks \
+            --${{ inputs.bump }}
+          
+          echo "package_name=$(jq -r '.name' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
+          echo "version=$(jq -r '.version' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: yarn --cwd ${{ inputs.path }} --frozen-lockfile
+
+      - name: Run build
+        run: yarn --cwd ${{ inputs.path }} build
+
+      - name: Run tests
+        run: yarn --cwd ${{ inputs.path }} test
+        env:
+          PVAULT_SERVICE_LICENSE: ${{ secrets.PVAULT_SERVICE_LICENSE }}
+
+      - name: Publish package
+        if: inputs.bump != 'none' && github.ref_name == 'main'
+        run: |
+          cat <<EOF >.npmrc
+          //registry.npmjs.org/:_authToken=${{ secrets.NPM_REGISTRY_TOKEN }}
+          EOF
+
+          yarn --cwd ${{ inputs.path }} publish --access=public
+
+      - name: Update new version for other packages
+        if: inputs.bump != 'none' && github.ref_name == 'main'
+        run: |
+          # find all dependent packages and update their package.json and yarn.lock.
+          git ls-files sdk/**/package.json | \
+            grep -v ${{ inputs.path }}/package.json | \ 
+            xargs -L1 -I{} bash -c '
+              grep ${{ steps.bump.outputs.package_name }} {} && \
+              yarn --cwd $(dirname {}) add ${{ steps.bump.outputs.package_name }}@${{ steps.bump.outputs.version }} --exact'
+
+      - name: Commit changes
+        run: |
+          git config --global user.email "cicd@piiano.com"
+          git config --global user.name "Github Actions"
+          BRANCH_NAME=$(echo "ci/$($(echo 'bump-${{ steps.bump.outputs.package_name }}-to-version-${{ steps.bump.outputs.version }}' | sed -E 's,[^a-zA-Z0-9]+,-,g')")
+          
+          git checkout -b $BRANCH_NAME
+          git add .
+          git commit -m "chore: bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}"
+          git push
+          
+          gh pr create \
+            --title "chore: Bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}" \
+            --body "chore: Bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}" \
+            --base main \
+            --head $BRANCH_NAME
+          
+          gh pr merge \
+            --delete-branch \
+            --squash \
+            --merge

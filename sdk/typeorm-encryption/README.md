@@ -140,7 +140,7 @@ Vault transformation is performed on the Vault server and the result is returned
 import {withTransformations} from '@piiano/typeorm-encryption';
 
 const customers = await withTransformations(Customer).find({
-  select: ['email.mask'],
+  select: { 'email.mask': true },
 });
 
 // returns:
@@ -170,8 +170,11 @@ This project is licensed under the MIT License - see the [LICENSE](../../LICENSE
 ## Known Limitations
 
 - Encryption is supported only for string columns.
-- Search queries are not supported on encrypted columns. Coming soon 🔜
-- Masking is not yet supported. Coming soon 🔜
+- Querying using the array notation don't of the same property in a transformed and untransformed form will return only the transformed value.
+  Examples:
+  Using select: `['email', 'email.mask']` will result in only `email.mask` being returned.
+  While using select: `{'email.mask': true, 'email': true}` will result in both `email` and `email.mask` being returned.
+  Selecting using the array notation is deprecated by TypeORM and is not recommended. 
 
 ## About Piiano Vault
 
