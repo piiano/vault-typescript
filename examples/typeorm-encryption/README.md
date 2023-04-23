@@ -23,7 +23,7 @@ To run the example app, please follow these steps:
    ```
 2. Set the `PVAULT_SERVICE_LICENSE` environment variable to a valid Piiano Vault license key.
    
-   You can obtain a free trial license key [here](https://piiano.com/docs/getting-started/).
+   You can obtain a free trial license key [here](https://piiano.com/docs/guides/get-started).
 3. Run `run-vault.sh`.
 
    This will download and launch a local instance of the Piiano Vault dev server using Docker and will start the example app.
