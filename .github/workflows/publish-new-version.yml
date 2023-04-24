@@ -2,6 +2,9 @@ name: Build, Test and Publish
 run-name: ${{ github.workflow }} (${{ github.head_ref || github.ref_name }})
 
 on:
+  push:
+    branches-ignore:
+      - dependabot/**
   workflow_dispatch:
     inputs:
       vault_version:
@@ -60,61 +63,81 @@ on:
           - major
 
 jobs:
-  bump-versions:
-    name: Bump versions
+  update-readme:
+    name: Update README
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+
+      - name: Update README
         env:
-          PACKAGES: >-
-            [
-              {"name": "testcontainers-vault", "bump": ${{ inputs.bump-testcontainers-vault }} },
-              {"name": "vault-client", "bump": ${{ inputs.bump-vault-client }} },
-              {"name": "typeorm-encryption", "bump": ${{ inputs.bump-typeorm-encryption }} }
-            ]
+          LINE: This package is compatible with Vault version
+        run: sed -i '' -E "s|$LINE [0-9]+\.[0-9]+\.[0-9]+\.|$LINE ${{ inputs.vault_version }}.|g" **/README.md
 
+      - name: Commit and push changes
+        if: github.event_name == 'workflow_dispatch'
         run: |
-          
-          # bump versions of packages
-          echo $PACKAGES | \
-            jq -r '.[] | select(.bump != "none") | "--cwd sdk/"+.name+" version --no-git-tag-version --no-commit-hooks --"+.bump' | \
-            xargs -L1 yarn
-          
-          # list new versions of packages
-          echo $PACKAGES | jq -r '"./sdk/"+.[].name+"/package.json"' | xargs -L1 -I{} jq -r '.version' {}
-          
-          jq '(.dependencies + .devDependencies + .peerDependencies)["@piiano/testcontainers-vault"] != null' ./sdk/vault-client/package.json
-          
-          echo $PACKAGES | jq -r 'map("./sdk/"+.+"/package.json")[]' | xargs jq --slurp -n '[inputs[] | {key: .name, value: .version} ] | from_entries'
-          
-          '
-            jq '(.dependencies + .devDependencies + .peerDependencies)["@piiano/testcontainers-vault"] != null' ./sdk/vault-client/package.json
-          
-          yarn --cwd packages/typeorm-encryption version --no-git-tag-version --no-commit-hooks --${{ github.event.inputs.typeorm-encryption-version }}
-          yarn --cwd packages/vault-client version --no-git-tag-version --no-commit-hooks --${{ github.event.inputs.vault-client-version }}
-          yarn --cwd packages/testcontainers-vault version --no-git-tag-version --no-commit-hooks --${{ github.event.inputs.testcontainers-vault-version }}
-
-      - run: Bump versions
-      - run: Check where packages are used and bump versions there
-      - run: Run build and test
-
-      - run: Update README.md
-
-      - name: Update README.md
-        run: |
-
-      - name: Commit changes
-        run: |
+          # TODO: commit and push changes           
+          git status
 
   build-test-publish:
-    name: Build, Test & Publish ${{ matrix.package }}
+    name: Build, Test & Publish @piiano/${{ matrix.package }}
     uses: ./.github/workflows/build-test-publish-package.yml
+    strategy:
+      matrix:
+        package:
+          - testcontainers-vault
+          - vault-client
+          - typeorm-encryption
+      # we need to run jobs sequentially because of the way packages depend on each other
+      max-parallel: 1
+      fail-fast: true
     with:
-      path: ${{ matrix.package }}
-      publish: ${{ github.ref_name == 'main' }}
+      path: ./sdk/${{ matrix.package }}
+      bump: ${{ inputs[format('bump-{0}', matrix.package)] || 'none' }}
 
+#
+#  bump-versions:
+#    name: Bump versions
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#        env:
+#          PACKAGES: >-
+#            [
+#              {"name": "testcontainers-vault", "bump": ${{ inputs.bump-testcontainers-vault }} },
+#              {"name": "vault-client", "bump": ${{ inputs.bump-vault-client }} },
+#              {"name": "typeorm-encryption", "bump": ${{ inputs.bump-typeorm-encryption }} }
+#            ]
+#
+#        run: |
+#
+#          # bump versions of packages
+#          echo $PACKAGES | \
+#            jq -r '.[] | \
+#              select(.bump != "none") | \
+#              "--cwd sdk/"+.name+" version --no-git-tag-version --no-commit-hooks --"+.bump' | \
+#            xargs -L1 yarn
 
+#          # update dependent packages
+#          echo $PACKAGES | \
+#            jq '"./sdk/"+.[].name+"/package.json"' | \
+#            xargs jq -r --slurp '
+#              [.[]] as $m | [$m[] | {
+#                name: .name,
+#                deps: [(.dependencies | keys | .-(.-[$m[].name]) | .[] as $d | { name: $d, version: [$m[] | select(.name == $d).version][0] })],
+#                devDeps: [(.devDependencies | keys | .-(.-[$m[].name]) | .[] as $d | { name: $d, version: [$m[] | select(.name == $d).version][0] })]
+#              }] |
+#              (
+#                [.[] | "\(.name) \(.deps[] | .name + "@" +.version)"] +
+#                [.[] | "\(.name) -D \(.devDeps[] | .name + "@" +.version)"]
+#              ) |
+#              map("add --cwd ./sdk/"+.[8:])[]' | \
+#            xargs -L1 yarn
 
 #    steps:
 ##      - name: Checkout

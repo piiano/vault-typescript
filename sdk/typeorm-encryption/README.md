@@ -12,6 +12,11 @@
 
 This package extends the `typeorm` package to provide support for encrypting and decrypting entity properties using a Piiano Vault server.
 
+> **Note:**
+>
+> This package is compatible with Vault version 1.3.1.
+> For a version compatible with other versions of Vault, check [other versions of this package](https://www.npmjs.com/package/@piiano/typeorm-encryption?activeTab=versions).
+
 ## Requirements
 
 - `typeorm` version 0.3.12 or higher.

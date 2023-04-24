@@ -2,6 +2,11 @@
 
 This is a TypeScript client to connect to a Piiano Vault. It provides an easy-to-use API for accessing the various resources exposed by the Vault [REST API](https://piiano.com/docs/api).
 
+> **Note:**
+> 
+> This package is compatible with Vault version 1.3.1.
+> For a Vault client compatible with other versions of Vault, check [other versions of this package](https://www.npmjs.com/package/@piiano/vault-client?activeTab=versions).
+
 ## Installation
 
 To install the package using `npm`:

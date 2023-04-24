@@ -58,6 +58,9 @@ jobs:
       - name: Install dependencies
         run: yarn --cwd ${{ inputs.path }} --frozen-lockfile
 
+      - name: Bump @piiano dependencies
+        run: yarn --cwd ${{ inputs.path }} upgrade --scope @piiano
+
       - name: Run build
         run: yarn --cwd ${{ inputs.path }} build
 
@@ -75,34 +78,12 @@ jobs:
 
           yarn --cwd ${{ inputs.path }} publish --access=public
 
-      - name: Update new version for other packages
-        if: inputs.bump != 'none' && github.ref_name == 'main'
-        run: |
-          # find all dependent packages and update their package.json and yarn.lock.
-          git ls-files sdk/**/package.json | \
-            grep -v ${{ inputs.path }}/package.json | \ 
-            xargs -L1 -I{} bash -c '
-              grep ${{ steps.bump.outputs.package_name }} {} && \
-              yarn --cwd $(dirname {}) add ${{ steps.bump.outputs.package_name }}@${{ steps.bump.outputs.version }} --exact'
-
       - name: Commit changes
+        if: inputs.bump != 'none' && github.ref_name == 'main'
         run: |
           git config --global user.email "cicd@piiano.com"
           git config --global user.name "Github Actions"
-          BRANCH_NAME=$(echo "ci/$($(echo 'bump-${{ steps.bump.outputs.package_name }}-to-version-${{ steps.bump.outputs.version }}' | sed -E 's,[^a-zA-Z0-9]+,-,g')")
-          
-          git checkout -b $BRANCH_NAME
-          git add .
+
+          git add ${{ inputs.path }}/yarn.lock ${{ inputs.path }}/package.json
           git commit -m "chore: bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}"
           git push
-          
-          gh pr create \
-            --title "chore: Bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}" \
-            --body "chore: Bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}" \
-            --base main \
-            --head $BRANCH_NAME
-          
-          gh pr merge \
-            --delete-branch \
-            --squash \
-            --merge
