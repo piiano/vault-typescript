@@ -75,7 +75,7 @@ jobs:
       - name: Update README
         env:
           LINE: This package is compatible with Vault version
-        run: sed -i '' -E "s|$LINE [0-9]+\.[0-9]+\.[0-9]+\.|$LINE ${{ inputs.vault_version }}.|g" **/README.md
+        run: sed -i '' -E "s|$LINE [0-9]+\.[0-9]+\.[0-9]+\.|$LINE ${{ inputs.vault_version }}.|g" $(git ls-files **/README.md)
 
       - name: Commit and push changes
         if: github.event_name == 'workflow_dispatch'
