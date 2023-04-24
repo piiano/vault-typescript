@@ -1,5 +1,4 @@
-name: Build, Test and Publish
-run-name: ${{ github.workflow }} (${{ github.head_ref || github.ref_name }})
+name: Build, Test and Publish Package
 
 on:
   workflow_call:
