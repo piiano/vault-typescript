@@ -73,6 +73,7 @@ jobs:
           fetch-depth: "0"
 
       - name: Update README
+        if: github.event_name == 'workflow_dispatch'
         env:
           LINE: This package is compatible with Vault version
         run: sed -i '' -E "s|$LINE [0-9]+\.[0-9]+\.[0-9]+\.|$LINE ${{ inputs.vault_version }}.|g" $(git ls-files **/README.md)
