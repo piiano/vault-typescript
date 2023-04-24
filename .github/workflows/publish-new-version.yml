@@ -66,6 +66,7 @@ jobs:
   update-readme:
     name: Update README
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -73,13 +74,11 @@ jobs:
           fetch-depth: "0"
 
       - name: Update README
-        if: github.event_name == 'workflow_dispatch'
         env:
           LINE: This package is compatible with Vault version
         run: sed -i '' -E "s|$LINE [0-9]+\.[0-9]+\.[0-9]+\.|$LINE ${{ inputs.vault_version }}.|g" $(git ls-files **/README.md)
 
       - name: Commit and push changes
-        if: github.event_name == 'workflow_dispatch'
         run: |
           # TODO: commit and push changes           
           git status
@@ -87,6 +86,7 @@ jobs:
   build-test-publish:
     needs:
       - update-readme
+    if: always() && (needs.update-readme.result == 'success' || needs.update-readme.result == 'skipped')
     name: Build, Test & Publish @piiano/${{ matrix.package }}
     uses: ./.github/workflows/build-test-publish-package.yml
     strategy:
