@@ -1,6 +1,26 @@
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "sdk/testcontainers-vault"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "sdk/typeorm-encryption"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "sdk/vault-client"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "examples/typeorm-encryption"
     schedule:
       interval: "weekly"
