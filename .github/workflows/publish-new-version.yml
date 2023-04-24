@@ -44,8 +44,9 @@ jobs:
         env:
           LINE: This package is compatible with Vault version
         run: |
-          git ls-files '**/README.md'
-          sed -i -E "s|$LINE [0-9]+\.[0-9]+\.[0-9]+\.|$LINE ${{ inputs.vault-version }}.|g" README.md $(git ls-files '**/README.md')
+          sed -i -E \
+            "s|$LINE [0-9]+\.[0-9]+\.[0-9]+|$LINE ${{ inputs.vault-version }}|g" \
+            $(git ls-files README.md '**/README.md')
 
       - name: Commit and push changes
         run: |
