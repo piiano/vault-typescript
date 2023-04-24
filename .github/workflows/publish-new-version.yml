@@ -54,7 +54,7 @@ jobs:
     needs:
       - update-readme
     if: always() && (needs.update-readme.result == 'success' || needs.update-readme.result == 'skipped')
-    name: @piiano/${{ matrix.package }}
+    name: "@piiano/${{ matrix.package }}"
     uses: ./.github/workflows/build-test-publish-package.yml
     strategy:
       matrix:
