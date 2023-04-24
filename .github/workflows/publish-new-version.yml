@@ -84,6 +84,8 @@ jobs:
           git status
 
   build-test-publish:
+    needs:
+      - update-readme
     name: Build, Test & Publish @piiano/${{ matrix.package }}
     uses: ./.github/workflows/build-test-publish-package.yml
     strategy:
@@ -98,6 +100,7 @@ jobs:
     with:
       path: ./sdk/${{ matrix.package }}
       bump: ${{ inputs[format('bump-{0}', matrix.package)] || 'none' }}
+    secrets: inherit
 
 #
 #  bump-versions:
