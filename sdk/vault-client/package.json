@@ -21,7 +21,7 @@
   "repository": "git://github.com/piiano/vault-typescript.git",
   "homepage": "https://github.com/piiano/vault-typescript#readme",
   "scripts": {
-    "openapi": "curl \"https://piiano.com/docs/${VAULT_VERSION:+$VAULT_VERSION/}assets/openapi.yaml\" --output openapi.yaml",
+    "openapi": "curl \"https://piiano.com/docs/$(echo \"v$VAULT_VERSION/\" | sed 's,\\.,-,g' | sed 's,v/,,')assets/openapi.yaml\" --output openapi.yaml",
     "pregenerate": "rm -rf ./src/generated",
     "generate": "openapi --postfixServices Client --useOptions --name VaultClient --indent 2 --useUnionTypes -i openapi.yaml -o ./src/generated -c axios",
     "postgenerate": "git apply patches/*.patch",

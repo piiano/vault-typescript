@@ -58,7 +58,7 @@ jobs:
           git config --global user.name "Github Actions"
           git add README.md '**/README.md'
           git status
-          git commit -a -m 'Update README.md files with to Vault version ${{ inputs.vault_version }}'
+          git commit -a -m 'Update README.md files to Vault version ${{ inputs.vault_version }}'
           git push
 
   build-test-publish:
