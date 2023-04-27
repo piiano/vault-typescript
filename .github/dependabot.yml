@@ -9,18 +9,30 @@ updates:
     directory: "sdk/testcontainers-vault"
     schedule:
       interval: "weekly"
+    ignore:
+        # typeorm isn't compatible yet with typescript 5.
+      - typescript: "5.x"
 
   - package-ecosystem: "npm"
     directory: "sdk/typeorm-encryption"
     schedule:
       interval: "weekly"
+    ignore:
+      # typeorm isn't compatible yet with typescript 5.
+      - typescript: "5.x"
 
   - package-ecosystem: "npm"
     directory: "sdk/vault-client"
     schedule:
       interval: "weekly"
+    ignore:
+      # typeorm isn't compatible yet with typescript 5.
+      - typescript: "5.x"
 
   - package-ecosystem: "npm"
     directory: "examples/typeorm-encryption"
     schedule:
       interval: "weekly"
+    ignore:
+      # typeorm isn't compatible yet with typescript 5.
+      - typescript: "5.x"
