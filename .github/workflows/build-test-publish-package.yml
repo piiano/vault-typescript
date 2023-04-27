@@ -36,7 +36,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: "0"
           token: ${{ secrets.CICD_RELEASES_PAT }}
 
       - name: Setup Node.js
@@ -86,6 +85,8 @@ jobs:
       - name: Commit changes
         if: inputs.bump != 'none' && github.ref_name == 'main'
         run: |
+          git config --global user.email "cicd@piiano.com"
+          git config --global user.name "Github Actions"
           git add ${{ inputs.path }}/yarn.lock ${{ inputs.path }}/package.json
           git status
           git commit -m "chore: bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}"

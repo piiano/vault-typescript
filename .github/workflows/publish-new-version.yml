@@ -10,6 +10,7 @@ on:
       vault_version:
         description: Vault version
         required: true
+        type: string
       bump-testcontainers-vault:
         description: Bump `@piiano/testcontainers-vault` version
         required: false
@@ -38,7 +39,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: "0"
           token: ${{ secrets.CICD_RELEASES_PAT }}
 
       - name: Update README to reference Vault version ${{ inputs.vault_version }}
@@ -54,6 +54,8 @@ jobs:
         # we still want to be extra safe and make sure we don't push changes to workflow that is triggered by push event.
         if: github.event_name != 'push'
         run: |
+          git config --global user.email "cicd@piiano.com"
+          git config --global user.name "Github Actions"
           git add README.md '**/README.md'
           git status
           git commit -a -m 'Update README.md files with to Vault version ${{ inputs.vault_version }}'
