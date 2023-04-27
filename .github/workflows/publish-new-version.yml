@@ -78,6 +78,7 @@ jobs:
       fail-fast: true
     with:
       path: ./sdk/${{ matrix.package }}
+      vault_version: ${{ inputs.vault_version }}
       # When bumping version the called workflow will perform a commit and push.
       # When github.event_name == 'push' we set bump to 'none' to prevent creating another commit and push that would cause an infinite loop.
       bump: >-
