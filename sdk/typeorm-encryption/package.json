@@ -31,13 +31,13 @@
     "@piiano/vault-client": "^1.0.4"
   },
   "peerDependencies": {
-    "typeorm": "^0.3.12"
+    "typeorm": "^0.3.15"
   },
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.0.1",
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.15.10",
+    "@types/node": "^18.16.1",
     "chai": "^4.3.7",
     "mocha": "^10.2.0",
     "reflect-metadata": "^0.1.13",
