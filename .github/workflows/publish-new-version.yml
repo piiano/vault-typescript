@@ -1,4 +1,4 @@
-name: Build, Test and Publish
+name: Publish
 run-name: ${{ github.workflow }} (${{ github.head_ref || github.ref_name }})
 
 on:
@@ -7,7 +7,7 @@ on:
       - dependabot/**
   workflow_dispatch:
     inputs:
-      vault-version:
+      vault_version:
         description: Vault version
         required: true
       bump-testcontainers-vault:
@@ -33,25 +33,31 @@ jobs:
   update-readme:
     name: Update README
     runs-on: ubuntu-latest
-#    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: "0"
+          token: ${{ secrets.CICD_RELEASES_PAT }}
 
-      - name: Update README to reference Vault version ${{ inputs.vault-version }}
+      - name: Update README to reference Vault version ${{ inputs.vault_version }}
         env:
           LINE: This package is compatible with Vault version
         run: |
           sed -i -E \
-            "s|$LINE [0-9]+\.[0-9]+\.[0-9]+|$LINE ${{ inputs.vault-version }}|g" \
+            "s|$LINE [0-9]+\.[0-9]+\.[0-9]+|$LINE ${{ inputs.vault_version }}|g" \
             $(git ls-files README.md '**/README.md')
 
       - name: Commit and push changes
+        # even though we're using `if: github.event_name == 'workflow_dispatch'` in the job definition
+        # we still want to be extra safe and make sure we don't push changes to workflow that is triggered by push event.
+        if: github.event_name != 'push'
         run: |
-          # TODO: commit and push changes           
+          git add README.md '**/README.md'
           git status
+          git commit -a -m 'Update README.md files with to Vault version ${{ inputs.vault_version }}'
+          git push
 
   build-test-publish:
     needs:
@@ -70,6 +76,8 @@ jobs:
       fail-fast: true
     with:
       path: ./sdk/${{ matrix.package }}
+      # When bumping version the called workflow will perform a commit and push.
+      # When github.event_name == 'push' we set bump to 'none' to prevent creating another commit and push that would cause an infinite loop.
       bump: >-
         ${{ 
           github.event_name == 'push' &&
