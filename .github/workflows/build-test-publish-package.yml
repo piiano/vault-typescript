@@ -21,6 +21,9 @@ on:
         default: none
         type: string
     secrets:
+      CICD_RELEASES_PAT:
+        description: 'Personal Access Token for pushing changes to repository'
+        required: true
       PVAULT_SERVICE_LICENSE:
         description: 'Vault license for testing'
         required: true
@@ -36,6 +39,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
+          # explicitly set ref so we pull based on branch name and get latest changes and not by commit hash and miss out
+          # changes that are committed by the workflow itself
+          ref: ${{ github.ref_name }}
           token: ${{ secrets.CICD_RELEASES_PAT }}
 
       - name: Setup Node.js
