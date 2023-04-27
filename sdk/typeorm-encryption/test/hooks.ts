@@ -10,6 +10,7 @@ import {Buyer, Seller} from "./entity/commerce";
 
 // Create a local test Vault server
 const vault = new Vault({
+  ...(process.env.VAULT_VERSION ? {version: process.env.VAULT_VERSION} : {}),
   env: {
     PVAULT_SENTRY_ENABLE: false,
     PVAULT_LOG_DATADOG_ENABLE: 'none',

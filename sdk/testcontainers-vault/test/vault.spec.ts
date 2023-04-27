@@ -4,9 +4,13 @@ import axios from "axios";
 import chaiAsPromised from 'chai-as-promised';
 
 use(chaiAsPromised)
-const testEnv = {
-  PVAULT_SENTRY_ENABLE: false,
-  PVAULT_LOG_DATADOG_ENABLE: 'none',
+
+const testVaultConfig = {
+  ...(process.env.VAULT_VERSION ? {version: process.env.VAULT_VERSION} : {}),
+  env: {
+    PVAULT_SENTRY_ENABLE: false,
+    PVAULT_LOG_DATADOG_ENABLE: 'none',
+  }
 }
 
 describe('testcontainers-vault', function () {
@@ -15,7 +19,7 @@ describe('testcontainers-vault', function () {
   this.timeout(30000)
 
   it('should be able to start and stop vault', async () => {
-    const vault = new Vault({ env: testEnv })
+    const vault = new Vault(testVaultConfig)
     const port = await vault.start()
 
     // verify that the Vault is started on a random port and not the default
@@ -37,7 +41,7 @@ describe('testcontainers-vault', function () {
 
   it('should be able to start vault on specific port', async () => {
     const port = 57384
-    const vault = new Vault({ port, env: testEnv })
+    const vault = new Vault({ port, ...testVaultConfig })
     const actualPort = await vault.start()
 
     expect(actualPort).to.equal(port)
@@ -56,8 +60,9 @@ describe('testcontainers-vault', function () {
   it('should be able to start vault with custom environment variables', async () => {
     const customAdminAPIKey = 'customAdminAPIKey';
     const vault = new Vault({
+      ...testVaultConfig,
       env: {
-        ...testEnv,
+        ...testVaultConfig.env,
         PVAULT_SERVICE_ADMIN_API_KEY: customAdminAPIKey
       }
     })

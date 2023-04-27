@@ -4,6 +4,7 @@ import {VaultClient} from "../";
 
 
 const vault = new Vault({
+  ...(process.env.VAULT_VERSION ? {version: process.env.VAULT_VERSION} : {}),
   env: {
     PVAULT_SENTRY_ENABLE: false,
     PVAULT_LOG_DATADOG_ENABLE: 'none',

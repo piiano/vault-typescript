@@ -71,6 +71,7 @@ jobs:
       - name: Run tests
         run: yarn --cwd ${{ inputs.path }} test
         env:
+          VAULT_VERSION: ${{ inputs.vault_version }}
           PVAULT_SERVICE_LICENSE: ${{ secrets.PVAULT_SERVICE_LICENSE }}
 
       - name: Publish package
