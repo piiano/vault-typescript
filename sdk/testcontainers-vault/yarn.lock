@@ -1117,9 +1117,9 @@ tar-stream@^2.0.0, tar-stream@^2.1.4, tar-stream@^2.2.0:
     readable-stream "^3.1.1"
 
 testcontainers@^9.5.0:
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.5.0.tgz#a2163ac803dec3944fdc6d433f8005f61274562e"
-  integrity sha512-XdLZec7CN8/eXfT/A0zR03J2bNIpwLM3O3kLbp1OZPpZTNtjnR1zsdhS688o2qAx5+FS+xZ8nHL+vm3UBMnfHg==
+  version "9.7.0"
+  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.7.0.tgz#c791d8759038d617a8d1eb62a0a78fcfa6948d61"
+  integrity sha512-NAmj/YBIkYaIRPgRnm01BVlRdVhwkqSSoQricpPWlAJ/BAitS0A8BIQA7Y4VHBX1bWQgOsygnf+o9UaOI01IWA==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/archiver" "^5.3.2"
