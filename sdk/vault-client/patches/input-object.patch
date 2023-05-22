@@ -1,8 +1,8 @@
-diff --git a/sdk/vault-client/src/generated/models/InputObject.ts b/sdk/vault-client/src/generated/models/InputObject.ts
-index 4878340..fde41b3 100644
---- a/sdk/vault-client/src/generated/models/InputObject.ts
-+++ b/sdk/vault-client/src/generated/models/InputObject.ts
-@@ -16,8 +16,9 @@ export type InputObject = {
+diff --git b/sdk/vault-client/src/generated/models/InputObject.ts a/sdk/vault-client/src/generated/models/InputObject.ts
+index 3b043f7..9f7f45b 100644
+--- b/sdk/vault-client/src/generated/models/InputObject.ts
++++ a/sdk/vault-client/src/generated/models/InputObject.ts
+@@ -19,12 +19,15 @@ export type InputObject = {
    /**
     * The ID of an object.
     */
@@ -14,5 +14,11 @@ index 4878340..fde41b3 100644
 +  fields: ObjectFields;
 +} | {
 +  encrypted: EncryptedObjectInput;
++} | {
+   /**
+    * The index of the object in the request array.
+    */
+-  request_index?: number;
++  request_index: number;
  };
--
+ 
