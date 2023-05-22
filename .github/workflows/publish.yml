@@ -61,12 +61,19 @@ jobs:
         # we still want to be extra safe and make sure we don't push changes to workflow that is triggered by push event.
         if: github.event_name != 'push'
         run: |
-          git config --global user.email "cicd@piiano.com"
-          git config --global user.name "Github Actions"
-          git add README.md '**/README.md'
-          git status
-          git commit -a -m 'Update README.md files to Vault version ${{ inputs.vault_version }}'
-          git push
+          git_status=$(git status -s)
+
+          if [ -n "$git_status" ]; then
+            echo "There are changes to commit"
+          
+            git config --global user.email "cicd@piiano.com"
+            git config --global user.name "Github Actions"
+            git add README.md '**/README.md'
+            git commit -a -m 'Update README.md files to Vault version ${{ inputs.vault_version }}'
+            git push
+          else
+            echo "No changes to commit"
+          fi
 
   build-test-publish:
     needs:
