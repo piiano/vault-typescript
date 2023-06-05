@@ -1,6 +1,7 @@
 import {GenericContainer, Wait} from "testcontainers";
 import {VaultOptions} from "./options";
 import {StartedTestContainer} from "testcontainers/dist/src/test-container";
+import {ExecResult} from "testcontainers/dist/src/docker/types";
 
 const vaultPort = 8123;
 
@@ -16,7 +17,8 @@ export class Vault {
       version = 'latest',
       env = {},
       license = process.env.PVAULT_SERVICE_LICENSE,
-      port
+      port,
+      bindMounts = []
     } = this.options;
 
     if (!license) {
@@ -31,6 +33,7 @@ export class Vault {
     this.container = new GenericContainer(`piiano/pvault-dev:${version}`)
       .withExposedPorts(port ? {container: vaultPort, host: port} : vaultPort)
       .withEnvironment(vars)
+      .withBindMounts(bindMounts)
         // A wait strategy that waits for Vault to be ready.
       .withWaitStrategy(Wait.forAll(['data', 'ctl'].map(service =>
         Wait
@@ -60,5 +63,15 @@ export class Vault {
     await this.startedContainer?.stop();
     this.startedContainer = undefined;
   }
-}
 
+  /**
+   * Executes a command in the Vault container.
+   */
+  exec(command: string, ...args: string[]): Promise<ExecResult> {
+    if (!this.startedContainer) {
+      throw new Error('Vault container not started');
+    }
+
+    return this.startedContainer.exec([command, ...args]);
+  }
+}

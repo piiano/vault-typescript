@@ -1,3 +1,4 @@
+
 /**
  * Options for configuring a local Vault instance.
  */
@@ -24,4 +25,24 @@ export type VaultOptions = Partial<{
    * The environment variables to pass to the Vault container.
    */
   env: Record<string, string | number | boolean>;
+
+
+  /**
+   * The volumes to mount in the Vault container.
+   */
+  bindMounts: BindMount[];
 }>
+
+/**
+ * A bind mount mode.
+ */
+export type BindMode = "rw" | "ro" | "z" | "Z";
+
+/**
+ * A bind mount.
+ */
+export type BindMount = {
+  source: string;
+  target: string;
+  mode?: BindMode;
+};
