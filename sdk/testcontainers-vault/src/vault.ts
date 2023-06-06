@@ -4,6 +4,7 @@ import {StartedTestContainer} from "testcontainers/dist/src/test-container";
 import {Container} from "dockerode";
 import {BoundPorts} from "testcontainers/dist/src/bound-ports";
 import {AbstractWaitStrategy} from "testcontainers/dist/src/wait-strategy/wait-strategy";
+import {CompositeWaitStrategy} from "testcontainers/dist/src/wait-strategy/composite-wait-strategy";
 
 const vaultPort = 8123;
 
@@ -34,7 +35,16 @@ export class Vault {
     this.container = new GenericContainer(`piiano/pvault-dev:${version}`)
       .withExposedPorts(port ? {container: vaultPort, host: port} : vaultPort)
       .withEnvironment(vars)
-      .withWaitStrategy(new VaultWaitStrategy());
+        // A wait strategy that waits for Vault to be ready.
+      .withWaitStrategy(Wait.forAll(['data', 'ctl'].map(service =>
+        Wait
+          .forHttp(`/api/pvlt/1.0/${service}/info/health`, vaultPort)
+          .forStatusCode(200)
+          .forResponsePredicate((res): boolean => {
+            const json = JSON.parse(res);
+            return json && typeof json === 'object' && 'status' in json && json?.status === 'pass';
+          })
+      )));
   }
 
   /**
@@ -56,21 +66,3 @@ export class Vault {
   }
 }
 
-/**
- * A wait strategy that waits for Vault to be ready.
- */
-class VaultWaitStrategy extends AbstractWaitStrategy {
-  async waitUntilReady(container: Container, host: string, boundPorts: BoundPorts): Promise<void> {
-    await Promise.all(['data', 'ctl'].map(async (service) =>
-      Wait
-        .forHttp(`/api/pvlt/1.0/${service}/info/health`, vaultPort)
-        .forStatusCode(200)
-        .forResponsePredicate((res): boolean => {
-          const json = JSON.parse(res);
-          return json && typeof json === 'object' && 'status' in json && json?.status === 'pass';
-        })
-        .withStartupTimeout(this.startupTimeout)
-        .waitUntilReady(container, host, boundPorts)
-    ));
-  }
-}
