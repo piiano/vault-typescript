@@ -1,6 +1,6 @@
 {
   "name": "@piiano/testcontainers-vault",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Add a local Piiano Vault for testing purposes using testcontainers",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
