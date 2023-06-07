@@ -1,0 +1,6 @@
+customers PERSONS (
+  ssn SSN UNIQUE COMMENT 'Social security number',
+  email EMAIL,
+  phone_number PHONE_NUMBER NULL,
+  zip_code_us ZIP_CODE_US NULL,
+);

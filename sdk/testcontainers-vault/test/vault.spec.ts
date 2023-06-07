@@ -57,6 +57,44 @@ describe('testcontainers-vault', function () {
     await vault.stop()
   })
 
+  it('should be able to start vault and exec commands', async () => {
+    const vault = new Vault(testVaultConfig)
+    await vault.start()
+
+    const { output } = await vault.exec('pvault', 'status')
+    expect(output).to.equal(`
++------+---------+
+| data | control |
++------+---------+
+| pass | pass    |
++------+---------+
+`.trimStart())
+
+    await vault.stop()
+  })
+
+  it('should be able to start vault and exec commands with mount binding', async () => {
+    const vault = new Vault({
+      ...testVaultConfig,
+      bindMounts: [{
+          source: `${__dirname}/resources`,
+          target: '/resources',
+          mode: 'ro'
+      }]
+    })
+    await vault.start()
+
+    const { exitCode } = await vault.exec('pvault', 'collection', 'add',
+      '--collection-pvschema', '@/resources/test-collection.pvschema')
+    expect(exitCode).to.equal(0)
+
+    const { output } = await vault.exec('pvault', 'collection', 'list', '--json')
+
+    expect(JSON.parse(output)).to.have.lengthOf(1)
+
+    await vault.stop()
+  })
+
   it('should be able to start vault with custom environment variables', async () => {
     const customAdminAPIKey = 'customAdminAPIKey';
     const vault = new Vault({
