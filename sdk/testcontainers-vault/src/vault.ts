@@ -1,10 +1,6 @@
 import {GenericContainer, Wait} from "testcontainers";
 import {VaultOptions} from "./options";
 import {StartedTestContainer} from "testcontainers/dist/src/test-container";
-import {Container} from "dockerode";
-import {BoundPorts} from "testcontainers/dist/src/bound-ports";
-import {AbstractWaitStrategy} from "testcontainers/dist/src/wait-strategy/wait-strategy";
-import {CompositeWaitStrategy} from "testcontainers/dist/src/wait-strategy/composite-wait-strategy";
 
 const vaultPort = 8123;
 
