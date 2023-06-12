@@ -75,12 +75,12 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@piiano/testcontainers-vault@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@piiano/testcontainers-vault/-/testcontainers-vault-1.0.1.tgz#824eee36ba689d9ff1f21779b989094c991347ab"
-  integrity sha512-wLElnXwPLBP0o7e7eIs2MQArMebBklDVoVclfX4UnEzjGzb5Do4B+rWSnfU2f83ALAUGjg/e4lRKr7sZGo+EOg==
+"@piiano/testcontainers-vault@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@piiano/testcontainers-vault/-/testcontainers-vault-1.0.3.tgz#fb3fcafcc4bfc3c7bb56931bfb8fd06404e2d7e2"
+  integrity sha512-s3I5Ar4YukcPnTx4xWtkS4gcgKeU1MTkuixeBxhR2++xB6VkCt/BV2Mco7A7SK3NfWTWD9/rAJK91XRpL3Ertw==
   dependencies:
-    testcontainers "^9.5.0"
+    testcontainers "^9.8.0"
 
 "@piiano/typeorm-encryption@^1.0.9":
   version "1.0.9"
@@ -2174,10 +2174,10 @@ tar@^6.0.2, tar@^6.1.11, tar@^6.1.2:
     mkdirp "^1.0.3"
     yallist "^4.0.0"
 
-testcontainers@^9.5.0:
-  version "9.6.0"
-  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.6.0.tgz#5af58822d27580c90bd92f308b6b9df94f6ab4bd"
-  integrity sha512-f7HWR0dIwDTx46CRX7dAM1oajOHvGwn8aliWVsEiBJDZkSsAII2uYD1qkst8NvHXyzpAgu4+3LP8fnpSVWtLrg==
+testcontainers@^9.8.0:
+  version "9.8.0"
+  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-9.8.0.tgz#03d8798ad047e7673e934934b5504bc0a2f14e4e"
+  integrity sha512-61IlJeVrUbS5JlAgM/N0koFnRxsID+vDap7CUmgaHXSGxmFofCiokB7kD96c1BtDWGOznrd7lTAPGSkd3RVkPA==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/archiver" "^5.3.2"
