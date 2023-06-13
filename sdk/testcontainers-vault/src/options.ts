@@ -31,6 +31,10 @@ export type VaultOptions = Partial<{
    * The volumes to mount in the Vault container.
    */
   bindMounts: BindMount[];
+  /**
+   * Specify to use Pvault-Server.
+   */
+  isPvaultServer?: Boolean
 }>
 
 /**
