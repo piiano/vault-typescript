@@ -1,7 +1,7 @@
-import {GenericContainer, Wait} from "testcontainers";
-import {VaultOptions} from "./options";
-import {StartedTestContainer} from "testcontainers/dist/src/test-container";
-import {ExecResult} from "testcontainers/dist/src/docker/types";
+import { GenericContainer, Wait } from "testcontainers";
+import { VaultOptions } from "./options";
+import { StartedTestContainer } from "testcontainers/dist/src/test-container";
+import { ExecResult } from "testcontainers/dist/src/docker/types";
 
 const vaultPort = 8123;
 
@@ -18,8 +18,11 @@ export class Vault {
       env = {},
       license = process.env.PVAULT_SERVICE_LICENSE,
       port,
+      withDB = true,
       bindMounts = []
     } = this.options;
+
+    const vaultImage = withDB ? 'piiano/pvault-dev' : 'piiano/pvault-server'
 
     if (!license) {
       throw new Error('Missing Vault license');
@@ -28,13 +31,13 @@ export class Vault {
     const vars = Object.entries(env).reduce((acc: Record<string, string>, [key, value]) => {
       acc[key] = String(value);
       return acc;
-    }, {PVAULT_SERVICE_LICENSE: license});
+    }, { PVAULT_SERVICE_LICENSE: license });
 
-    this.container = new GenericContainer(`piiano/pvault-dev:${version}`)
-      .withExposedPorts(port ? {container: vaultPort, host: port} : vaultPort)
+    this.container = new GenericContainer(`${vaultImage}:${version}`)
+      .withExposedPorts(port ? { container: vaultPort, host: port } : vaultPort)
       .withEnvironment(vars)
       .withBindMounts(bindMounts)
-        // A wait strategy that waits for Vault to be ready.
+      // A wait strategy that waits for Vault to be ready.
       .withWaitStrategy(Wait.forAll(['data', 'ctl'].map(service =>
         Wait
           .forHttp(`/api/pvlt/1.0/${service}/info/health`, vaultPort)

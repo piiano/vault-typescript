@@ -31,6 +31,10 @@ export type VaultOptions = Partial<{
    * The volumes to mount in the Vault container.
    */
   bindMounts: BindMount[];
+  /**
+    * Start Vault with a builtin database (default: true).
+    */
+  withDB?: boolean
 }>
 
 /**
