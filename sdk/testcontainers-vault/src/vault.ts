@@ -18,16 +18,11 @@ export class Vault {
       env = {},
       license = process.env.PVAULT_SERVICE_LICENSE,
       port,
+      withDB = true,
       bindMounts = []
     } = this.options;
 
-    let pvaultServerOrDev = ''
-    if (typeof (this.options.isPvaultServer) == 'undefined') {
-      pvaultServerOrDev = `piiano/pvault-dev:`
-    }
-    else {
-      pvaultServerOrDev = 'piiano/pvault-server:'
-    }
+    const vaultImage = withDB ? 'piiano/pvault-dev' : 'piiano/pvault-server'
 
     if (!license) {
       throw new Error('Missing Vault license');
@@ -38,7 +33,7 @@ export class Vault {
       return acc;
     }, { PVAULT_SERVICE_LICENSE: license });
 
-    this.container = new GenericContainer(`${pvaultServerOrDev}${version}`)
+    this.container = new GenericContainer(`${vaultImage}:${version}`)
       .withExposedPorts(port ? { container: vaultPort, host: port } : vaultPort)
       .withEnvironment(vars)
       .withBindMounts(bindMounts)

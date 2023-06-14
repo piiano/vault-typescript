@@ -32,9 +32,9 @@ export type VaultOptions = Partial<{
    */
   bindMounts: BindMount[];
   /**
-   * Specify to use Pvault-Server.
-   */
-  isPvaultServer?: Boolean
+    * Start Vault with a builtin database (default: true).
+    */
+  withDB?: boolean
 }>
 
 /**
