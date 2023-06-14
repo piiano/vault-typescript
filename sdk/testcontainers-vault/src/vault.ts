@@ -21,12 +21,12 @@ export class Vault {
       bindMounts = []
     } = this.options;
 
-    let pvaultServer = ''
+    let pvaultServerOrDev = ''
     if (typeof (this.options.isPvaultServer) == 'undefined') {
-      pvaultServer = `piiano/pvault-dev:`
+      pvaultServerOrDev = `piiano/pvault-dev:`
     }
     else {
-      pvaultServer = 'piiano/pvault-server:'
+      pvaultServerOrDev = 'piiano/pvault-server:'
     }
 
     if (!license) {
@@ -38,7 +38,7 @@ export class Vault {
       return acc;
     }, { PVAULT_SERVICE_LICENSE: license });
 
-    this.container = new GenericContainer(`${pvaultServer}${version}`)
+    this.container = new GenericContainer(`${pvaultServerOrDev}${version}`)
       .withExposedPorts(port ? { container: vaultPort, host: port } : vaultPort)
       .withEnvironment(vars)
       .withBindMounts(bindMounts)
