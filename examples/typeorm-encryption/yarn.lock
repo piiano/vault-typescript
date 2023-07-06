@@ -82,10 +82,10 @@
   dependencies:
     testcontainers "^9.8.0"
 
-"@piiano/typeorm-encryption@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@piiano/typeorm-encryption/-/typeorm-encryption-1.0.9.tgz#3be0d974909562a39a1771d1ac216884bea3c0d8"
-  integrity sha512-TtR0t13fcMcbSSqFTbkZw1sdQu17bccfjE+esDGBRnq3slDJvthMTWOWIhNvA0xxuWS8x4CysN0B9DVbYmZX8Q==
+"@piiano/typeorm-encryption@^1.0.13":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@piiano/typeorm-encryption/-/typeorm-encryption-1.0.13.tgz#60d25eebdacacd250854cdb7ba3363e2e61a6b44"
+  integrity sha512-pzjQKXTkpoQdiZnttQtrSEu7rjxurJ8Pct91oco27LfUanT7ENShdiKVvqF5PvCVQAWXeY1l2tWmGfpJLF6iVg==
   dependencies:
     "@piiano/vault-client" "^1.0.5"
 
