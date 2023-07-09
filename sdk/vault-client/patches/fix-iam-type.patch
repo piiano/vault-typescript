@@ -1,0 +1,19 @@
+diff --git b/sdk/vault-client/src/generated/models/IAMConfig.ts a/sdk/vault-client/src/generated/models/IAMConfig.ts
+index 12e12c2..c025298 100644
+--- b/sdk/vault-client/src/generated/models/IAMConfig.ts
++++ a/sdk/vault-client/src/generated/models/IAMConfig.ts
+@@ -2,13 +2,4 @@
+ /* tslint:disable */
+ /* eslint-disable */
+ 
+-import type { Policy } from './Policy';
+-import type { Role } from './Role';
+-import type { User } from './User';
+-
+-export type IAMConfig = {
+-  policies?: Record<string, Policy>;
+-  roles?: Record<string, Role>;
+-  users?: Record<string, User>;
+-};
+-
++export type IAMConfig = string;
