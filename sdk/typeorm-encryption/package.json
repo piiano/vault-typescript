@@ -1,6 +1,6 @@
 {
   "name": "@piiano/typeorm-encryption",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "TypeORM plugin for data encryption using Piiano Vault",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
