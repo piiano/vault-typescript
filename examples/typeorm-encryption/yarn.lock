@@ -89,10 +89,10 @@
   dependencies:
     "@piiano/vault-client" "^1.0.5"
 
-"@piiano/vault-client@^1.0.5", "@piiano/vault-client@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.9.tgz#f025acb11920f9d373646c9a47a6256ba923abc6"
-  integrity sha512-Gyxg0xyvVGSrRQ5YKvfkxHx4QPv3HwTZIqF/5JIaFqQtk++QWdfgnYAO7R0mowSxrC+tWEu3dFLyzWz9NO32dg==
+"@piiano/vault-client@^1.0.15", "@piiano/vault-client@^1.0.5":
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.15.tgz#1bf861d34af388684fb8f2069aff7e58933cf9e9"
+  integrity sha512-mN8WGCnGKfIX9Tau+s9PG5PX/FL/6izLHa8VuZr9AQUb6WzIRjWkgBIZ0EJy3Uq2gpoL5ygjgHIHBL0RXim9RA==
   dependencies:
     axios "^1.3.6"
     form-data "^4.0.0"
