@@ -33,15 +33,15 @@
     "form-data": "^4.0.0"
   },
   "devDependencies": {
-    "@piiano/testcontainers-vault": "^1.0.1",
+    "@piiano/testcontainers-vault": "^1.0.4",
     "@types/chai": "^4.3.4",
     "@types/chai-as-promised": "^7.1.5",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.2.5",
+    "@types/node": "^20.4.7",
     "chai": "^4.3.7",
     "chai-as-promised": "^7.1.1",
     "mocha": "^10.2.0",
-    "openapi-typescript-codegen": "^0.24.0",
+    "openapi-typescript-codegen": "^0.25.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   }
