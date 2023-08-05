@@ -1,7 +1,5 @@
-import { GenericContainer, Wait } from "testcontainers";
+import { GenericContainer, Wait, StartedTestContainer, ExecResult } from "testcontainers";
 import { VaultOptions } from "./options";
-import { StartedTestContainer } from "testcontainers/dist/src/test-container";
-import { ExecResult } from "testcontainers/dist/src/docker/types";
 
 const vaultPort = 8123;
 
