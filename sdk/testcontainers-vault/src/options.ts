@@ -35,6 +35,11 @@ export type VaultOptions = Partial<{
     * Start Vault with a builtin database (default: true).
     */
   withDB?: boolean
+  /**
+    * Whether to reuse the container if it already exists (default: false).
+    * If true, the container won't be stopped after the tests.
+    */
+  reuse?: boolean
 }>
 
 /**

@@ -16,6 +16,7 @@ export class Vault {
       env = {},
       license = process.env.PVAULT_SERVICE_LICENSE,
       port,
+      reuse = false,
       withDB = true,
       bindMounts = []
     } = this.options;
@@ -45,6 +46,10 @@ export class Vault {
             return json && typeof json === 'object' && 'status' in json && json?.status === 'pass';
           })
       )));
+
+    if (reuse) {
+      this.container = this.container.withReuse();
+    }
   }
 
   /**
