@@ -20,7 +20,7 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
-    "@piiano/typeorm-encryption": "^1.0.9",
+    "@piiano/typeorm-encryption": "^1.0.18",
     "@piiano/vault-client": "^1.0.16",
     "express": "^4.18.2",
     "reflect-metadata": "^0.1.13",
