@@ -4,7 +4,7 @@ This is a TypeScript client to connect to a Piiano Vault. It provides an easy-to
 
 > **Note:**
 > 
-> This package is compatible with Vault version 1.9.0.
+> This package is compatible with Vault version 1.7.2.
 > For a Vault client compatible with other versions of Vault, check [other versions of this package](https://www.npmjs.com/package/@piiano/vault-client?activeTab=versions).
 
 ## Installation
