@@ -1,7 +1,6 @@
 import {expect} from "chai";
-import {Collection} from "../";
 import {addTestCollection} from "./collections.spec";
-import {Reason} from "../src";
+import {Reason, Collection} from "..";
 
 describe('crypto',  function () {
 
