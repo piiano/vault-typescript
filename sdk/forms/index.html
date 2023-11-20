@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" type="image/png" href="/favicon-32x32.png" />
+    <title>Test Forms</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+    <!-- Include Piiano Vault Client -->
+    <script type="module" src="./src/index.ts"></script>
+
+    <!-- Old original form submission code -->
+    <script>
+      function myOldOnSubmit(e) {
+        const data = Object.fromEntries(new FormData(e.target));
+        console.log('my original on submit handler', data);
+      }
+    </script>
+  </head>
+  <body>
+    <form action="/backend" method="post" onsubmit="myOldOnSubmit(event)"
+          data-piiano-proxy-options='{
+            "collection":"credit_cards",
+            "hijack":true,
+            "vaultURL":"http://localhost:3000"
+          }'>
+      <h1>Form</h1>
+      <label for="card_number">Card Number</label>
+      <input type="text" id="card_number" name="card_number" value="4111111111111111" />
+      <label for="card_holder">Card Holder</label>
+      <input type="text" id="card_holder" name="card_holder" value="Jane Doe" />
+      <label for="card_expiry">Card Expiry</label>
+      <input type="text" id="card_expiry" name="card_expiry" value="12/25"/>
+      <label for="card_cvv">Card CVV</label>
+      <input type="text" id="card_cvv" name="card_cvv" value="123" />
+      <input type="submit" value="Pay/Add card" />
+    </form>
+  </body>
+</html>

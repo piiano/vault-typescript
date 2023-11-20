@@ -1,6 +1,7 @@
 import initDataSource from "./data-source";
 import {User} from "./entity/User";
-import express, {Request, Response} from "express";
+import { Request, Response} from "express";
+import * as express from "express";
 import {Config} from "./config";
 import {Server} from "http";
 import {DataSource} from "typeorm";

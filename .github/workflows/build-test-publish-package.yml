@@ -81,14 +81,23 @@ jobs:
           VAULT_VERSION: ${{ inputs.vault_version }}
           PVAULT_SERVICE_LICENSE: ${{ secrets.PVAULT_SERVICE_LICENSE }}
 
-      - name: Publish package
+      - name: Configure aws credentials
+        if: inputs.bump != 'none' && github.ref_name == 'main'
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::032109477184:role/vault-saas-prod-piiano-vault-typescript-github-actions
+          aws-region: us-east-2
+
+      - name: Configure NPM credentials
         if: inputs.bump != 'none' && github.ref_name == 'main'
         run: |
           cat <<EOF >.npmrc
           //registry.npmjs.org/:_authToken=${{ secrets.NPM_REGISTRY_TOKEN }}
           EOF
 
-          yarn --cwd ${{ inputs.path }} publish --access=public
+      - name: Publish package
+        if: inputs.bump != 'none' && github.ref_name == 'main'
+        run: yarn --cwd ${{ inputs.path }} push
 
       - name: Commit changes
         if: inputs.bump != 'none' && github.ref_name == 'main'

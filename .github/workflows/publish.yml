@@ -87,6 +87,7 @@ jobs:
           - testcontainers-vault
           - vault-client
           - typeorm-encryption
+          - forms
       # we need to run jobs sequentially because of the way packages depend on each other
       max-parallel: 1
       fail-fast: true

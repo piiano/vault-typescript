@@ -23,27 +23,28 @@
   "repository": "git://github.com/piiano/vault-typescript.git",
   "homepage": "https://github.com/piiano/vault-typescript#readme",
   "scripts": {
-    "test": "TS_NODE_PROJECT='./tsconfig.test.json' mocha -c -r ts-node/register -r test/hooks.ts 'test/**/*.spec.ts'",
     "build": "tsc -p tsconfig.build.json",
-    "tsc": "tsc"
+    "test": "TS_NODE_PROJECT='./tsconfig.test.json' mocha -c -r ts-node/register -r test/hooks.ts 'test/**/*.spec.ts'",
+    "tsc": "tsc",
+    "push": "yarn publish --access=public"
   },
   "dependencies": {
-    "@piiano/vault-client": "^1.0.16"
+    "@piiano/vault-client": "^1.0.23"
   },
   "peerDependencies": {
-    "typeorm": "^0.3.15"
+    "typeorm": "^0.3.17"
   },
   "devDependencies": {
-    "@piiano/testcontainers-vault": "^1.0.4",
-    "@types/chai": "^4.3.4",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.4.7",
-    "chai": "^4.3.7",
+    "@piiano/testcontainers-vault": "^1.1.1",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.10.4",
+    "chai": "^4.3.10",
     "mocha": "^10.2.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.1.14",
     "sqlite3": "^5.1.6",
-    "ts-node": "^10.9.1",
-    "typeorm": "^0.3.12",
+    "ts-node": "^10.9.2",
+    "typeorm": "^0.3.17",
     "typescript": "^4.9.5"
   }
 }

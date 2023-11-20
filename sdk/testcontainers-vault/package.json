@@ -25,7 +25,8 @@
   "scripts": {
     "test": "TS_NODE_PROJECT='./tsconfig.test.json' mocha -c -p -r ts-node/register 'test/**/*.spec.ts'",
     "build": "tsc -p tsconfig.build.json",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "push": "yarn publish --access=public"
   },
   "dependencies": {
     "testcontainers": "^10.3.2"

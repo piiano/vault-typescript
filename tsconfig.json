@@ -3,6 +3,8 @@
     "target": "ES2016",                       /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "commonjs",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,     /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
     "declaration": true,                      /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
     "declarationMap": true,                   /* Create sourcemaps for d.ts files. */
     "sourceMap": true,                        /* Create source map files for emitted JavaScript files. */

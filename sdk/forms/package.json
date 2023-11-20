@@ -1,0 +1,36 @@
+{
+  "name": "@piiano/forms",
+  "version": "1.0.21",
+  "description": "Piiano Forms SDK",
+  "author": "Ori Shalom <ori.shalom@piiano.com>",
+  "private": true,
+  "type": "module",
+  "keywords": [
+    "Piiano",
+    "pvault",
+    "vault",
+    "pci",
+    "pii",
+    "form",
+    "privacy",
+    "client",
+    "sdk"
+  ],
+  "license": "MIT",
+  "repository": "git://github.com/piiano/vault-typescript.git",
+  "homepage": "https://github.com/piiano/vault-typescript#readme",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --mode dev",
+    "test": "playwright test",
+    "push": "aws s3 sync dist/ s3://vault-saas-prod-cdn/"
+  },
+  "dependencies": {
+    "@piiano/vault-client": "^1.0.23"
+  },
+  "devDependencies": {
+    "@piiano/testcontainers-vault": "^1.1.1",
+    "@playwright/test": "^1.40.1",
+    "vite": "^5.0.7"
+  }
+}
