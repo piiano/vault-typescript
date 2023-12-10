@@ -1,5 +1,5 @@
 import {expect, use} from 'chai'
-import {Vault} from "../";
+import {Vault} from "..";
 import axios from "axios";
 import chaiAsPromised from 'chai-as-promised';
 
