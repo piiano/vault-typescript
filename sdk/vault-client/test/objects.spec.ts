@@ -1,8 +1,7 @@
 import {expect, use} from "chai";
-import {Collection} from "../";
 import {addTestCollection} from "./collections.spec";
-import {Reason} from "../src";
-import chaiAsPromised from "chai-as-promised";
+import {Reason, Collection} from "..";
+import * as chaiAsPromised from "chai-as-promised";
 
 use(chaiAsPromised)
 

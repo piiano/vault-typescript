@@ -1,18 +1,8 @@
 import {expect} from "chai";
 import {AsyncFunc, Context} from "mocha";
-import {Collection} from "../";
-
-
-it('coll', async function () {
-
-  console.log(Object.entries(this.vaultClient).
-  filter(([k, v]) => k !== 'request').
-  map(([k, v]) =>
-    `# ${k}\n\n${Object.getOwnPropertyNames(Object.getPrototypeOf(v)).filter(n => n !== 'constructor').join('\n')}`).join('\n\n'));
-});
+import {Collection} from "..";
 
 describe('collections',  function () {
-
   const testCollection: Collection = {
     name: 'test_collection',
     type: 'PERSONS',

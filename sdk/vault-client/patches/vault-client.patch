@@ -1,30 +1,49 @@
-diff --git a/sdk/vault-client/src/generated/VaultClient.ts b/sdk/vault-client/src/generated/VaultClient.ts
-index da7e769..9abe31f 100644
---- a/sdk/vault-client/src/generated/VaultClient.ts
-+++ b/sdk/vault-client/src/generated/VaultClient.ts
-@@ -2,7 +2,6 @@
+diff --git b/sdk/vault-client/src/generated/VaultClient.ts a/sdk/vault-client/src/generated/VaultClient.ts
+index 652f5ed..1df4c50 100644
+--- b/sdk/vault-client/src/generated/VaultClient.ts
++++ a/sdk/vault-client/src/generated/VaultClient.ts
+@@ -2,22 +2,20 @@
+ /* istanbul ignore file */
  /* tslint:disable */
  /* eslint-disable */
- import type { BaseHttpRequest } from './core/BaseHttpRequest';
+-import type { BaseHttpRequest } from './core/BaseHttpRequest';
 -import type { OpenAPIConfig } from './core/OpenAPI';
- import { AxiosHttpRequest } from './core/AxiosHttpRequest';
- 
- import { BundlesClient } from './services/BundlesClient';
-@@ -15,8 +14,7 @@ import { IamClient } from './services/IamClient';
- import { ObjectsClient } from './services/ObjectsClient';
- import { SystemClient } from './services/SystemClient';
- import { TokensClient } from './services/TokensClient';
+-import { FetchHttpRequest } from './core/FetchHttpRequest';
+-
+-import { BundlesClient } from './services/BundlesClient';
+-import { CollectionPropertiesClient } from './services/CollectionPropertiesClient';
+-import { CollectionsClient } from './services/CollectionsClient';
+-import { ConfigVarsClient } from './services/ConfigVarsClient';
+-import { CryptoClient } from './services/CryptoClient';
+-import { CustomDataTypesClient } from './services/CustomDataTypesClient';
+-import { IamClient } from './services/IamClient';
+-import { ObjectsClient } from './services/ObjectsClient';
+-import { SystemClient } from './services/SystemClient';
+-import { TokensClient } from './services/TokensClient';
 -
 -type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
++import type {BaseHttpRequest} from './core/BaseHttpRequest';
++import {FetchHttpRequest} from './core/FetchHttpRequest';
++
++import {BundlesClient} from './services/BundlesClient';
++import {CollectionPropertiesClient} from './services/CollectionPropertiesClient';
++import {CollectionsClient} from './services/CollectionsClient';
++import {ConfigVarsClient} from './services/ConfigVarsClient';
++import {CryptoClient} from './services/CryptoClient';
++import {CustomDataTypesClient} from './services/CustomDataTypesClient';
++import {IamClient} from './services/IamClient';
++import {ObjectsClient} from './services/ObjectsClient';
++import {SystemClient} from './services/SystemClient';
++import {TokensClient} from './services/TokensClient';
 +import {VaultClientOptions} from "../options";
  
  export class VaultClient {
  
-@@ -33,17 +31,13 @@ export class VaultClient {
+@@ -34,17 +32,13 @@ export class VaultClient {
  
    public readonly request: BaseHttpRequest;
  
--  constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = AxiosHttpRequest) {
+-  constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = FetchHttpRequest) {
 -    this.request = new HttpRequest({
 -      BASE: config?.BASE ?? 'http://localhost:8123',
 -      VERSION: config?.VERSION ?? '1.0',
@@ -36,7 +55,7 @@ index da7e769..9abe31f 100644
 -      HEADERS: config?.HEADERS,
 -      ENCODE_PATH: config?.ENCODE_PATH,
 +  constructor(config?: Partial<VaultClientOptions>) {
-+    this.request = new AxiosHttpRequest({
++    this.request = new FetchHttpRequest({
 +      BASE: config?.vaultURL ?? 'http://localhost:8123',
 +      VERSION: '1.0',
 +      WITH_CREDENTIALS: false,
