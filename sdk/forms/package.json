@@ -22,7 +22,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite --mode dev",
-    "test": "playwright test",
+    "test": "yarn playwright install && playwright test",
     "push": "aws s3 sync dist/ s3://vault-saas-prod-cdn/"
   },
   "dependencies": {
