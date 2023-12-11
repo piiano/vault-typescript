@@ -48,11 +48,11 @@
   integrity sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==
 
 "@piiano/testcontainers-vault@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@piiano/testcontainers-vault/-/testcontainers-vault-1.1.0.tgz#4e861f4a031025408bf233b5ecb8a623878274f1"
-  integrity sha512-KX1vlH1Ir/RuYaAAl+ZJFLN0btj0aHE3kd/MVqGdQtYkOC2hEDjvMMVzGK8bg0jja4D0MiP2Te/arurme0OAUg==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@piiano/testcontainers-vault/-/testcontainers-vault-1.1.1.tgz#e2fa544f90f795276eb95b4903504097d8cc1df8"
+  integrity sha512-08im2/2MT95ZE8u3S70t4/37xQAchrl/410MTb7q0DZnJioJH//S2Viggv+yeqHI6A8eXJtVWOm6gh32g0rzQQ==
   dependencies:
-    testcontainers "^10.0.2"
+    testcontainers "^10.3.2"
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
@@ -86,6 +86,22 @@
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.10.tgz#2ad2959d1767edee5b0e4efb1a0cd2b500747317"
   integrity sha512-of+ICnbqjmFCiixUnqRulbylyXQrPqIGf/B3Jax1wIF3DvSheysQxAWvqHhZiW3IQrycvokcLcFQlveGp+vyNg==
 
+"@types/docker-modem@*":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@types/docker-modem/-/docker-modem-3.0.6.tgz#1f9262fcf85425b158ca725699a03eb23cddbf87"
+  integrity sha512-yKpAGEuKRSS8wwx0joknWxsmLha78wNMe9R2S3UNsVOkZded8UqOrV8KoeDXoXsjndxwyF3eIhyClGbO1SEhEg==
+  dependencies:
+    "@types/node" "*"
+    "@types/ssh2" "*"
+
+"@types/dockerode@^3.3.21":
+  version "3.3.23"
+  resolved "https://registry.yarnpkg.com/@types/dockerode/-/dockerode-3.3.23.tgz#07b2084013d01e14d5d97856446f4d9c9f27c223"
+  integrity sha512-Lz5J+NFgZS4cEVhquwjIGH4oQwlVn2h7LXD3boitujBnzOE5o7s9H8hchEjoDK2SlRsJTogdKnQeiJgPPKLIEw==
+  dependencies:
+    "@types/docker-modem" "*"
+    "@types/node" "*"
+
 "@types/json-schema@^7.0.6":
   version "7.0.15"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
@@ -96,7 +112,21 @@
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-10.0.4.tgz#b5331955ebca216604691fd4fcd2dbdc2bd559a4"
   integrity sha512-xKU7bUjiFTIttpWaIZ9qvgg+22O1nmbA+HRxdlR+u6TWsGfmFdXrheJoK4fFxrHNVIOBDvDNKZG+LYBpMHpX3w==
 
-"@types/node@*", "@types/node@^20.4.7":
+"@types/node@*":
+  version "20.10.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.10.4.tgz#b246fd84d55d5b1b71bf51f964bd514409347198"
+  integrity sha512-D08YG6rr8X90YB56tSIuBaddy/UXAA9RKJoFvrsnogAum/0pmjkgi4+2nx96A330FmioegBWmEYQ+syqCFaveg==
+  dependencies:
+    undici-types "~5.26.4"
+
+"@types/node@^18.11.18":
+  version "18.19.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.3.tgz#e4723c4cb385641d61b983f6fe0b716abd5f8fc0"
+  integrity sha512-k5fggr14DwAytoA/t8rPrIz++lXK7/DqckthCmoZOKNsEbJkId4Z//BqgApXBUGrGddrigYa1oqheo/7YmW4rg==
+  dependencies:
+    undici-types "~5.26.4"
+
+"@types/node@^20.4.7":
   version "20.9.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.9.2.tgz#002815c8e87fe0c9369121c78b52e800fadc0ac6"
   integrity sha512-WHZXKFCEyIUJzAwh3NyyTHYSR35SevJ6mZ1nWwJafKtiQbqRTIKSRcw3Ma3acqgsent3RRDqeVwpHntMk+9irg==
@@ -109,6 +139,13 @@
   integrity sha512-Sy8tpEmCce4Tq0oSOYdfqaBpA3hDM8SoxoFh5vzFsu2oL+znzGz8oVWW7xb4K920yYMUY+PIG31qZnFMfPWNCg==
   dependencies:
     "@types/node" "*"
+
+"@types/ssh2@*":
+  version "1.11.18"
+  resolved "https://registry.yarnpkg.com/@types/ssh2/-/ssh2-1.11.18.tgz#0766a52a91f85c39768ccdc8dce1498dcbb02d32"
+  integrity sha512-7eH4ppQMFlzvn//zhwD54MWaITR1aSc1oFBye9vb76GZ2Y9PSFYdwVIwOlxRXWs5+1hifntXyt+8a6SUbOD7Hg==
+  dependencies:
+    "@types/node" "^18.11.18"
 
 "@types/ssh2@^0.5.48":
   version "0.5.52"
@@ -1099,9 +1136,9 @@ ssh2@^1.11.0, ssh2@^1.4.0:
     nan "^2.17.0"
 
 streamx@^2.15.0:
-  version "2.15.5"
-  resolved "https://registry.yarnpkg.com/streamx/-/streamx-2.15.5.tgz#87bcef4dc7f0b883f9359671203344a4e004c7f1"
-  integrity sha512-9thPGMkKC2GctCzyCUjME3yR03x2xNo0GPKGkRw2UMYN+gqWa9uqpyNWhmsNCutU5zHmkUum0LsCRQTXUgUCAg==
+  version "2.15.6"
+  resolved "https://registry.yarnpkg.com/streamx/-/streamx-2.15.6.tgz#28bf36997ebc7bf6c08f9eba958735231b833887"
+  integrity sha512-q+vQL4AAz+FdfT137VF69Cc/APqUbxy+MDOImRrMvchJpigHj9GksgDU2LYbO9rx7RX6osWgxJB2WxhYv4SZAw==
   dependencies:
     fast-fifo "^1.1.0"
     queue-tick "^1.0.1"
@@ -1194,12 +1231,13 @@ tar-stream@^3.1.5:
     fast-fifo "^1.2.0"
     streamx "^2.15.0"
 
-testcontainers@^10.0.2:
-  version "10.2.2"
-  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-10.2.2.tgz#a7cc0b3512642131cff4ffc9af93e15edc765463"
-  integrity sha512-5GZ93rtoVXMx/s3xZjydftrKLnv1Yf+ETzGkXYRCm16LB60W48SGodxuiouYvNlVy0y0ogoQhdOw3DqsPActEA==
+testcontainers@^10.3.2:
+  version "10.3.2"
+  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-10.3.2.tgz#1477771585b328953ef6641f83b43368adac1242"
+  integrity sha512-IsV6NgS5reHcVF1nJLCDJv1hM9gAWUhLwh9b3ybgzvM3X7T2dcmuLFKt1RAR8qN8k+44tW2Drj7idxW6oeGvvg==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
+    "@types/dockerode" "^3.3.21"
     archiver "^5.3.2"
     async-lock "^1.4.0"
     byline "^5.0.0"
