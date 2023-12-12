@@ -1,3 +1,13 @@
+<p>
+  <a href="https://piiano.com/pii-data-privacy-vault/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://docs.piiano.com/img/logo-developers-dark.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://docs.piiano.com/img/logo-developers.svg">
+      <img alt="Piiano Vault" src="https://docs.piiano.com/img/logo-developers.svg" height="40" />
+    </picture>
+  </a>
+</p>
+
 # @piiano/forms
 
 Make your forms compliant with PCI or any other privacy regulation by tokenizing sensitive data before submitting it to
@@ -65,7 +75,7 @@ The form is pretty standard, but we need to add a few things to make it work wit
 First, we need to include the Piiano Forms SDK in the head of the page:
 
 ```html
-<script src="https://cdn.piiano.com/public/pvault-forms-v1-0-21.js"></script>
+<script src="https://cdn.piiano.com/pvault-forms-v1-0-22.js"></script>
 ```
 
 Next, add a `data-piiano-proxy-options` attribute to the form and set it to a JSON configuration object:
