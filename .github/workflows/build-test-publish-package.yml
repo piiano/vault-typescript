@@ -31,6 +31,11 @@ on:
         description: 'Token for NPM registry'
         required: true
 
+# Necessary for AWS assume role.
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-test-publish:
     name: Build, Test & Publish
