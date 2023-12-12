@@ -29,7 +29,17 @@ type ConfigFormOptions = {
   onSubmit?: (id: any) => void;
 }
 
-const configForm = async ({form, strategy, hijack, tenantId, onSubmit, collection, reason, apiKey, vaultURL}: ConfigFormOptions) => {
+const configForm = async ({
+                            form,
+                            strategy,
+                            hijack,
+                            tenantId,
+                            onSubmit,
+                            collection,
+                            reason,
+                            apiKey,
+                            vaultURL
+                          }: ConfigFormOptions) => {
   const client = new VaultClient({vaultURL, apiKey: await getAPIKey(apiKey)});
 
   const formElement = typeof form === 'string' ? document.querySelector(form) : form;
@@ -89,7 +99,17 @@ async function getAPIKey(apiKey: string | Promise<string> | (() => Promise<strin
   return apiKey;
 }
 
-async function send({strategy = 'multi-token', object, client, tenantId, reason = 'AppFunctionality', collection}: Omit<ConfigFormOptions, 'form' | 'apiKey' | 'vaultURL' | 'onSubmit'> & { client: VaultClient, object: Record<string, any> }) {
+async function send({
+                      strategy = 'multi-token',
+                      object,
+                      client,
+                      tenantId,
+                      reason = 'AppFunctionality',
+                      collection
+                    }: Omit<ConfigFormOptions, 'form' | 'apiKey' | 'vaultURL' | 'onSubmit'> & {
+  client: VaultClient,
+  object: Record<string, any>
+}) {
   switch (strategy) {
     case 'object':
       return client.objects.addObject({

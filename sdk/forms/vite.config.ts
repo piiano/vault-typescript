@@ -4,7 +4,7 @@ import {Vault} from "@piiano/testcontainers-vault";
 import pkg from './package.json';
 
 // https://vitejs.dev/config/
-export default defineConfig((async ()=> {
+export default defineConfig((async () => {
   let devVaultPort = 8123;
   if (process.env.NODE_ENV === 'development') {
     devVaultPort = await initDevelopmentVault();
@@ -21,7 +21,7 @@ export default defineConfig((async ()=> {
         name: 'pvault',
         // iife (immediately invoked function expression) is the most compatible format to be used in the browser.
         formats: ['iife'],
-        fileName: () => `pvault-forms-v${pkg.version.replace(/\./g,'-')}.js`,
+        fileName: () => `pvault-forms-v${pkg.version.replace(/\./g, '-')}.js`,
       },
     },
     plugins: [
@@ -72,7 +72,7 @@ export default defineConfig((async ()=> {
                 method: req.method,
                 body: Object.fromEntries(new URLSearchParams(data.toString()).entries()),
                 queryParam: Object.fromEntries(new URLSearchParams(req.url!.replace('/backend', '')).entries()),
-              }, null, 2 ));
+              }, null, 2));
               end();
             });
             res.end = () => res;

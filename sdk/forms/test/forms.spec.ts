@@ -1,7 +1,6 @@
-
-import { test, expect } from '@playwright/test';
-import { resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
+import {expect, test} from '@playwright/test';
+import {dirname, resolve} from 'path'
+import {fileURLToPath} from 'url'
 import {createServer, ViteDevServer} from 'vite'
 import {AddressInfo} from "node:net";
 
@@ -12,8 +11,8 @@ let url: string;
 let server: ViteDevServer;
 
 test.beforeAll(async () => {
+  // Start the vite dev server programmatically.
   server = await createServer({
-    // any valid user config options, plus `mode` and `configFile`
     configFile: resolve(rootDir, 'vite.config.ts'),
     root: rootDir,
   })
@@ -26,13 +25,13 @@ test.afterAll(async () => {
   await server.close()
 })
 
-test('submitting the forms tokenize the data', async ({ page }) => {
+test('submitting the forms tokenize the data', async ({page}) => {
   await page.goto(url);
 
-  const cardNumberInput =page.getByLabel('Card Number')
-  const cardHolderInput =page.getByLabel('Card Holder')
-  const cardExpiryInput =page.getByLabel('Card Expiry')
-  const cardCVVInput =page.getByLabel('Card CVV')
+  const cardNumberInput = page.getByLabel('Card Number')
+  const cardHolderInput = page.getByLabel('Card Holder')
+  const cardExpiryInput = page.getByLabel('Card Expiry')
+  const cardCVVInput = page.getByLabel('Card CVV')
 
   for (const {input, value} of [{
     input: cardNumberInput,
@@ -53,6 +52,7 @@ test('submitting the forms tokenize the data', async ({ page }) => {
     await expect(input).toHaveValue(value)
   }
 
+  // Listen to the console event to verify the original submit handler was called once the form was submitted.
   const consoleEvent = page.waitForEvent('console');
 
   const submitButton = page.getByRole('button', {name: 'Pay/Add card'});
