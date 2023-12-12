@@ -36,6 +36,12 @@ on:
         default: patch
         type: choice
         options: [none, patch, minor, major]
+      bump-forms:
+        description: Bump `@piiano/forms` version
+        required: false
+        default: patch
+        type: choice
+        options: [none, patch, minor, major]
 
 jobs:
   update-readme:
