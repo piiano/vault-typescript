@@ -16,26 +16,25 @@
     "test": "TS_NODE_PROJECT=tsconfig.test.json mocha -c -r ts-node/register -r test/hooks.ts 'test/**/*.spec.ts'",
     "tsc": "tsc",
     "build": "yarn tsc -p tsconfig.build.json",
-    "start": "ts-node --project tsconfig.build.json src/start.ts",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "start": "ts-node --project tsconfig.build.json src/start.ts"
   },
   "dependencies": {
-    "@piiano/typeorm-encryption": "^1.0.9",
-    "@piiano/vault-client": "^1.0.16",
+    "@piiano/typeorm-encryption": "^1.0.23",
+    "@piiano/vault-client": "^1.0.23",
     "express": "^4.18.2",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.1.14",
     "sqlite3": "^5.1.6",
     "typeorm": "0.3.17"
   },
   "devDependencies": {
-    "@piiano/testcontainers-vault": "^1.0.4",
-    "@types/chai": "^4.3.5",
-    "@types/express": "^4.17.17",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.4.7",
-    "chai": "^4.3.7",
+    "@piiano/testcontainers-vault": "^1.1.1",
+    "@types/chai": "^4.3.11",
+    "@types/express": "^4.17.21",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.10.4",
+    "chai": "^4.3.10",
     "mocha": "^10.2.0",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   }
 }

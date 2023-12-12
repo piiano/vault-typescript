@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "emitDecoratorMetadata": true
   },
   "include": ["test/**/*.ts"],
   "exclude": ["node_modules", "dist", "src"]
