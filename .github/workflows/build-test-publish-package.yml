@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # By default, the ref is the commit hash that triggered the original workflow.
           # Meaning it is missing changes that are committed by the workflow itself.
