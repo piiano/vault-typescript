@@ -13,6 +13,10 @@
 Make your forms compliant with PCI or any other privacy regulation by tokenizing sensitive data before submitting it to
 your backend.
 
+> [!IMPORTANT]
+> At the time of writing (December 2023) Piiano is in the process of seeking PCI DSS Level 1 certification.  
+> [Talk to us](https://www.piiano.com/contact-us) about obtaining access to a PCI compliant SaaS environment.
+
 ## When to use Piiano Forms
 
 If you want to make sure that your backend never sees sensitive data, but still can use it with relevant services,
