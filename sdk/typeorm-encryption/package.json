@@ -39,7 +39,7 @@
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.4",
-    "chai": "^4.3.10",
+    "chai": "^5.0.0",
     "mocha": "^10.2.0",
     "reflect-metadata": "^0.1.14",
     "sqlite3": "^5.1.6",
