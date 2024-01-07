@@ -1,0 +1,142 @@
+:root {
+  --primary: #0070e0;
+  --invalid-color: #c43443;
+  --background: #fff;
+  --primary-dark: color-mix(in oklab, var(--primary), black 15%);
+  --focus-background: color-mix(in oklab, var(--primary) 5%, var(--background));
+  --label-color: #666;
+  --placeholder-color: #888;
+  --border-color: rgba(0, 0, 0, 0.15);
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+/* if the user has requested reduced motion, disable all transitions */
+@media (prefers-reduced-motion) {
+  * {
+    transition: none;
+  }
+}
+
+form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+/* remove autofill background color in chrome */
+.field input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 999px var(--background) inset !important;
+}
+.field input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 999px var(--focus-background) inset !important;
+}
+
+.field.invalid label {
+  color: var(--invalid-color);
+}
+.field.invalid input {
+  color: var(--invalid-color);
+  outline-color: var(--invalid-color);
+}
+.field.invalid input:focus {
+  outline-color: var(--invalid-color);
+}
+.field.invalid .validation-message {
+  scale: 1 1;
+  margin: 0.25rem;
+  height: 0.75rem;
+}
+
+.field .validation-message {
+  height: 0;
+  color: var(--invalid-color);
+  font-size: 0.75rem;
+  transform-origin: top;
+  overflow: hidden;
+  display: block;
+  margin: 0 0.25rem;
+  scale: 1 0;
+}
+
+.field label {
+  font-size: 0.865rem;
+  background: var(--background);
+  font-weight: 500;
+  display: inline-block;
+  margin: 0 0 0.5rem 0.5rem;
+  color: var(--label-color);
+}
+
+.field input::placeholder {
+  color: var(--placeholder-color);
+}
+.field:focus-within label {
+  color: var(--primary);
+}
+
+.field input {
+  width: 100%;
+  background: var(--background);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.4rem;
+  outline-color: var(--primary);
+}
+
+.field input:focus {
+  background: var(--focus-background);
+}
+
+button {
+  display: flex;
+  margin-top: 0.5rem;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--primary);
+  color: #fff;
+  border: none;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+}
+
+form.submitting button:after {
+  background-color: currentColor;
+  content: '';
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid'%3E%3Ccircle cx='50' cy='50' fill='none' stroke='currentColor' stroke-width='10' r='35' stroke-dasharray='165 55' /%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid'%3E%3Ccircle cx='50' cy='50' fill='none' stroke='currentColor' stroke-width='10' r='35' stroke-dasharray='165 55' /%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  opacity: 0.75;
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  aspect-ratio: 1;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

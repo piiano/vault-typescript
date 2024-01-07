@@ -1,0 +1,58 @@
+/* .floating-label */
+.floating-label form {
+  padding-top: 0.5rem;
+  grid-gap: 1rem;
+}
+
+.floating-label .field label {
+  color: var(--placeholder-color);
+  position: absolute;
+  display: inline-block;
+  margin-top: -1rem;
+  font-size: 0.865rem;
+  background: var(--background);
+  font-weight: 500;
+  padding: 0.1rem 0.5rem 0;
+  border-radius: 0.5rem 0.5rem 0 0;
+  transform-origin: top left;
+  transform: translateY(0.45rem) scale(0.865);
+  cursor: text;
+}
+
+.floating-label .field:focus-within label {
+  color: var(--primary);
+  background: var(--focus-background);
+  cursor: auto;
+}
+
+.floating-label input::placeholder {
+  color: transparent;
+}
+
+.floating-label input:focus::placeholder {
+  color: var(--placeholder-color);
+}
+
+.floating-label .field:has(input:placeholder-shown:not(:focus)) label {
+  transform: translateY(1.65rem);
+  font-weight: 400;
+}
+
+.floating-label input {
+  width: 100%;
+  background: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: 0.4rem;
+}
+
+.floating-label input:focus {
+  background: var(--focus-background);
+}
+
+.floating-label .field.invalid input:focus {
+  outline-color: var(--invalid-color);
+}
+
+.floating-label .field.invalid label {
+  color: var(--invalid-color);
+}

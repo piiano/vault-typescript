@@ -1,0 +1,67 @@
+import { Field as FieldProps } from '../../../options';
+import { Field } from './field';
+import { SubmitButton } from './submit-button';
+import { useRef } from '../component';
+import { iframeLogger, sendToParent } from '../index';
+import { applyStrategy, SubmitRequest } from '../../../apply-strategy';
+import { ApiError } from '@piiano/vault-client';
+
+type FormProps = SubmitRequest & {
+  fields: FieldProps[];
+  submitButton?: string;
+};
+
+export function Form({ fields, submitButton, ...submitOptions }: FormProps) {
+  const form = document.createElement('form');
+  // we manage validation ourselves. this allows us to show validation errors on submit and not on blur
+  form.noValidate = true;
+  const touchedRef = useRef(false);
+  const fieldElements = fields.map((field) => Field({ touchedRef, ...field }));
+  form.append(...fieldElements);
+  const validateAll = () =>
+    fieldElements.reduce(
+      (valid, field) =>
+        // don't short circuit, we want to run validate on all fields even if we already have an invalid one
+        field.validate() && valid,
+      true,
+    );
+
+  if (submitButton) {
+    form.appendChild(SubmitButton({ submitButton }));
+  }
+
+  form.onsubmit = (e) => {
+    e.preventDefault();
+    touchedRef.current = true;
+
+    if (!validateAll()) {
+      sendToParent('error', 'validation error');
+      return false;
+    }
+
+    const formData = new FormData(form);
+    const object = Object.fromEntries(formData.entries());
+    form.classList.add('submitting');
+    iframeLogger.log('Send request to vault');
+    applyStrategy(object, submitOptions)
+      .then((result) => {
+        iframeLogger.log('Received response from vault');
+        sendToParent('submit', result);
+      })
+      .catch((err) => {
+        iframeLogger.log('Received error from vault', err);
+        if (err instanceof ApiError) {
+          err = err.body.message;
+        } else if (err instanceof Error) {
+          err = err.message;
+        }
+        sendToParent('error', err);
+      })
+      .finally(() => {
+        form.classList.remove('submitting');
+      });
+    return false;
+  };
+
+  return form;
+}

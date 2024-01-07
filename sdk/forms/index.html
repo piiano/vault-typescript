@@ -1,38 +1,149 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <link rel="shortcut icon" type="image/png" href="/favicon-32x32.png"/>
-  <title>Test Forms</title>
-  <link rel="stylesheet" href="./src/styles.css"/>
-  <!-- Include Piiano Vault Client -->
-  <script type="module" src="./src/index.ts"></script>
+  <head>
+    <meta charset="utf-8" />
+    <title>Test Forms</title>
+    <!-- Include Piiano Vault Client -->
+    <script type="module">
+      import { pvault } from './src/index.ts';
+      const form = pvault.createProtectedForm('#form-container', {
+        vaultURL: `http://localhost:${import.meta.env.VITE_VAULT_PORT}`,
+        apiKey: 'pvaultauth',
+        collection: 'credit_cards',
+        fields: [
+          {
+            name: 'card_holder',
+            data_type_name: 'CC_HOLDER_NAME',
+            label: 'Name',
+            required: true,
+            placeholder: 'John Doe',
+          },
+          {
+            name: 'card_number',
+            data_type_name: 'CC_NUMBER',
+            label: 'Card',
+            required: true,
+            placeholder: '4111 1111 1111 1111',
+          },
+          {
+            name: 'card_expiry',
+            data_type_name: 'CC_EXPIRATION_STRING',
+            label: 'Expiry',
+            required: true,
+            placeholder: '12/34',
+          },
+          {
+            name: 'card_cvv',
+            data_type_name: 'CC_CVV',
+            label: 'CVV',
+            required: true,
+            placeholder: '123',
+          },
+        ],
+        submitButton: 'Pay',
+        debug: true,
+        style: {
+          theme: 'floating-label',
+          css: `
+form { grid-template-columns: 1fr 1fr; }
+[data-name="card_holder"], [data-name="card_number"] { grid-column: 1 / span 2; }
+`,
+        },
+      });
 
-  <!-- Old original form submission code -->
-  <script>
-    function myOldOnSubmit(e) {
-      const data = Object.fromEntries(new FormData(e.target));
-      console.log('my original on submit handler', data);
-    }
-  </script>
-</head>
-<body>
-<form action="/backend" method="post" onsubmit="myOldOnSubmit(event)"
-      data-piiano-proxy-options='{
-            "collection":"credit_cards",
-            "hijack":true,
-            "vaultURL":"http://localhost:3000"
-          }'>
-  <h1>Form</h1>
-  <label for="card_number">Card Number</label>
-  <input type="text" id="card_number" name="card_number" value="4111111111111111"/>
-  <label for="card_holder">Card Holder</label>
-  <input type="text" id="card_holder" name="card_holder" value="Jane Doe"/>
-  <label for="card_expiry">Card Expiry</label>
-  <input type="text" id="card_expiry" name="card_expiry" value="12/25"/>
-  <label for="card_cvv">Card CVV</label>
-  <input type="text" id="card_cvv" name="card_cvv" value="123"/>
-  <input type="submit" value="Pay/Add card"/>
-</form>
-</body>
+      const result = document.getElementById('result');
+      document.getElementById('form1').addEventListener('submit', (e) => {
+        e.preventDefault();
+        console.log('submitting form');
+        form
+          .submit()
+          .then((data) => JSON.stringify(data, null, 2))
+          .catch((err) => err)
+          .then((value) => {
+            result.innerText = value;
+            result.style.display = 'block';
+          });
+        return false;
+      });
+    </script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        height: 100vh;
+        padding: 0 5rem;
+      }
+      main {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      form {
+        display: grid;
+        gap: 1rem;
+        width: 22rem;
+        margin-bottom: 1rem;
+      }
+      button {
+        padding: 0.75rem;
+        font-size: 1rem;
+        border-radius: 0.25rem;
+        background-color: #0070e0;
+        color: #fff;
+        border: none;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+      button:hover,
+      button:focus {
+        background-color: #0060c0;
+      }
+      button:active {
+        background-color: #004f9d;
+      }
+      pre {
+        padding: 2rem;
+        background: #f5f5f5;
+        border-radius: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- protected form example -->
+      <section>
+        <h2>Protected form (iframe)</h2>
+        <form id="form1">
+          <div id="form-container">
+            <!-- piiano form will be injected here -->
+          </div>
+          <button type="submit">Pay</button>
+        </form>
+        <pre id="result" style="display: none"></pre>
+      </section>
+
+      <!-- controlled form example -->
+      <!--    <section>-->
+      <!--      <h2>Controlled form</h2>-->
+      <!--      <form id="form2" action="/backend" method="post" onsubmit="myOldOnSubmit(event)">-->
+      <!--        <label for="card_holder">Card Holder</label>-->
+      <!--        <input type="text" id="card_holder" name="card_holder" value="Jane Doe"/>-->
+      <!--        <label for="card_number">Card Number</label>-->
+      <!--        <input type="text" id="card_number" name="card_number" value="4111111111111111"/>-->
+      <!--        <label for="card_expiry">Card Expiry</label>-->
+      <!--        <input type="text" id="card_expiry" name="card_expiry" value="12/25"/>-->
+      <!--        <label for="card_cvv">Card CVV</label>-->
+      <!--        <input type="text" id="card_cvv" name="card_cvv" value="123"/>-->
+      <!--        <button type="submit">Pay</button>-->
+      <!--      </form>-->
+      <!--    </section>-->
+    </main>
+  </body>
 </html>
