@@ -10,7 +10,7 @@ export function optimizeVaultClientBundleSize(): Plugin {
     transform(code, id) {
       // Remove the errors dictionary repeated in every service.
       if (/\/generated\/services\/.*Client\.js$/.test(id)) {
-        return code.replace(/,\s*errors: \{([^}]|\n)*}/g, '');
+        return code.replace(/,\s*errors: \{[^}]*}/gm, '');
       }
       // Update the code to use a single errors map.
       if (/\/generated\/core\/request\.js$/.test(id)) {

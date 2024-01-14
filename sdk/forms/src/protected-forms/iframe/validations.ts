@@ -1,8 +1,5 @@
 const regexp = {
   objectId: /^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/i,
-  email:
-    // eslint-disable-next-line no-control-regex
-    /^(?:(?:[a-zA-Z]|\d|[!#$%&'*+/=?^_`{|}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(?:\.([a-zA-Z]|\d|[!#$%&'*+/=?^_`{|}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*|"(?:(?:(?:[ \t]*\r\n)?[ \t]+)?(?:(?:[\x01-\b\v\f\x0e-\x1f\x7f]|!|[#-[]|[\]-~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(?:[\x01-\t\v\f\r-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))*(?:(?:[ \t]*\r\n)?([ \t])+)?")@(?:(?:(?:[a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(?:[a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])(?:[a-zA-Z]|\d|-|\.|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*(?:[a-zA-Z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))\.)+(?:(?:[a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(?:[a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])(?:[a-zA-Z]|\d|-|\.|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*(?:[a-zA-Z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))\.?$/,
   ccExpiration: /^(0[1-9]|1[0-2])\/([0-9]{2}|[0-9]{4})$/,
   cvv: /^[0-9]{3,4}$/,
   ban: /^[0-9]{5,17}$/,
@@ -20,9 +17,10 @@ export const validations: Record<string, (value: string) => string | null> = {
   ADDRESS: noValidation,
   CC_HOLDER_NAME: noValidation,
   BLOB: noValidation,
+  // We rely on builtin browser's validation for emails so we don't need to validate it here.
+  EMAIL: noValidation,
+  EMAIL_STRICT: noValidation,
   OBJECT_ID: (value) => (regexp.objectId.test(value) ? null : 'Invalid Object ID'),
-  EMAIL: (value) => (regexp.email.test(value) ? null : 'Invalid email'),
-  EMAIL_STRICT: (value) => (regexp.email.test(value) ? null : 'Invalid email'),
   URL: (value) => (isValidURL(value) ? null : 'Invalid URL'),
   PHONE_NUMBER: (value) => (isValidPhoneNumber(value) ? null : 'Invalid phone number'),
   ZIP_CODE_US: (value) => (regexp.usZipCode.test(value) ? null : 'Invalid zip code'),
@@ -75,17 +73,15 @@ function isValidCardNumber(value: string): boolean {
 }
 
 function luhnCheck(cardNumber: string): boolean {
-  // We are ignoring the warnings for magic numbers in this code as the magic numbers are
-  // part of the algorithm...
   let checksum = 0;
 
   const numberLen = cardNumber.length;
   for (let i = numberLen - 1; i >= 0; i -= 2) {
-    const n = cardNumber.charCodeAt(i) - '0'.charCodeAt(0);
+    const n = Number(cardNumber.charAt(i));
     checksum += n;
   }
   for (let i = numberLen - 2; i >= 0; i -= 2) {
-    let n = cardNumber.charCodeAt(i) - '0'.charCodeAt(0);
+    let n = Number(cardNumber.charAt(i));
     n *= 2;
     if (n > 9) {
       n -= 9;
