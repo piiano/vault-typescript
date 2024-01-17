@@ -33,14 +33,22 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
       },
     },
   }[process.env.BUILD_TARGET ?? 'lib']!;
-  process.env.VITE_IFRAME_URL =
+  // TODO: if the iframe will be loaded from the vault then we need change theses values dynamically
+  //  to reflect the vault url and origin.
+  Object.assign(
+    process.env,
     mode === 'dev'
-      ? './src/protected-forms/iframe/index.html'
-      : `https://cdn.piiano.com/pvault-forms-iframe-v${version}.html`;
+      ? {
+          VITE_IFRAME_URL: './src/protected-forms/iframe/index.html',
+          VITE_IFRAME_ORIGIN: 'http://localhost:3000',
+        }
+      : {
+          VITE_IFRAME_URL: `https://cdn.piiano.com/pvault-forms-iframe-v${version}.html`,
+          VITE_IFRAME_ORIGIN: 'https://cdn.piiano.com',
+        },
+  );
 
   return {
-    // define  : {
-    // },
     publicDir: false,
     base: undefined,
     build: {

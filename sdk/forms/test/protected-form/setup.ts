@@ -41,6 +41,7 @@ export async function prepareProtectedFormTest(
   const formOptions: ProtectedFormOptions<any> = {
     vaultURL: vaultURL,
     apiKey: 'pvaultauth',
+    debug: true,
     collection: 'credit_cards',
     fields: Object.entries(inputs).map(([name, { type: data_type_name, label }]) => ({
       name,
@@ -53,17 +54,15 @@ export async function prepareProtectedFormTest(
     ...options,
   };
 
-  const protectedFormHandle = await page.evaluateHandle(
-    (formOptions) =>
-      window.pvault.createProtectedForm('#form-container', {
-        ...formOptions,
-        hooks: {
-          onSubmit: (r) => console.log('test onSubmit hook:', JSON.stringify(r)),
-          onError: (e) => console.log('test onError hook:', e),
-        },
-      }),
-    formOptions,
-  );
+  const protectedFormHandle = await page.evaluateHandle(async (formOptions) => {
+    return window.pvault.createProtectedForm('#form-container', {
+      ...formOptions,
+      hooks: {
+        onSubmit: (r) => console.log('test onSubmit hook:', JSON.stringify(r)),
+        onError: (e) => console.log('test onError hook:', e),
+      },
+    });
+  }, formOptions);
 
   // expecting the iframe to be loaded by the library
   const frame = page.frameLocator('iframe');

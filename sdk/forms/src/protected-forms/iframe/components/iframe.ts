@@ -2,19 +2,17 @@ import { IframeOptions, ResultType, Style } from '../../../options';
 import { sendSizeEvents } from '../../common/size';
 import { VaultClient } from '@piiano/vault-client';
 import { Form } from './form';
-import { sendToParent } from '../index';
+import { Sender } from '../../common/events';
+import { Logger } from '../../common/logger';
 
-export function renderForm({
-  vaultURL,
-  apiKey,
-  fields,
-  submitButton,
-  style,
-  ...submitOptions
-}: IframeOptions<ResultType>) {
+export function renderForm(
+  log: Logger,
+  sendToParent: Sender,
+  { vaultURL, apiKey, fields, submitButton, style, ...submitOptions }: IframeOptions<ResultType>,
+) {
   const client = new VaultClient({ apiKey, vaultURL });
   applyStyle(style);
-  const form = Form({ fields, submitButton, ...submitOptions, client });
+  const form = Form({ log, sendToParent, fields, submitButton, ...submitOptions, client });
   document.body.appendChild(form);
   sendSizeEvents(sendToParent, 'content-size', form);
   return form;

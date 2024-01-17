@@ -17,7 +17,7 @@ export const validations: Record<string, (value: string) => string | null> = {
   ADDRESS: noValidation,
   CC_HOLDER_NAME: noValidation,
   BLOB: noValidation,
-  // We rely on builtin browser's validation for emails so we don't need to validate it here.
+  // We rely on builtin browser's validation for emails, so we don't need to validate it here.
   EMAIL: noValidation,
   EMAIL_STRICT: noValidation,
   OBJECT_ID: (value) => (regexp.objectId.test(value) ? null : 'Invalid Object ID'),

@@ -18,22 +18,23 @@ export async function mockCDN(page: Page, vaultURL: string) {
     await route.fulfill({
       body: await fs.readFile(resolve(rootDir, 'dist', file), 'utf-8'),
       headers: {
-        'content-type': ext === 'html' ? 'text/html' : 'application/javascript',
-        ...(ext === 'html'
-          ? {
-              // CSP header that should reflect the CSP headers returned by the CDN in prod for the iframe html file.
-              'content-security-policy': Object.entries({
-                default: [`'none'`], // by default, block everything
-                img: [`data:`], // allow data urls for images
-                // TODO: calculate hashes for inline scripts and styles or use nonce
-                script: [`'self'`, `'unsafe-inline'`],
-                style: [`'self'`, `'unsafe-inline'`],
-                connect: [vaultURL],
-              })
-                .map(([key, value]) => `${key}-src ${value.join(' ')};`)
-                .join('; '),
-            }
-          : {}),
+        Host: 'cdn.piiano.com',
+        'Content-Type': ext === 'html' ? 'text/html' : 'application/javascript',
+        // ...(ext === 'html'
+        //   ? {
+        //       // CSP header that should reflect the CSP headers returned by the CDN in prod for the iframe html file.
+        //       'content-security-policy': Object.entries({
+        //         default: [`'none'`], // by default, block everything
+        //         img: [`data:`], // allow data urls for images
+        //         // TODO: calculate hashes for inline scripts and styles or use nonce
+        //         script: [`'self'`, `'unsafe-inline'`],
+        //         style: [`'self'`, `'unsafe-inline'`],
+        //         connect: [vaultURL],
+        //       })
+        //         .map(([key, value]) => `${key}-src ${value.join(' ')};`)
+        //         .join('; '),
+        //     }
+        //   : {}),
       },
     });
   });

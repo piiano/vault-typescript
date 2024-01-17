@@ -1,7 +1,7 @@
 import { ProtectedFormOptions, IframeOptions, ResultType, Result, Hooks } from '../options';
 import { sendSizeEvents } from './common/size';
 import { getElement } from '../element-selector';
-import { newSender, Sender } from './common/events';
+import { newSenderToTarget, Sender } from './common/events';
 import { Logger, newLogger } from './common/logger';
 
 export type Form<T extends ResultType> = {
@@ -17,7 +17,7 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const iframeURL = import.meta.env.VITE_IFRAME_URL;
-  const parentLogger = newLogger('parent', options.debug);
+  const log = newLogger('parent', options.debug);
   let sendToIframe: Sender;
   iframe.src = iframeURL;
   iframe.style.border = 'none';
@@ -25,18 +25,20 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
   iframe.style.display = 'block';
   iframe.style.margin = '0';
   iframe.onload = () => {
-    sendToIframe = newSender(iframe.contentWindow!, parentLogger);
-    // sendToIframe = newSender(iframe.contentWindow!, parentLogger, iframeURL);
-    // type assertion to verify we don't pass hooks to the iframe as they are serializable and can't be passed with postMessage
-    const iframeOptions: IframeOptions<T> = options;
-    sendToIframe('init', iframeOptions);
-    sendSizeEvents(sendToIframe, 'container-size', container);
+    setTimeout(() => {
+      sendToIframe = newSenderToTarget(iframe.contentWindow!, log);
+      // sendToIframe = newSender(iframe.contentWindow!, parentLogger, iframeURL);
+      // type assertion to verify we don't pass hooks to the iframe as they are serializable and can't be passed with postMessage
+      const iframeOptions: IframeOptions<T> = options;
+      sendToIframe('init', iframeOptions);
+      sendSizeEvents(sendToIframe, 'container-size', container);
+    });
   };
 
   let resultPromise: Promise<Result<T>> | undefined;
   let promiseCallbacks: { submit: (result: Result<T>) => void; error: (err: Error) => void } | undefined;
 
-  const ready = registerHooks<T>(parentLogger, iframe, {
+  const ready = registerHooks<T>(log, iframe, {
     onSubmit(r) {
       hooks?.onSubmit?.(r);
       promiseCallbacks?.submit?.(r);
@@ -67,15 +69,16 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
   };
 }
 
-function registerHooks<T extends ResultType>(
-  logger: Logger,
-  iframe: HTMLIFrameElement,
-  hooks: Hooks<T>,
-): Promise<void> {
+function registerHooks<T extends ResultType>(log: Logger, iframe: HTMLIFrameElement, hooks: Hooks<T>): Promise<void> {
   return new Promise((resolve, reject) => {
     let ready = false;
-    window.onmessage = ({ data: { event, payload } }) => {
-      logger.log(`Received "${event}" event from iframe`);
+    window.onmessage = ({ origin, data: { event, payload } }) => {
+      // @ts-ignore
+      const iframeOrigin = import.meta.env.VITE_IFRAME_ORIGIN;
+      // if the message is not from the iframe, ignore it
+      if (origin !== iframeOrigin) return;
+
+      log(`Received "${event}" event from iframe`);
       switch (event) {
         case 'ready':
           ready = true;

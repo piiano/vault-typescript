@@ -2,16 +2,19 @@ import { Field as FieldProps } from '../../../options';
 import { Field } from './field';
 import { SubmitButton } from './submit-button';
 import { useRef } from '../component';
-import { iframeLogger, sendToParent } from '../index';
 import { applyStrategy, SubmitRequest } from '../../../apply-strategy';
 import { ApiError } from '@piiano/vault-client';
+import { Sender } from '../../common/events';
+import { Logger } from '../../common/logger';
 
 type FormProps = SubmitRequest & {
+  log: Logger;
+  sendToParent: Sender;
   fields: FieldProps[];
   submitButton?: string;
 };
 
-export function Form({ fields, submitButton, ...submitOptions }: FormProps) {
+export function Form({ log, sendToParent, fields, submitButton, ...submitOptions }: FormProps) {
   const form = document.createElement('form');
   // we manage validation ourselves. this allows us to show validation errors on submit and not on blur
   form.noValidate = true;
@@ -42,14 +45,14 @@ export function Form({ fields, submitButton, ...submitOptions }: FormProps) {
     const formData = new FormData(form);
     const object = Object.fromEntries(formData.entries());
     form.classList.add('submitting');
-    iframeLogger.log('Send request to vault');
+    log('Send request to vault');
     applyStrategy(object, submitOptions)
       .then((result) => {
-        iframeLogger.log('Received response from vault');
+        log('Received response from vault');
         sendToParent('submit', result);
       })
       .catch((err) => {
-        iframeLogger.log('Received error from vault', err);
+        log('Received error from vault', err);
         if (err instanceof ApiError) {
           err = err.body.message;
         } else if (err instanceof Error) {
