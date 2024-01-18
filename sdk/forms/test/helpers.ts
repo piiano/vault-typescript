@@ -10,7 +10,7 @@ const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // serve the dist folder as a CDN to the test page.
 // This allows us to test that the lib is loading the iframe from the CDN as expected to be in prod.
 // It also allows us to add Content-Security-Policy headers to the CDN to test how the lib handles them.
-export async function mockCDN(page: Page, vaultURL: string) {
+export async function mockCDN(page: Page, vaultURL: URL, webPageURL: URL) {
   const cdnBaseURL = 'https://cdn.piiano.com/';
   await page.route(`${cdnBaseURL}**`, async (route) => {
     const file = route.request().url().replace(cdnBaseURL, '');
@@ -20,21 +20,33 @@ export async function mockCDN(page: Page, vaultURL: string) {
       headers: {
         Host: 'cdn.piiano.com',
         'Content-Type': ext === 'html' ? 'text/html' : 'application/javascript',
-        // ...(ext === 'html'
-        //   ? {
-        //       // CSP header that should reflect the CSP headers returned by the CDN in prod for the iframe html file.
-        //       'content-security-policy': Object.entries({
-        //         default: [`'none'`], // by default, block everything
-        //         img: [`data:`], // allow data urls for images
-        //         // TODO: calculate hashes for inline scripts and styles or use nonce
-        //         script: [`'self'`, `'unsafe-inline'`],
-        //         style: [`'self'`, `'unsafe-inline'`],
-        //         connect: [vaultURL],
-        //       })
-        //         .map(([key, value]) => `${key}-src ${value.join(' ')};`)
-        //         .join('; '),
-        //     }
-        //   : {}),
+        ...(ext === 'html'
+          ? {
+              // CSP header that should reflect the CSP headers returned by the CDN in prod for the iframe html file.
+              'Content-Security-Policy': [
+                'sandbox allow-forms allow-same-origin allow-scripts', // define the iframe sandbox
+                `frame-ancestors ${webPageURL.origin}`, // allow only the web page origin to load the iframe
+                `default-src 'none'`, // by default block all requests
+                `img-src data:`, // allow data urls for images
+                `script-src 'unsafe-inline'`, // allow our own inline scripts
+                `style-src 'unsafe-inline'`, // allow our own inline styles
+                `connect-src ${vaultURL.origin}`, // allow requests to the vault
+              ].join('; '),
+            }
+          : {}),
+      },
+    });
+  });
+}
+
+// serve test web page HTML as if it was loaded with its own URL.
+export async function mockWebPage(page: Page, pageURL: URL, body = '') {
+  await page.route(pageURL.toString(), async (route) => {
+    await route.fulfill({
+      body: testHTML(body),
+      headers: {
+        Host: pageURL.host,
+        'Content-Type': 'text/html',
       },
     });
   });
