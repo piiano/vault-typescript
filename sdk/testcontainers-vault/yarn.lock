@@ -1181,9 +1181,9 @@ tar-stream@^3.1.5:
     streamx "^2.15.0"
 
 testcontainers@^10.3.2:
-  version "10.3.2"
-  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-10.3.2.tgz#1477771585b328953ef6641f83b43368adac1242"
-  integrity sha512-IsV6NgS5reHcVF1nJLCDJv1hM9gAWUhLwh9b3ybgzvM3X7T2dcmuLFKt1RAR8qN8k+44tW2Drj7idxW6oeGvvg==
+  version "10.6.0"
+  resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-10.6.0.tgz#205ad9148e68ff5c43a6209a30b12965acbe89d8"
+  integrity sha512-FDJ3o3J8IMu1V7Uc6lNZ2MAD8+BV4HdpR/Vf5mHtgYHKdn6k1EbGFwtnvVNOxanJ99FCjf/EU8eA5ZQ4yjlsGA==
   dependencies:
     "@balena/dockerignore" "^1.0.2"
     "@types/dockerode" "^3.3.21"
