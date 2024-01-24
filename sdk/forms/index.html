@@ -57,10 +57,9 @@ form { grid-template-columns: 1fr 1fr; }
         console.log('submitting form');
         form
           .submit()
-          .then((data) => JSON.stringify(data, null, 2))
           .catch((err) => err)
           .then((value) => {
-            result.innerText = value;
+            result.innerText = JSON.stringify(value, null, 2);
             result.style.display = 'block';
           });
         return false;

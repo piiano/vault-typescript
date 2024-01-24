@@ -92,7 +92,7 @@ function registerHooks<T extends ResultType>(log: Logger, iframe: HTMLIFrameElem
           hooks?.onSubmit?.(payload);
           break;
         case 'error':
-          const error = new Error(payload);
+          const error = Object.assign(new Error(payload.message), payload);
           // when error is fired before the ready event it is an initialization error and we reject.
           if (!ready) {
             reject(error);

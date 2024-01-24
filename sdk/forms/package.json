@@ -25,7 +25,7 @@
     "build:iframe": "BUILD_TARGET=iframe vite build --mode prod",
     "dev": "vite --mode dev",
     "test": "yarn playwright install && playwright test --reporter github",
-    "push": "aws s3 sync dist/ s3://vault-saas-prod-cdn/",
+    "push": "aws s3 sync dist/ s3://vault-saas-pci-cdn/ && aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
     "format": "prettier . --write",
     "lint": "eslint --ext .ts src --max-warnings 0"
   },

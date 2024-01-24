@@ -38,7 +38,15 @@ export function Form({ log, sendToParent, fields, submitButton, ...submitOptions
     touchedRef.current = true;
 
     if (!validateAll()) {
-      sendToParent('error', 'validation error');
+      sendToParent('error', {
+        type: 'validation',
+        message: 'Form validation failed',
+        context: Object.fromEntries(
+          ([...form.elements] as HTMLInputElement[])
+            .filter((i) => i.validationMessage)
+            .map((i: HTMLInputElement) => [i.name, i.validationMessage]),
+        ),
+      });
       return false;
     }
 
@@ -54,9 +62,9 @@ export function Form({ log, sendToParent, fields, submitButton, ...submitOptions
       .catch((err) => {
         log('Received error from vault', err);
         if (err instanceof ApiError) {
-          err = err.body.message;
+          err = { type: 'vault', ...err.body };
         } else if (err instanceof Error) {
-          err = err.message;
+          err = { type: 'network', message: err.message };
         }
         sendToParent('error', err);
       })
