@@ -3,7 +3,6 @@ import { Vault } from '@piiano/testcontainers-vault';
 export async function initDevelopmentVault(): Promise<Vault> {
   // Start a Vault server to use for testing/development.
   const vault = new Vault({
-    version: '1.9.8',
     reuse: true,
     env: {
       PVAULT_DEVMODE: true,
