@@ -30,14 +30,16 @@ export function Input({
   input.id = name;
   input.name = name;
   input.value = value ?? '';
-  input.type = dataTypes[dataTypeName] ?? 'text';
+  input.type = dataTypes.get(dataTypeName) ?? 'text';
   input.placeholder = placeholder ?? '';
   input.required = required ?? false;
   input.setAttribute('aria-describedby', validationMessageId);
-  const validator = validations[dataTypeName];
+  const validator = validations.get(dataTypeName);
   const validate = () => {
     if (!touchedRef.current) return true;
-    input.setCustomValidity(validator(input.value) || '');
+    if (typeof validator === 'function') {
+      input.setCustomValidity(validator?.(input.value) || '');
+    }
     const valid = input.checkValidity();
     if (valid) {
       clearValidationMessage();

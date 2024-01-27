@@ -9,33 +9,35 @@ const regexp = {
   usBankRouting: /^(([0-9]{9})|([0-9]{4}\/[0-9]{4})|(([0-9]{2})-([0-9]{4})\/([0-9]{4})))$/,
 };
 
-export const validations: Record<string, (value: string) => string | null> = {
-  STRING: noValidation,
-  LONGTEXT: noValidation,
-  NAME: noValidation,
-  GENDER: noValidation,
-  ADDRESS: noValidation,
-  CC_HOLDER_NAME: noValidation,
-  BLOB: noValidation,
-  // We rely on builtin browser's validation for emails, so we don't need to validate it here.
-  EMAIL: noValidation,
-  EMAIL_STRICT: noValidation,
-  OBJECT_ID: (value) => (regexp.objectId.test(value) ? null : 'Invalid Object ID'),
-  URL: (value) => (isValidURL(value) ? null : 'Invalid URL'),
-  PHONE_NUMBER: (value) => (isValidPhoneNumber(value) ? null : 'Invalid phone number'),
-  ZIP_CODE_US: (value) => (regexp.usZipCode.test(value) ? null : 'Invalid zip code'),
-  SSN: (value) => (value.length === 11 && regexp.ssn.test(value) ? null : 'Invalid SSN'),
-  BAN: (value) => (regexp.ban.test(value) ? null : 'Invalid BAN'),
-  TIMESTAMP: (value) => (!isNaN(Date.parse(value)) ? null : 'Invalid timestamp'),
-  DATE: (value) => (isValidDate(value) ? null : 'Invalid date'),
-  DATE_OF_BIRTH: (value) => (isValidDate(value) ? null : 'Invalid date'),
-  CC_NUMBER: (value) => (isValidCardNumber(value) ? null : 'Invalid card number'),
-  CC_EXPIRATION_STRING: (value) => (regexp.ccExpiration.test(value) ? null : 'Invalid card expiration'),
-  CC_CVV: (value) => (regexp.cvv.test(value) ? null : 'Invalid CVV'),
-  US_BANK_ROUTING: (value) => (regexp.usBankRouting.test(value) ? null : 'Invalid routing number'),
-  US_BANK_ACCOUNT_NUMBER: (value) => (value !== '' ? null : 'Invalid routing number'),
-  TENANT_ID: (value) => (!value.includes(',') ? null : 'Invalid tenant ID'),
-};
+export const validations = new Map<string, (value: string) => string | null>(
+  Object.entries({
+    STRING: noValidation,
+    LONGTEXT: noValidation,
+    NAME: noValidation,
+    GENDER: noValidation,
+    ADDRESS: noValidation,
+    CC_HOLDER_NAME: noValidation,
+    BLOB: noValidation,
+    // We rely on builtin browser's validation for emails, so we don't need to validate it here.
+    EMAIL: noValidation,
+    EMAIL_STRICT: noValidation,
+    OBJECT_ID: (value) => (regexp.objectId.test(value) ? null : 'Invalid Object ID'),
+    URL: (value) => (isValidURL(value) ? null : 'Invalid URL'),
+    PHONE_NUMBER: (value) => (isValidPhoneNumber(value) ? null : 'Invalid phone number'),
+    ZIP_CODE_US: (value) => (regexp.usZipCode.test(value) ? null : 'Invalid zip code'),
+    SSN: (value) => (value.length === 11 && regexp.ssn.test(value) ? null : 'Invalid SSN'),
+    BAN: (value) => (regexp.ban.test(value) ? null : 'Invalid BAN'),
+    TIMESTAMP: (value) => (!isNaN(Date.parse(value)) ? null : 'Invalid timestamp'),
+    DATE: (value) => (isValidDate(value) ? null : 'Invalid date'),
+    DATE_OF_BIRTH: (value) => (isValidDate(value) ? null : 'Invalid date'),
+    CC_NUMBER: (value) => (isValidCardNumber(value) ? null : 'Invalid card number'),
+    CC_EXPIRATION_STRING: (value) => (regexp.ccExpiration.test(value) ? null : 'Invalid card expiration'),
+    CC_CVV: (value) => (regexp.cvv.test(value) ? null : 'Invalid CVV'),
+    US_BANK_ROUTING: (value) => (regexp.usBankRouting.test(value) ? null : 'Invalid routing number'),
+    US_BANK_ACCOUNT_NUMBER: (value) => (value !== '' ? null : 'Invalid routing number'),
+    TENANT_ID: (value) => (!value.includes(',') ? null : 'Invalid tenant ID'),
+  }),
+);
 
 export function noValidation() {
   return null;
