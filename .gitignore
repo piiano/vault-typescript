@@ -6,6 +6,9 @@ dist
 openapi.yaml
 *.db
 
+# Playwright
+test-results
+
 # IDEs and editors
 .idea
 

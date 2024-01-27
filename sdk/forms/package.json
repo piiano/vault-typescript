@@ -20,10 +20,16 @@
   "repository": "git://github.com/piiano/vault-typescript.git",
   "homepage": "https://github.com/piiano/vault-typescript#readme",
   "scripts": {
-    "build": "vite build",
+    "build": "rm -rf dist && yarn build:lib && yarn build:iframe",
+    "build:lib": "BUILD_TARGET=lib vite build --mode prod",
+    "build:iframe": "BUILD_TARGET=iframe vite build --mode prod",
     "dev": "vite --mode dev",
-    "test": "yarn playwright install && playwright test",
-    "push": "aws s3 sync dist/ s3://vault-saas-prod-cdn/"
+    "test": "yarn test:unit && yarn test:e2e",
+    "test:unit": "vitest --dir src --run",
+    "test:e2e": "yarn playwright install && playwright test",
+    "push": "aws s3 sync dist/ s3://vault-saas-pci-cdn/ && aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
+    "format": "prettier . --write",
+    "lint": "eslint --ext .ts src --max-warnings 0"
   },
   "dependencies": {
     "@piiano/vault-client": "^1.0.23"
@@ -31,6 +37,15 @@
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.1.1",
     "@playwright/test": "^1.40.1",
-    "vite": "^5.0.7"
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "3.2.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.7",
+    "vite-plugin-singlefile": "^0.13.5",
+    "vitest": "^1.2.2"
   }
 }

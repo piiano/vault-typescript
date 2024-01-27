@@ -40,6 +40,7 @@ This will require your backend to be PCI compliant which is a lot of work and re
 the card details.
 
 > A partial list of the things you need to do to be PCI compliant if you were to store the card details on your own:
+>
 > - Payment details are encrypted at rest.
 > - Payment details are encrypted in transit.
 > - Payment details are not stored in logs.
@@ -63,13 +64,13 @@ Let's take a look at the form:
 <form action="/cards" method="post">
   <h1>Add payment details</h1>
   <label for="card_number">Card Number</label>
-  <input type="text" id="card_number" name="card_number"/>
+  <input type="text" id="card_number" name="card_number" />
   <label for="card_holder">Card Holder</label>
-  <input type="text" id="card_holder" name="card_holder"/>
+  <input type="text" id="card_holder" name="card_holder" />
   <label for="card_expiry">Card Expiry</label>
-  <input type="text" id="card_expiry" name="card_expiry"/>
+  <input type="text" id="card_expiry" name="card_expiry" />
   <label for="card_cvv">Card CVV</label>
-  <input type="text" id="card_cvv" name="card_cvv"/>
+  <input type="text" id="card_cvv" name="card_cvv" />
   <button type="submit">Add card</button>
 </form>
 ```
@@ -79,27 +80,30 @@ The form is pretty standard, but we need to add a few things to make it work wit
 First, we need to include the Piiano Forms SDK in the head of the page:
 
 ```html
-<script src="https://cdn.piiano.com/pvault-forms-v1-0-22.js"></script>
+<script src="https://cdn.piiano.com/pvault-forms-lib-v1-0-22.js"></script>
 ```
 
 Next, add a `data-piiano-proxy-options` attribute to the form and set it to a JSON configuration object:
 
 ```html
-<form action="/cards" method="post"
-      data-piiano-proxy-options='{
+<form
+  action="/cards"
+  method="post"
+  data-piiano-proxy-options='{
         "collection":"credit_cards",
         "hijack":true,
         "vaultURL":"https://xxxxxxxxxx.us-east-2.awsapprunner.com"
-      }'>
+      }'
+>
   <h1>Add payment details</h1>
   <label for="card_number">Card Number</label>
-  <input type="text" id="card_number" name="card_number"/>
+  <input type="text" id="card_number" name="card_number" />
   <label for="card_holder">Card Holder</label>
-  <input type="text" id="card_holder" name="card_holder"/>
+  <input type="text" id="card_holder" name="card_holder" />
   <label for="card_expiry">Card Expiry</label>
-  <input type="text" id="card_expiry" name="card_expiry"/>
+  <input type="text" id="card_expiry" name="card_expiry" />
   <label for="card_cvv">Card CVV</label>
-  <input type="text" id="card_cvv" name="card_cvv"/>
+  <input type="text" id="card_cvv" name="card_cvv" />
   <button type="submit">Add card</button>
 </form>
 ```
