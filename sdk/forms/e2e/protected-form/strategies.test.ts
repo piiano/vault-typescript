@@ -10,10 +10,6 @@ test.describe.configure({
   timeout: 600000,
 });
 test.describe('strategies', () => {
-  let vault: Vault;
-  test.beforeAll(async () => (vault = await initDevelopmentVault()));
-  test.afterAll(() => vault.stop());
-
   const strategies: {
     strategy: Strategy<any>;
     resultAssertion: (result: any) => void;
@@ -69,12 +65,12 @@ test.describe('strategies', () => {
   for (const { strategy, resultAssertion } of strategies) {
     test.describe(`strategy ${strategy}`, () => {
       test('internal submit button', async ({ page }) => {
-        const { vaultPort, frame, form } = await prepareProtectedFormTest(vault, page, {
+        const { form } = await prepareProtectedFormTest(page, {
           strategy,
         });
 
         const log = waitForConsole(page, { message: /^test onSubmit hook: / });
-        const responsePromise = page.waitForResponse(`http://localhost:${vaultPort}/api/**`);
+        const responsePromise = page.waitForResponse(`http://localhost:${process.env.VAULT_PORT}/api/**`);
 
         await form.submitButton.click();
 
@@ -90,13 +86,13 @@ test.describe('strategies', () => {
       });
 
       test('externally controlled submit', async ({ page }) => {
-        const { vaultPort, frame, protectedFormHandle } = await prepareProtectedFormTest(vault, page, {
+        const { protectedFormHandle } = await prepareProtectedFormTest(page, {
           strategy,
           submitButton: undefined,
         });
 
         const log = waitForConsole(page, { message: /^test onSubmit hook: / });
-        const responsePromise = page.waitForResponse(`http://localhost:${vaultPort}/api/**`);
+        const responsePromise = page.waitForResponse(`http://localhost:${process.env.VAULT_PORT}/api/**`);
 
         const promiseResult = await protectedFormHandle.evaluate((form: Form<'fields'>) => form.submit());
         resultAssertion(promiseResult);

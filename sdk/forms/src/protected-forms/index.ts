@@ -1,8 +1,9 @@
-import { ProtectedFormOptions, IframeOptions, ResultType, Result, Hooks } from '../options';
+import { Hooks, IframeOptions, ProtectedFormOptions, Result, ResultType } from '../options';
 import { sendSizeEvents } from './common/size';
 import { getElement } from '../element-selector';
 import { newSenderToTarget, Sender } from './common/events';
 import { Logger, newLogger } from './common/logger';
+import { InitOptionsValidator } from './common/models';
 
 export type Form<T extends ResultType> = {
   submit: () => Promise<Result<T>>;
@@ -12,6 +13,10 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
   containerOrSelector: string | HTMLDivElement,
   { hooks, ...options }: ProtectedFormOptions<T>,
 ): Form<T> {
+  if (!InitOptionsValidator.parse(options)) {
+    throw new Error('Invalid options provided');
+  }
+
   const container = getElement<HTMLDivElement>(containerOrSelector, 'div');
   const iframe = document.createElement('iframe');
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

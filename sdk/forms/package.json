@@ -24,7 +24,9 @@
     "build:lib": "BUILD_TARGET=lib vite build --mode prod",
     "build:iframe": "BUILD_TARGET=iframe vite build --mode prod",
     "dev": "vite --mode dev",
-    "test": "yarn playwright install && playwright test --reporter github",
+    "test": "yarn test:unit && yarn test:e2e",
+    "test:unit": "vitest --dir src --run",
+    "test:e2e": "yarn playwright install && playwright test",
     "push": "aws s3 sync dist/ s3://vault-saas-pci-cdn/ && aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
     "format": "prettier . --write",
     "lint": "eslint --ext .ts src --max-warnings 0"
@@ -43,6 +45,7 @@
     "prettier": "3.2.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.7",
-    "vite-plugin-singlefile": "^0.13.5"
+    "vite-plugin-singlefile": "^0.13.5",
+    "vitest": "^1.2.2"
   }
 }

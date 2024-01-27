@@ -1,9 +1,11 @@
-import { IframeOptions, ResultType, Style } from '../../../options';
+import { IframeOptions, ResultType } from '../../../options';
 import { sendSizeEvents } from '../../common/size';
 import { VaultClient } from '@piiano/vault-client';
 import { Form } from './form';
 import { Sender } from '../../common/events';
 import { Logger } from '../../common/logger';
+import { StyleValidator } from '../../common/models';
+import { Infer } from '../../common/schema';
 
 export function renderForm(
   log: Logger,
@@ -18,7 +20,7 @@ export function renderForm(
   return form;
 }
 
-function applyStyle({ theme, css, variables }: Style = {}) {
+function applyStyle({ theme, css, variables }: Infer<typeof StyleValidator> = {}) {
   if (css) {
     const style = document.createElement('style');
     style.innerText = css;

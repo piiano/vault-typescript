@@ -1,14 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { waitForConsole } from '../helpers';
 import { prepareProtectedFormTest } from './setup';
-import { Vault } from '@piiano/testcontainers-vault';
 import { Form } from '../../src/protected-forms';
-import { Result, ResultType, Strategy } from '../../src/options';
-import { initDevelopmentVault } from '../../vite/init-dev-vault';
-
-let vault: Vault;
-test.beforeAll(async () => (vault = await initDevelopmentVault()));
-test.afterAll(() => vault.stop());
 
 const validations: {
   field: string;
@@ -40,7 +33,7 @@ const validations: {
 for (const { field, validValue, invalidValue } of validations) {
   test.describe(`input ${field}`, () => {
     test(`test validations for input ${field}`, async ({ page }) => {
-      const { form, protectedFormHandle } = await prepareProtectedFormTest(vault, page, {
+      const { form, protectedFormHandle } = await prepareProtectedFormTest(page, {
         strategy: 'store-object',
         submitButton: undefined,
       });
@@ -61,8 +54,8 @@ for (const { field, validValue, invalidValue } of validations) {
       const log = waitForConsole(page, { message: /^test onError hook: / });
       const error = await protectedFormHandle.evaluate((form: Form<'fields'>) => form.submit().catch((e) => e.message));
 
-      expect(error).toEqual('validation error');
-      expect(await log).toMatch(/^test onError hook: Error: validation error/);
+      expect(error).toEqual('Form validation failed');
+      expect(await log).toMatch(/^test onError hook: Error: Form validation failed/);
 
       // After submitting the form, the validation should be shown.
       await expect(validationMessage).toBeVisible();

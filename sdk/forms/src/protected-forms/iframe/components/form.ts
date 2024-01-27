@@ -1,4 +1,4 @@
-import { Field as FieldProps } from '../../../options';
+import { FieldValidator as FieldProps } from '../../common/models';
 import { Field } from './field';
 import { SubmitButton } from './submit-button';
 import { useRef } from '../component';
@@ -6,11 +6,12 @@ import { applyStrategy, SubmitRequest } from '../../../apply-strategy';
 import { ApiError } from '@piiano/vault-client';
 import { Sender } from '../../common/events';
 import { Logger } from '../../common/logger';
+import { Infer } from '../../common/schema';
 
 type FormProps = SubmitRequest & {
   log: Logger;
   sendToParent: Sender;
-  fields: FieldProps[];
+  fields: Infer<typeof FieldProps>[];
   submitButton?: string;
 };
 

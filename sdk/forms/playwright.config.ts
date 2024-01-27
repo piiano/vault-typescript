@@ -1,1 +1,8 @@
-// this file must be present for playwright to work with typescript.
+import { defineConfig } from '@playwright/test';
+import { resolve } from 'path';
+
+export default defineConfig({
+  testDir: 'e2e',
+  reporter: 'github',
+  globalSetup: resolve('./e2e/global-setup.ts'),
+});

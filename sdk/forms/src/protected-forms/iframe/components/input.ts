@@ -1,9 +1,10 @@
-import { Field } from '../../../options';
 import { dataTypes } from '../data-types';
 import { validations } from '../validations';
 import { Ref } from '../component';
+import { FieldValidator } from '../../common/models';
+import { Infer } from '../../common/schema';
 
-export type InputProps = Omit<Field, 'label'> & {
+export type InputProps = Omit<Infer<typeof FieldValidator>, 'label'> & {
   touchedRef: Ref<boolean>;
   validationMessageId: string;
   setValidationMessage: (message: string) => void;
@@ -19,7 +20,7 @@ export function Input({
   placeholder,
   required,
   value,
-  data_type_name,
+  dataTypeName,
   validationMessageId,
   setValidationMessage,
   clearValidationMessage,
@@ -29,11 +30,11 @@ export function Input({
   input.id = name;
   input.name = name;
   input.value = value ?? '';
-  input.type = dataTypes[data_type_name] ?? 'text';
+  input.type = dataTypes[dataTypeName] ?? 'text';
   input.placeholder = placeholder ?? '';
   input.required = required ?? false;
   input.setAttribute('aria-describedby', validationMessageId);
-  const validator = validations[data_type_name];
+  const validator = validations[dataTypeName];
   const validate = () => {
     if (!touchedRef.current) return true;
     input.setCustomValidity(validator(input.value) || '');

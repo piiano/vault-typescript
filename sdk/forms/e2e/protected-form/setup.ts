@@ -3,13 +3,8 @@ import { expect, Page } from '@playwright/test';
 import { mockCDN, mockWebPage } from '../helpers';
 import { ProtectedFormOptions } from '../../src/options';
 
-export async function prepareProtectedFormTest(
-  vault: Vault,
-  page: Page,
-  options: Partial<ProtectedFormOptions<any>> = {},
-) {
-  const vaultPort = await vault.start(); // calling start() on a started container just returns the port.
-  const vaultURL = new URL(`http://localhost:${vaultPort}`);
+export async function prepareProtectedFormTest(page: Page, options: Partial<ProtectedFormOptions<any>> = {}) {
+  const vaultURL = new URL(`http://localhost:${process.env.VAULT_PORT}`);
   const webPageURL = new URL('https://testwebpage.com');
   await mockCDN(page, vaultURL, webPageURL);
   await mockWebPage(page, webPageURL, `<div id="form-container"></div>`);
@@ -37,9 +32,9 @@ export async function prepareProtectedFormTest(
     apiKey: 'pvaultauth',
     debug: true,
     collection: 'credit_cards',
-    fields: Object.entries(inputs).map(([name, { type: data_type_name, label }]) => ({
+    fields: Object.entries(inputs).map(([name, { type: dataTypeName, label }]) => ({
       name,
-      data_type_name,
+      dataTypeName,
       label,
       required: true,
     })),
@@ -85,7 +80,6 @@ export async function prepareProtectedFormTest(
   }
 
   return {
-    vaultPort,
     protectedFormHandle,
     frame,
     form: {

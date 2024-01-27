@@ -1,10 +1,11 @@
-import { Field as FieldOptions } from '../../../options';
+import { FieldValidator as FieldOptions } from '../../common/models';
 import { Input } from './input';
 import { Label } from './label';
 import { ValidationMessage } from './validation-message';
 import { Ref } from '../component';
+import { Infer } from '../../common/schema';
 
-type FieldProps = FieldOptions & {
+type FieldProps = Infer<typeof FieldOptions> & {
   touchedRef: Ref<boolean>;
 };
 
