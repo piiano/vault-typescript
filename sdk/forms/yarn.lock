@@ -211,12 +211,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@piiano/testcontainers-vault@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@piiano/testcontainers-vault/-/testcontainers-vault-1.1.1.tgz#e2fa544f90f795276eb95b4903504097d8cc1df8"
-  integrity sha512-08im2/2MT95ZE8u3S70t4/37xQAchrl/410MTb7q0DZnJioJH//S2Viggv+yeqHI6A8eXJtVWOm6gh32g0rzQQ==
+"@piiano/testcontainers-vault@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@piiano/testcontainers-vault/-/testcontainers-vault-1.1.2.tgz#37bb983fd98c47ac39539df17a8c5bf774ffef3e"
+  integrity sha512-po7MkdBOgCeZ7ayAL2vmUl6DjXyuVG6fT/13Uw2F3xYdT/4twXuVimsEwJAi1QbC9Ff9ysnVe4CuY3fLDcZ79g==
   dependencies:
-    testcontainers "^10.3.2"
+    testcontainers "^10.6.0"
 
 "@piiano/vault-client@^1.0.23":
   version "1.0.23"
@@ -1986,7 +1986,7 @@ tar-stream@^3.1.5:
     fast-fifo "^1.2.0"
     streamx "^2.15.0"
 
-testcontainers@^10.3.2:
+testcontainers@^10.6.0:
   version "10.6.0"
   resolved "https://registry.yarnpkg.com/testcontainers/-/testcontainers-10.6.0.tgz#205ad9148e68ff5c43a6209a30b12965acbe89d8"
   integrity sha512-FDJ3o3J8IMu1V7Uc6lNZ2MAD8+BV4HdpR/Vf5mHtgYHKdn6k1EbGFwtnvVNOxanJ99FCjf/EU8eA5ZQ4yjlsGA==

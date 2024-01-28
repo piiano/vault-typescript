@@ -35,7 +35,7 @@
     "@piiano/vault-client": "^1.0.23"
   },
   "devDependencies": {
-    "@piiano/testcontainers-vault": "^1.1.1",
+    "@piiano/testcontainers-vault": "^1.1.2",
     "@playwright/test": "^1.41.1",
     "@typescript-eslint/eslint-plugin": "^6.19.1",
     "@typescript-eslint/parser": "^6.19.1",
