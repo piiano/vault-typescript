@@ -38,13 +38,13 @@
     "@piiano/testcontainers-vault": "^1.1.1",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.10.4",
-    "chai": "^4.3.10",
+    "@types/node": "^20.11.8",
+    "chai": "^4.4.1",
     "mocha": "^10.2.0",
-    "reflect-metadata": "^0.1.14",
-    "sqlite3": "^5.1.6",
+    "reflect-metadata": "^0.2.1",
+    "sqlite3": "^5.1.7",
     "ts-node": "^10.9.2",
-    "typeorm": "^0.3.17",
+    "typeorm": "^0.3.20",
     "typescript": "^4.9.5"
   }
 }
