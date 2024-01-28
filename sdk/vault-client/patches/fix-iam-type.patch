@@ -1,16 +1,15 @@
 diff --git b/sdk/vault-client/src/generated/models/IAMConfig.ts a/sdk/vault-client/src/generated/models/IAMConfig.ts
-index cc0c580..c905d4b 100644
+index bfd0769..a4aaa38 100644
 --- b/sdk/vault-client/src/generated/models/IAMConfig.ts
 +++ a/sdk/vault-client/src/generated/models/IAMConfig.ts
-@@ -3,15 +3,5 @@
+@@ -2,14 +2,5 @@
+ /* istanbul ignore file */
  /* tslint:disable */
  /* eslint-disable */
- 
 -import type { Idp } from './Idp';
 -import type { Policy } from './Policy';
 -import type { Role } from './Role';
 -import type { User } from './User';
--
 -export type IAMConfig = {
 -  policies?: Record<string, Policy>;
 -  roles?: Record<string, Role>;
