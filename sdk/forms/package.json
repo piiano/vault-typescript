@@ -32,7 +32,7 @@
     "lint": "eslint --ext .ts src --max-warnings 0"
   },
   "dependencies": {
-    "@piiano/vault-client": "^1.0.23"
+    "@piiano/vault-client": "^1.0.24"
   },
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.1.2",

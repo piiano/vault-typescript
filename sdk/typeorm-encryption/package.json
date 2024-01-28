@@ -29,7 +29,7 @@
     "push": "yarn publish --access=public"
   },
   "dependencies": {
-    "@piiano/vault-client": "^1.0.23"
+    "@piiano/vault-client": "^1.0.24"
   },
   "peerDependencies": {
     "typeorm": "^0.3.17"
