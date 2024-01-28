@@ -79,10 +79,15 @@
   dependencies:
     "@piiano/vault-client" "^1.0.16"
 
-"@piiano/vault-client@^1.0.16", "@piiano/vault-client@^1.0.23":
+"@piiano/vault-client@^1.0.16":
   version "1.0.23"
   resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.23.tgz#d5cb3c885a43a85f50a99a50255ff7a7c5f3327e"
   integrity sha512-BpzryHmrhW/rkhjJSVSElXLjMSm9mPGHhfJO/0PojcpcCjOYticogRrRlhzMk7t8suLHxqbcJpRmomQCq5DRHA==
+
+"@piiano/vault-client@^1.0.24":
+  version "1.0.24"
+  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.24.tgz#3225e41127b27cf8e7b08fb5bf99aae55db0bae0"
+  integrity sha512-FFPIA7ItFuUg4NiaFuIz1r4FnDfmGSTtJvzv6wEwlSgKIJvubac/krVCma2yR5AuILO+3/PPrEimbj05dslFUQ==
 
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
