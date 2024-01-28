@@ -1,5 +1,5 @@
 diff --git b/sdk/vault-client/src/generated/VaultClient.ts a/sdk/vault-client/src/generated/VaultClient.ts
-index b0c4bb7..0c49af3 100644
+index 15fe546..1e1c504 100644
 --- b/sdk/vault-client/src/generated/VaultClient.ts
 +++ a/sdk/vault-client/src/generated/VaultClient.ts
 @@ -3,7 +3,7 @@
@@ -9,21 +9,20 @@ index b0c4bb7..0c49af3 100644
 -import type { OpenAPIConfig } from './core/OpenAPI';
 +import {VaultClientOptions} from "../options";
  import { FetchHttpRequest } from './core/FetchHttpRequest';
- 
  import { ActionsClient } from './services/ActionsClient';
-@@ -18,8 +18,6 @@ import { ObjectsClient } from './services/ObjectsClient';
+ import { BundlesClient } from './services/BundlesClient';
+@@ -16,7 +16,6 @@ import { IamClient } from './services/IamClient';
+ import { ObjectsClient } from './services/ObjectsClient';
  import { SystemClient } from './services/SystemClient';
  import { TokensClient } from './services/TokensClient';
- 
 -type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
--
  export class VaultClient {
- 
    public readonly actions: ActionsClient;
-@@ -36,17 +34,13 @@ export class VaultClient {
- 
+   public readonly bundles: BundlesClient;
+@@ -30,17 +29,13 @@ export class VaultClient {
+   public readonly system: SystemClient;
+   public readonly tokens: TokensClient;
    public readonly request: BaseHttpRequest;
- 
 -  constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = FetchHttpRequest) {
 -    this.request = new HttpRequest({
 -      BASE: config?.BASE ?? 'http://localhost:8123',
@@ -43,5 +42,5 @@ index b0c4bb7..0c49af3 100644
 +      CREDENTIALS: 'include',
 +      TOKEN: config?.apiKey ?? 'pvaultauth',
      });
- 
      this.actions = new ActionsClient(this.request);
+     this.bundles = new BundlesClient(this.request);
