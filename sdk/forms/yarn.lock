@@ -219,9 +219,9 @@
     testcontainers "^10.6.0"
 
 "@piiano/vault-client@^1.0.24":
-  version "1.0.24"
-  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.24.tgz#3225e41127b27cf8e7b08fb5bf99aae55db0bae0"
-  integrity sha512-FFPIA7ItFuUg4NiaFuIz1r4FnDfmGSTtJvzv6wEwlSgKIJvubac/krVCma2yR5AuILO+3/PPrEimbj05dslFUQ==
+  version "1.0.25"
+  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.25.tgz#926436f328e0898d1f77fc998313bea7d6ac2cb4"
+  integrity sha512-oI9o6nic6ZOZfgk/eZU0SLk/h6p+ZpAPTMyN+dQbIzACgvrjSHAunVU1tH8fkwnVocxTcn5vWnAloSsXWzIhAw==
 
 "@pkgr/core@^0.1.0":
   version "0.1.1"
