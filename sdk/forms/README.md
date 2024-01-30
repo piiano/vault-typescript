@@ -14,7 +14,7 @@ Make your forms compliant with PCI or any other privacy regulation by tokenizing
 your backend.
 
 > [!IMPORTANT]
-> At the time of writing (December 2023) Piiano is in the process of seeking PCI DSS Level 1 certification.  
+> At the time of writing (January 2024) Piiano is in the process of seeking PCI DSS Level 1 certification.  
 > [Talk to us](https://www.piiano.com/contact-us) about obtaining access to a PCI compliant SaaS environment.
 
 ## When to use Piiano Forms
@@ -80,7 +80,7 @@ The form is pretty standard, but we need to add a few things to make it work wit
 First, we need to include the Piiano Forms SDK in the head of the page:
 
 ```html
-<script src="https://cdn.piiano.com/pvault-forms-lib-v1-0-22.js"></script>
+<script src="https://cdn.piiano.com/pvault-forms-lib-v1.0.24.js"></script>
 ```
 
 Next, add a `data-piiano-proxy-options` attribute to the form and set it to a JSON configuration object:
