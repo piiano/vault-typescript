@@ -1,4 +1,4 @@
-import { array, boolean, Infer, literal, number, object, oneOf, record, string } from './schema';
+import { array, boolean, Infer, literal, number, object, oneOf, optional, or, record, string } from './schema';
 
 export const StrategyValidator = string().enum(
   /**
@@ -127,6 +127,12 @@ export const InitOptionsValidator = object({
    * The reason for submitting the form. This will be included to the audit log.
    */
   reason: ReasonValidator.optional(),
+  /**
+   * The time in seconds for the token/object/ciphertext to expire.
+   * If not provided, the default expiration time of the Vault will be used.
+   * Set to -1 for no expiration.
+   */
+  expiration: number().optional(),
   /**
    * The fields to render in the form.
    */
