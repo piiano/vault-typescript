@@ -26,13 +26,21 @@ export async function applyStrategy<T extends ResultType = 'fields'>(
 
 async function storeObject(
   object: Record<string, FormDataEntryValue>,
-  { client, collection, tenantId, globalVaultIdentifiers = true, reason = 'AppFunctionality' }: SubmitRequest<'object'>,
+  {
+    client,
+    collection,
+    tenantId,
+    globalVaultIdentifiers = true,
+    reason = 'AppFunctionality',
+    expiration,
+  }: SubmitRequest<'object'>,
 ) {
   const { id } = await client.objects.addObject({
     reason,
     collection,
     requestBody: object,
     xTenantId: tenantId ? [tenantId] : undefined,
+    expirationSecs: asExpirationSecs(expiration),
   });
 
   return result(collection, 'read_object', id, globalVaultIdentifiers);
@@ -40,7 +48,14 @@ async function storeObject(
 
 async function tokenizeObject(
   object: Record<string, FormDataEntryValue>,
-  { client, collection, tenantId, globalVaultIdentifiers = true, reason = 'AppFunctionality' }: SubmitRequest<'object'>,
+  {
+    client,
+    collection,
+    tenantId,
+    globalVaultIdentifiers = true,
+    reason = 'AppFunctionality',
+    expiration,
+  }: SubmitRequest<'object'>,
 ) {
   const [{ token_id }] = await client.tokens.tokenize({
     reason,
@@ -52,6 +67,7 @@ async function tokenizeObject(
         props: Object.keys(object),
       },
     ],
+    expirationSecs: asExpirationSecs(expiration),
     xTenantId: tenantId ? [tenantId] : undefined,
   });
 
@@ -60,13 +76,21 @@ async function tokenizeObject(
 
 async function tokenizeFields(
   object: Record<string, FormDataEntryValue>,
-  { client, collection, tenantId, globalVaultIdentifiers = true, reason = 'AppFunctionality' }: SubmitRequest<'fields'>,
+  {
+    client,
+    collection,
+    tenantId,
+    globalVaultIdentifiers = true,
+    reason = 'AppFunctionality',
+    expiration,
+  }: SubmitRequest<'fields'>,
 ) {
   const fields = Object.entries(object);
   const tokens = await client.tokens.tokenize({
     reason,
     collection,
     xTenantId: tenantId ? [tenantId] : undefined,
+    expirationSecs: asExpirationSecs(expiration),
     requestBody: fields.map(([field, value]) => ({
       object: { fields: { [field]: value } },
       type: 'pci',
@@ -84,12 +108,20 @@ async function tokenizeFields(
 
 async function encryptFields(
   object: Record<string, FormDataEntryValue>,
-  { client, collection, tenantId, globalVaultIdentifiers = true, reason = 'AppFunctionality' }: SubmitRequest<'fields'>,
+  {
+    client,
+    collection,
+    tenantId,
+    globalVaultIdentifiers = true,
+    reason = 'AppFunctionality',
+    expiration,
+  }: SubmitRequest<'fields'>,
 ) {
   const fields = Object.entries(object);
   const encryptedFields = await client.crypto.encrypt({
     reason,
     collection,
+    expirationSecs: asExpirationSecs(expiration),
     requestBody: fields.map(([field, value]) => ({
       object: {
         fields: {
@@ -113,11 +145,19 @@ async function encryptFields(
 
 async function encryptObject(
   object: Record<string, FormDataEntryValue>,
-  { client, collection, tenantId, globalVaultIdentifiers, reason = 'AppFunctionality' }: SubmitRequest<'object'>,
+  {
+    client,
+    collection,
+    tenantId,
+    globalVaultIdentifiers,
+    reason = 'AppFunctionality',
+    expiration,
+  }: SubmitRequest<'object'>,
 ) {
   const [{ ciphertext }] = await client.crypto.encrypt({
     reason,
     collection,
+    expirationSecs: asExpirationSecs(expiration),
     requestBody: [
       {
         object: {
@@ -153,4 +193,8 @@ function result(
 
 function asGlobalVaultIdentifiers(collection: string, operation: Operation, id: string, property?: string) {
   return `pvlt:${operation}:${collection}:${property ?? ''}:${id}:`;
+}
+
+function asExpirationSecs(expiration?: number) {
+  return expiration === undefined ? undefined : expiration < 0 ? '' : String(expiration);
 }

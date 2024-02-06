@@ -10,6 +10,7 @@
         vaultURL: `http://localhost:${import.meta.env.VITE_VAULT_PORT}`,
         apiKey: 'pvaultauth',
         collection: 'credit_cards',
+        expiration: 15 * 60, // 15 minutes
         fields: [
           {
             name: 'card_holder',
