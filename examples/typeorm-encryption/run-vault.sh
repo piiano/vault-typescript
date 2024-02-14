@@ -1,5 +1,7 @@
 #!/bin/bash
 
+VAULT_TAG=1.10.2
+
 # check for license key of Vault
 if [ -z $PVAULT_SERVICE_LICENSE ] ; then
 	echo "Please first set environment variable: PVAULT_SERVICE_LICENSE"
@@ -33,11 +35,13 @@ docker run --rm --init -d \
   -e PVAULT_SERVICE_LICENSE=$PVAULT_SERVICE_LICENSE \
   -e PVAULT_SENTRY_ENABLE=false \
   -e PVAULT_LOG_DATADOG_ENABLE=none \
-  piiano/pvault-dev:1.3.0
+  piiano/pvault-dev:${VAULT_TAG}
+
+echo "Vault is running at http://localhost:8123"
 
 # define an alias for Vault CLI
 shopt -s expand_aliases
-alias pvault="docker run --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:1.3.0"
+alias pvault="docker run --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:${VAULT_TAG}"
 
 # check for Vault version to ensure it is up and running
 until pvault version > /dev/null 2>&1
@@ -55,10 +59,8 @@ user PERSONS (
   ssn SSN COMMENT 'Social security number',
 )"
 
-# Install dependencies
-npm ci
+# Build
+yarn build
 
 # Run the example
-npm start
-
-echo "Vault is running at http://localhost:8123"
+yarn start
