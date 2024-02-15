@@ -60,7 +60,7 @@ user PERSONS (
 )"
 
 # Build
-yarn build
+yarn --frozen-lockfile
 
 # Run the example
 yarn start
