@@ -1,0 +1,24 @@
+{
+  "name": "@piiano/vault-use-cases-examples",
+  "version": "1.0.0",
+  "description": "Sample code for @piiano/vault-client",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "David Erel <david@piiano.com>",
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "repository": "git://github.com/piiano/vault-typescript.git",
+  "homepage": "https://github.com/piiano/vault-typescript#readme",
+  "scripts": {
+    "tsc": "tsc",
+    "build": "yarn tsc -p tsconfig.build.json",
+    "test": "ts-node --project tsconfig.build.json src/start.ts"
+  },
+  "dependencies": {
+    "@piiano/vault-client": "^1.0.27",
+    "typescript": "^4.9.5"
+  }
+}
