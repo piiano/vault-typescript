@@ -6,6 +6,7 @@ async function main() {
     apiKey: "pvaultauth",
   });
 
+  // a collection is needed for validation and scoping purposes even though it doesn't store data
   await client.collections.addCollection({
     requestBody: {
       name: "users",
