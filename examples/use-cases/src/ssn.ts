@@ -29,6 +29,7 @@ async function main() {
   });
   console.log(token);
   // sample output: [ { token_id: '1aca18c7-aaa2-3c59-5418-7546433be09c' } ]
+  // to get back run: pvault token detokenize -c users --token-id 1aca18c7-aaa2-3c59-5418-7546433be09c
 }
 
 main();

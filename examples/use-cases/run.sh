@@ -26,9 +26,12 @@ if [ $? != 0 ] ; then
 fi
 
 # remove existing vault container
+echo "Stopping old Vaults"
+docker stop pvault-dev > /dev/null 2>&1
 docker rm -f pvault-dev > /dev/null 2>&1
 
 # run vault container
+echo "starting a new Vault"
 docker run --rm --init -d \
   --name pvault-dev \
   -p 8123:8123 \
@@ -43,15 +46,25 @@ echo "Vault is running at http://localhost:8123"
 shopt -s expand_aliases
 alias pvault="docker run --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:${VAULT_TAG}"
 
-# check for Vault version to ensure it is up and running
-until pvault version > /dev/null 2>&1
-do
-    echo "Waiting for the vault to start ..."
-    sleep 1
-done
-
 # Build
 npm ci
 
-# Run the example
-npm test
+# check for Vault version to ensure it is up and running
+until pvault version > /dev/null 2>&1
+do
+    echo "Waiting for the vault to complete initialization ..."
+    sleep 1
+done
+
+# Run the examples
+
+npm run test::ssn
+npm run cleanup
+
+npm run test::encrypt
+npm run cleanup
+
+npm run test::store
+npm run cleanup
+
+docker stop pvault-dev

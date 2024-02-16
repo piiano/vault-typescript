@@ -15,7 +15,10 @@
   "scripts": {
     "tsc": "tsc",
     "build": "yarn tsc -p tsconfig.build.json",
-    "test": "ts-node --project tsconfig.build.json src/start.ts"
+    "cleanup": "ts-node --project tsconfig.build.json src/cleanup.ts",
+    "test::ssn": "ts-node --project tsconfig.build.json src/ssn.ts",
+    "test::encrypt": "ts-node --project tsconfig.build.json src/encrypt.ts",
+    "test::store": "ts-node --project tsconfig.build.json src/store.ts"
   },
   "dependencies": {
     "@piiano/vault-client": "^1.0.27",
