@@ -1,10 +1,8 @@
 import { VaultClient } from "@piiano/vault-client";
 
 async function main() {
-  const client = new VaultClient({
-    vaultURL: "http://localhost:8123",
-    apiKey: "pvaultauth",
-  });
+  // by default VaultClient will connect to localhost with default credentials
+  const client = new VaultClient();
 
   await client.collections.addCollection({
     requestBody: {
@@ -18,7 +16,7 @@ async function main() {
     },
   });
 
-  var response = await client.objects.addObject({
+  const response = await client.objects.addObject({
     collection: "users",
     reason: "AppFunctionality",
     requestBody: {

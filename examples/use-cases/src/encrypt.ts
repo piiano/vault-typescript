@@ -1,10 +1,8 @@
 import { VaultClient } from "@piiano/vault-client";
 
 async function main() {
-  const client = new VaultClient({
-    vaultURL: "http://localhost:8123",
-    apiKey: "pvaultauth",
-  });
+  // by default VaultClient will connect to localhost with default credentials
+  const client = new VaultClient();
 
   // a collection is needed for validation and scoping purposes even though it doesn't store data
   await client.collections.addCollection({
@@ -19,12 +17,11 @@ async function main() {
     },
   });
 
-  var ciphertext = await client.crypto.encrypt({
+  const ciphertext = await client.crypto.encrypt({
     collection: "users",
     reason: "AppFunctionality",
     requestBody: [
       {
-        type: "deterministic",
         object: {
           fields: {
             name: "John Doe",
