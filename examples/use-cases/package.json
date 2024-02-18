@@ -5,6 +5,7 @@
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
   "author": "David Erel <david@piiano.com>",
   "files": [
     "dist"
@@ -15,13 +16,16 @@
   "scripts": {
     "tsc": "tsc",
     "build": "yarn tsc",
-    "cleanup": "ts-node src/cleanup.ts",
-    "test::ssn": "ts-node src/ssn.ts",
-    "test::encrypt": "ts-node src/encrypt.ts",
-    "test::store": "ts-node src/store.ts"
+    "cleanup": "ts-node --esm src/cleanup.ts",
+    "test::ssn": "ts-node --esm src/ssn.ts",
+    "test::encrypt": "ts-node --esm src/encrypt.ts",
+    "test::store": "ts-node --esm src/store.ts"
   },
   "dependencies": {
-    "@piiano/vault-client": "^1.0.27",
-    "typescript": "^4.9.5"
+    "@piiano/vault-client": "^1.0.27"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
   }
 }
