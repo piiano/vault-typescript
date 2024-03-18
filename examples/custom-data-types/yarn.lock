@@ -39,8 +39,10 @@
   dependencies:
     testcontainers "^10.6.0"
 
-"@piiano/vault-bundles@file:../../sdk/vault-bundles":
-  version "0.0.1"
+"@piiano/vault-bundles@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@piiano/vault-bundles/-/vault-bundles-0.1.0.tgz#1e2015442c56ed0dbe5f6726ff27917f9b5740ef"
+  integrity sha512-NKbcvGdcItVrOa8mLJKTlgFHldu4tO4wrr+61w23A3/g3XlrS1GgH8mniucOJwAKpk8fBRHGJuNCRBMLMjtL2w==
 
 "@piiano/vault-client@^1.0.30":
   version "1.0.30"
@@ -68,9 +70,9 @@
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
 
 "@types/chai@^4.3.11":
-  version "4.3.12"
-  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.12.tgz#b192fe1c553b54f45d20543adc2ab88455a07d5e"
-  integrity sha512-zNKDHG/1yxm8Il6uCCVsm+dRdEsJlFoDu73X17y09bId6UwoYww+vFBsAcRzl8knM1sab3Dp1VRikFQwDOtDDw==
+  version "4.3.13"
+  resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.3.13.tgz#1b152232b93959829842177cbdfc756ed27e9fd9"
+  integrity sha512-+LxQEbg4BDUf88utmhpUpTyYn1zHao443aGnXIAQak9ZMt9Rtsic0Oig0OS1xyIqdDXc5uMekoC6NaiUlkT/qA==
 
 "@types/docker-modem@*":
   version "3.0.6"
