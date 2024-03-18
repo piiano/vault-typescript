@@ -1,0 +1,27 @@
+{
+  "name": "@piiano/vault-custom-data-types-example",
+  "version": "0.0.1",
+  "description": "Example of using the Piiano Vault bundles and custom data types",
+  "author": "Ori Shalom <ori.shalom@piiano.com>",
+  "private": true,
+  "license": "MIT",
+  "repository": "git://github.com/piiano/vault-typescript.git",
+  "homepage": "https://github.com/piiano/vault-typescript#readme",
+  "scripts": {
+    "test": "TS_NODE_PROJECT=tsconfig.test.json mocha -c -r ts-node/register -r test/hooks.ts 'test/**/*.spec.ts'",
+    "build": "tsc -p tsconfig.build.json",
+    "push": "yarn publish --access=public"
+  },
+  "devDependencies": {
+    "@piiano/testcontainers-vault": "^1.1.2",
+    "@piiano/vault-client": "^1.0.29",
+    "@piiano/vault-bundles-types": "file:../../sdk/vault-bundles-types",
+    "typescript": "^5.4.2",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.8",
+    "chai": "^4.4.1",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.2"
+  }
+}

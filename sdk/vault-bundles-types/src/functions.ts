@@ -5,7 +5,7 @@ import {Validator} from "./validator";
 export type VaultFunction = (
   | {
   /**
-   * Specifies the type of the function, either validator, normalizer, or transformation.
+   * Specifies the type of the function, either validator, normalizer, or transformer.
    */
   type: 'validator',
   /**
@@ -15,9 +15,9 @@ export type VaultFunction = (
 }
   | {
   /**
-   * Specifies the type of the function, either validator, normalizer, or transformation.
+   * Specifies the type of the function, either validator, normalizer, or transformer.
    */
-  type: 'transformation',
+  type: 'transformer',
   /**
    * The function or a reference to the function (but not the name of the function, which would be a string). See Writing a handler for more information.
    */
@@ -25,7 +25,7 @@ export type VaultFunction = (
 }
   | {
   /**
-   * Specifies the type of the function, either validator, normalizer, or transformation.
+   * Specifies the type of the function, either validator, normalizer, or transformer.
    */
   type: 'normalizer',
   /**
