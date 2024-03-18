@@ -42,6 +42,12 @@ on:
         default: patch
         type: choice
         options: [none, patch, minor, major]
+      bump-bundles:
+        description: Bump `@piiano/bundles` version
+        required: false
+        default: patch
+        type: choice
+        options: [none, patch, minor, major]
 
 jobs:
   update-readme:
@@ -90,6 +96,7 @@ jobs:
     strategy:
       matrix:
         package:
+          - bundles
           - testcontainers-vault
           - vault-client
           - typeorm-encryption
