@@ -2,7 +2,7 @@ import {Transformation} from "./transformation";
 import {Normalizer} from "./normalizer";
 import {Validator} from "./validator";
 
-export type FunctionConfig = (
+export type VaultFunction = (
   | {
   /**
    * Specifies the type of the function, either validator, normalizer, or transformation.
