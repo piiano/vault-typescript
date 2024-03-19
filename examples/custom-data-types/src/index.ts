@@ -1,5 +1,10 @@
 import type {VaultFunction} from "@piiano/vault-bundles";
 
+/*
+ * Vaults prior to 1.10.4 had a stricter SSN validation.
+ * In this example we provided a new data type that has relaxed SSN validation that can work with earlier vaults.
+ */
+
 // Validators
 
 export const validate: VaultFunction = {
