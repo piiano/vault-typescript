@@ -6,7 +6,7 @@ CODEGEN_IMAGE := openapitools/openapi-generator-cli:v6.4.0
 CODEGEN_CONFIG_FILE := config.yaml
 
 $(GEN_FOLDER)/$(OPENAPI_YAML):
-	curl https://piiano.com/docs/$(subst .,-,$(VAULT_VERSION))/assets/openapi.yaml --output $@
+	curl https://docs.piiano.com/$(subst .,-,$(VAULT_VERSION))/assets/openapi.yaml --output $@
 
 ###### APP ######
 .PHONY: prepare-sdk

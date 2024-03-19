@@ -20,7 +20,7 @@ This package extends the `typeorm` package to provide support for encrypting and
 ## Requirements
 
 - `typeorm` version 0.3.12 or higher.
-- Vault server version 1.3.1 or higher. If this is your first time using Vault, you can [get started here](https://piiano.com/docs/guides/get-started).
+- Vault server version 1.3.1 or higher. If this is your first time using Vault, you can [get started here](https://docs.piiano.com/guides/get-started).
 
 ## Installation
 
@@ -131,7 +131,7 @@ const customers = await Customer.find({
 
 ### Using Vault transformations
 
-The Piiano Vault server supports the use of [transformations](https://piiano.com/docs/data-security/transformations/).
+The Piiano Vault server supports the use of [transformations](https://docs.piiano.com/data-security/transformations/).
 
 Transformations provide a mechanism to present sensitive data in a way that reduces data exposure.
 
@@ -196,4 +196,4 @@ The main benefits are:
 - Easy masking and tokenization of data.
 - Out of the box privacy compliance functionality.
 
-More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://piiano.com/docs/).
+More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://docs.piiano.com/).

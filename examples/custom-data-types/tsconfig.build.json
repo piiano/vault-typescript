@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "noEmitHelpers": false,
+    "importHelpers": false,
+    "esModuleInterop": false,
+    "module": "CommonJS",
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false
+  },
+  "files": ["src/index.ts"],
+  "exclude": ["node_modules", "dist"]
+}

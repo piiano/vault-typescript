@@ -5,7 +5,7 @@ VAULT_TAG=1.10.2
 # check for license key of Vault
 if [ -z $PVAULT_SERVICE_LICENSE ] ; then
 	echo "Please first set environment variable: PVAULT_SERVICE_LICENSE"
-	echo "Obtain a free license here: https://piiano.com/docs/guides/get-started#install-piiano-vault"
+	echo "Obtain a free license here: https://docs.piiano.com/guides/get-started#install-piiano-vault"
 	exit 0
 fi
 

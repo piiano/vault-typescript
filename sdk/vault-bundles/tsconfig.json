@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "module": "ES2022",
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false
+  },
+  "files": ["src/index.ts"],
+  "exclude": ["node_modules", "dist"]
+}
