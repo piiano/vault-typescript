@@ -12,18 +12,18 @@ This is a TypeScript package that provides type definitions for [Piiano Vault Bu
 To install the package using `npm`:
 
 ```bash
-npm install -D @piiano/vault-bundles-types
+npm install -D @piiano/vault-bundles
 ```
 
 To install the package using `yarn`:
 
 ```bash
-yarn add -D @piiano/vault-bundles-types
+yarn add -D @piiano/vault-bundles
 ```
 
 ## Usage
 
-Check this [usage example](../../examples/custom-data-types) showing how to define a custom data type using a bundle typed with `@piiano/vault-bundles-types` package.
+Check this [usage example](../../examples/custom-data-types) showing how to define a custom data type using a bundle typed with `@piiano/vault-bundles` package.
 
 ## License
 

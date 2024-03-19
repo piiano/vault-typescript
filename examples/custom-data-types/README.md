@@ -1,6 +1,6 @@
 # @piiano/custom-data-types
 
-This example demonstrates how to define custom data types using a bundle defined with the `@piiano/vault-bundles-types` package.
+This example demonstrates how to define custom data types using a bundle defined with the `@piiano/vault-bundles` package.
 
 ## Running the example
 

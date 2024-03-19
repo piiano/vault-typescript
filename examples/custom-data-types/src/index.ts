@@ -1,4 +1,4 @@
-import type {VaultFunction} from "@piiano/vault-bundles-types";
+import type {VaultFunction} from "@piiano/vault-bundles";
 
 // Validators
 

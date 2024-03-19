@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.1.2",
-    "@piiano/vault-client": "^1.0.29",
-    "@piiano/vault-bundles-types": "file:../../sdk/vault-bundles-types",
+    "@piiano/vault-client": "^1.0.30",
+    "@piiano/vault-bundles": "^0.0.1",
     "typescript": "^5.4.2",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",

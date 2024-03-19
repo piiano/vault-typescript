@@ -42,8 +42,8 @@ on:
         default: patch
         type: choice
         options: [none, patch, minor, major]
-      bump-vault-bundles-types:
-        description: Bump `@piiano/vault-bundles-types` version
+      bump-vault-bundles:
+        description: Bump `@piiano/vault-bundles` version
         required: false
         default: patch
         type: choice
@@ -96,7 +96,7 @@ jobs:
     strategy:
       matrix:
         package:
-          - vault-bundles-types
+          - vault-bundles
           - testcontainers-vault
           - vault-client
           - typeorm-encryption

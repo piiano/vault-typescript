@@ -1,5 +1,5 @@
 {
-  "name": "@piiano/vault-bundles-types",
+  "name": "@piiano/vault-bundles",
   "version": "0.0.1",
   "description": "Piiano Vault type definitions for bundles",
   "types": "dist/index.d.ts",
