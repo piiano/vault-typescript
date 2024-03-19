@@ -5,7 +5,7 @@ Testcontainers-vault helps you run a Piiano Vault container for testing purposes
 ## Requirements
 
 - Docker - This module uses [testcontainers](https://www.npmjs.com/package/testcontainers) under the hood, which requires Docker to be installed and running.
-- A valid Vault license - follow the [Vault getting started](https://piiano.com/docs/guides/get-started/) to obtain a free 30 days license (no credit card required)
+- A valid Vault license - follow the [Vault getting started](https://docs.piiano.com/guides/get-started) to obtain a free 30 days license (no credit card required)
 
 ## Installation
 
@@ -77,4 +77,4 @@ export type VaultOptions = Partial<{
 ## More information
 
 - [Piiano Vault](https://piiano.com)
-- [Piiano Vault Documentation](https://piiano.com/docs)
+- [Piiano Vault Documentation](https://docs.piiano.com)

@@ -1,6 +1,6 @@
 # @piiano/vault-client
 
-This is a TypeScript client to connect to a Piiano Vault. It provides an easy-to-use API for accessing the various resources exposed by the Vault [REST API](https://piiano.com/docs/api).
+This is a TypeScript client to connect to a Piiano Vault. It provides an easy-to-use API for accessing the various resources exposed by the Vault [REST API](https://docs.piiano.com/api).
 
 > **Note:**
 > 

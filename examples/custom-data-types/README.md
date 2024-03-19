@@ -13,7 +13,7 @@ To run the example, please follow these steps:
    ```
 2. Set the `PVAULT_SERVICE_LICENSE` environment variable to a valid Piiano Vault license key.
 
-   You can obtain a free trial license key [here](https://piiano.com/docs/getting-started/).
+   You can obtain a free trial license key [here](https://docs.piiano.com/guides/get-started/).
 3. Install the dependencies
    ```bash
     yarn
@@ -43,7 +43,7 @@ The main benefits are:
 - Easy masking and tokenization of data.
 - Out of the box privacy compliance functionality.
 
-More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://piiano.com/docs/).
+More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://docs.piiano.com/).
 
 ## Issues and Feedback
 
