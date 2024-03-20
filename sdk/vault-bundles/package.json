@@ -1,0 +1,32 @@
+{
+  "name": "@piiano/vault-bundles",
+  "version": "0.1.0",
+  "description": "Piiano Vault type definitions for bundles",
+  "types": "dist/index.d.ts",
+  "author": "Ori Shalom <ori.shalom@piiano.com>",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "Piiano",
+    "pvault",
+    "vault",
+    "pii",
+    "privacy",
+    "bundles",
+    "functions",
+    "custom data types",
+    "sdk"
+  ],
+  "license": "MIT",
+  "repository": "git://github.com/piiano/vault-typescript.git",
+  "homepage": "https://github.com/piiano/vault-typescript#readme",
+  "scripts": {
+    "test": "echo \"no tests for types only package\"",
+    "build": "tsc -p tsconfig.json",
+    "push": "yarn publish --access=public"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.2"
+  }
+}

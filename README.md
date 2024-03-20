@@ -36,4 +36,4 @@ The main benefits are:
 - Easy masking and tokenization of data.
 - Out of the box privacy compliance functionality.
 
-More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://piiano.com/docs/).
+More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://docs.piiano.com/).

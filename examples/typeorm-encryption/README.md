@@ -23,7 +23,7 @@ To run the example app, please follow these steps:
    ```
 2. Set the `PVAULT_SERVICE_LICENSE` environment variable to a valid Piiano Vault license key.
    
-   You can obtain a free trial license key [here](https://piiano.com/docs/getting-started/).
+   You can obtain a free trial license key [here](https://docs.piiano.com/guides/get-started).
 3. Run `run-vault.sh`.
 
    This will download and launch a local instance of the Piiano Vault dev server using Docker and will start the example app.
@@ -118,7 +118,7 @@ The package is configured to work with the Piiano Vault server to encrypt and de
 > 
 > This instance is not suitable for production use as it does not persist the encryption keys which means that the data will be lost when the server is restarted.
 > 
-> To read more about how to deploy Piiano Vault in production, please refer to the [Piiano Vault documentation](https://piiano.com/docs/).
+> To read more about how to deploy Piiano Vault in production, please refer to the [Piiano Vault documentation](https://docs.piiano.com/).
 
 ## About Piiano Vault
 
@@ -135,7 +135,7 @@ The main benefits are:
 - Easy masking and tokenization of data.
 - Out of the box privacy compliance functionality.
 
-More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://piiano.com/docs/).
+More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://docs.piiano.com/).
 
 ## Issues and Feedback
 
