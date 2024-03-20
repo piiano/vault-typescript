@@ -15,7 +15,7 @@ your backend.
 
 ## When to use Piiano Forms
 
-If you want to make sure that your backend never sees sensitive data, but still can use it with relevant services,
+If you want to make sure that your backend never sees sensitive data, but can still use it with relevant services,
 Piiano Forms is for you.
 
 - Save credit card details in Vault, and use Vault to pass them to payment gateways when needed without making your
