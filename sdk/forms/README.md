@@ -13,13 +13,9 @@
 Make your forms compliant with PCI or any other privacy regulation by tokenizing sensitive data before submitting it to
 your backend.
 
-> [!IMPORTANT]
-> At the time of writing (January 2024) Piiano is in the process of seeking PCI DSS Level 1 certification.  
-> [Talk to us](https://www.piiano.com/contact-us) about obtaining access to a PCI compliant SaaS environment.
-
 ## When to use Piiano Forms
 
-If you want to make sure that your backend never sees sensitive data, but still can use it with relevant services,
+If you want to make sure that your backend never sees sensitive data, but can still use it with relevant services,
 Piiano Forms is for you.
 
 - Save credit card details in Vault, and use Vault to pass them to payment gateways when needed without making your
