@@ -90,7 +90,7 @@ jobs:
         if: inputs.bump != 'none' && github.ref_name == 'main'
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::202832695688:role/vault-saas-pci-piiano-vault-typescript-github-actions
+          role-to-assume: arn:aws:iam::202832695688:role/vault-saas-prod-piiano-vault-typescript-github-actions
           aws-region: us-east-2
 
       - name: Configure NPM credentials
