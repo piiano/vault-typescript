@@ -27,7 +27,7 @@
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "vitest --dir src --run",
     "test:e2e": "yarn playwright install && playwright test",
-    "push": "aws s3 sync dist/ s3://vault-saas-pci-cdn/ && aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
+    "push": "aws s3 sync dist/ s3://vault-saas-prod-cdn/ && aws cloudfront create-invalidation --distribution-id E10ZFREQ3633MO --paths '/*'",
     "format": "prettier . --write",
     "lint": "eslint --ext .ts src --max-warnings 0"
   },
