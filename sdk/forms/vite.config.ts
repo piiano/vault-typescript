@@ -16,8 +16,11 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
   const [major, minor, patch] = version.split('.');
 
   const target = {
-    lib: {
+    module: {
       input: 'src/index.ts',
+    },
+    lib: {
+      input: 'src/lib.ts',
       output: {
         name: 'pvault-forms-lib.js',
         // allow the lib to be loaded by any of the following suffixes.
@@ -55,22 +58,29 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
       target: 'es2022',
       minify: true,
       sourcemap: false,
-      outDir: path.resolve(__dirname, 'dist'),
+      outDir: path.resolve(__dirname, process.env.BUILD_TARGET === 'module' ? 'dist/module' : 'dist'),
       cssCodeSplit: false,
       modulePreload: false,
       assetsInlineLimit: 100_000_000,
       emptyOutDir: false,
       rollupOptions: {
         input: target.input,
+        preserveEntrySignatures: 'exports-only',
         output: {
+          preserveModules: process.env.BUILD_TARGET === 'module',
+          inlineDynamicImports: process.env.BUILD_TARGET !== 'module',
+          preserveModulesRoot: 'src',
+          entryFileNames: `[name].js`,
           format: 'es',
           manualChunks: undefined,
           compact: true,
-          inlineDynamicImports: true,
         },
       },
     },
-    plugins: [optimizeVaultClientBundleSize(), singleInlinedHtml(), appendSuffixes(target.output)],
+    plugins:
+      process.env.BUILD_TARGET === 'module'
+        ? [optimizeVaultClientBundleSize()]
+        : [optimizeVaultClientBundleSize(), singleInlinedHtml(), appendSuffixes(target.output!)],
     server: {
       port: 3000,
     },

@@ -1,4 +1,4 @@
-import { Logger } from './logger';
+import type { Logger } from './logger';
 
 export type Sender = (event: string, payload?: unknown) => void;
 

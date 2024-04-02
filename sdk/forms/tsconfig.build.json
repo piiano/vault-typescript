@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist/module",
+    "target": "ES2022",
+    "module": "ES2022",
+    "verbatimModuleSyntax": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false
+  },
+  "files": ["src/index.ts"],
+  "exclude": ["node_modules", "dist"]
+}

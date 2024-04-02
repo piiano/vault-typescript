@@ -1,6 +1,6 @@
 import { VaultClient } from '@piiano/vault-client';
 import { applyStrategy } from '../apply-strategy';
-import { ControlFormOptions, Result, ResultType } from '../options';
+import type { ControlFormOptions, Result, ResultType } from '../options';
 import { getElement } from '../element-selector';
 
 const piianoControlledAttribute = 'data-piiano-controlled';

@@ -1,4 +1,4 @@
-import { array, boolean, Infer, literal, number, object, oneOf, optional, or, record, string } from './schema';
+import { array, boolean, type Infer, literal, number, object, oneOf, optional, or, record, string } from './schema';
 
 export const StrategyValidator = string().enum(
   /**

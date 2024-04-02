@@ -1,4 +1,4 @@
-import { Sender } from './events';
+import type { Sender } from './events';
 
 export function sendSizeEvents(sender: Sender, eventName: string, element: HTMLElement) {
   new ResizeObserver(() => {
