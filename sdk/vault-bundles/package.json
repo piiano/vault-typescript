@@ -1,6 +1,6 @@
 {
   "name": "@piiano/vault-bundles",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Piiano Vault type definitions for bundles",
   "types": "dist/index.d.ts",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
