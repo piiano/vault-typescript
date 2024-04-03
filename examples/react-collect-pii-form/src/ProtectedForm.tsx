@@ -11,10 +11,8 @@ function useProtectedForm<T extends ResultType = 'fields'>(options: ProtectedFor
 
     if (!form) {
       const form = createProtectedForm(containerRef.current, options);
-      console.log('init', options);
       setForm(form);
     } else {
-      console.log('update', options);
       form.update(options);
     }
   }, [options]);
