@@ -1,3 +1,17 @@
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  height: 100vh;
+  padding: 0 5rem;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
 section {
   display: flex;
   flex-direction: column;

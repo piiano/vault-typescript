@@ -1,8 +1,7 @@
-import React, { ForwardedRef, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import React, { ComponentProps, ForwardedRef, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import { createProtectedForm, type Form, type ProtectedFormOptions, type ResultType } from '@piiano/forms';
-import './App.css';
 
-function useProtectedForm<T extends ResultType = 'fields'>(options: ProtectedFormOptions<T>) {
+export function useProtectedForm<T extends ResultType = 'fields'>(options: ProtectedFormOptions<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState<Form<T>>();
 

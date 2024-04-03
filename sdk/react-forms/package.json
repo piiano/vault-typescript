@@ -1,7 +1,7 @@
 {
-  "name": "@piiano/react-collect-pii-form",
+  "name": "@piiano/react-forms",
   "version": "1.0.31",
-  "description": "Piiano Forms SDK",
+  "description": "Piiano Forms SDK for React",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
   "private": true,
   "keywords": [
@@ -13,6 +13,7 @@
     "form",
     "privacy",
     "client",
+    "react",
     "sdk"
   ],
   "license": "MIT",
@@ -24,11 +25,15 @@
     "lint": "eslint --ext .ts src --max-warnings 0"
   },
   "dependencies": {
-    "@piiano/forms": "^1.0.33",
+    "@piiano/forms": "^1.0.33"
+  },
+  "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@piiano/testcontainers-vault": "^1.1.2",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.23",

@@ -1,8 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { ResultType } from '@piiano/forms';
+import { createRoot } from 'react-dom/client';
 import './App.css';
-import { ProtectedForm } from './ProtectedForm';
-import { Result } from '@piiano/forms/src';
+import { ProtectedForm, Result, ResultType } from '../';
 
 const fields = [
   { name: 'card_holder', dataTypeName: 'CC_HOLDER_NAME', label: 'Name', required: true, placeholder: 'John Doe' },
@@ -40,3 +39,5 @@ export function App() {
     </section>
   );
 }
+
+createRoot(document.getElementById('root')!).render(<App />);
