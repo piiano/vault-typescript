@@ -8,13 +8,15 @@ function useProtectedForm<T extends ResultType = 'fields'>(options: ProtectedFor
 
   useEffect(() => {
     if (!containerRef.current) return;
-    const form = createProtectedForm(containerRef.current, options);
-    setForm(form);
 
-    return () => {
-      form.destroy();
-      setForm(undefined);
-    };
+    if (!form) {
+      const form = createProtectedForm(containerRef.current, options);
+      console.log('init', options);
+      setForm(form);
+    } else {
+      console.log('update', options);
+      form.update(options);
+    }
   }, [options]);
 
   return { containerRef, form };
