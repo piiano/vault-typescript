@@ -164,6 +164,13 @@ export const IframeEventValidator = oneOf(
     payload: InitOptionsValidator,
   }),
   /**
+   * The update event is sent from the parent to the iframe to update the form.
+   */
+  object({
+    event: literal('update'),
+    payload: InitOptionsValidator,
+  }),
+  /**
    * The submit event is sent from the parent to trigger the form submission programmatically.
    */
   object({

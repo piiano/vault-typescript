@@ -8,6 +8,7 @@ import { InitOptionsValidator } from './common/models';
 export type Form<T extends ResultType> = {
   submit: () => Promise<Result<T>>;
   destroy: () => void;
+  update: (options: ProtectedFormOptions<T>) => void;
 };
 
 export function createProtectedForm<T extends ResultType = 'fields'>(
@@ -74,6 +75,13 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
     },
     destroy() {
       container.removeChild(iframe);
+    },
+    update({ hooks: newHooks, ...options }: ProtectedFormOptions<T>) {
+      if (!InitOptionsValidator.parse(options)) {
+        throw new Error('Invalid options provided');
+      }
+      hooks = newHooks;
+      sendToIframe('update', options);
     },
   };
 }
