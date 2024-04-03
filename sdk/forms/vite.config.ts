@@ -80,7 +80,7 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
     },
     plugins:
       process.env.BUILD_TARGET === 'module'
-        ? [optimizeVaultClientBundleSize()]
+        ? []
         : [optimizeVaultClientBundleSize(), singleInlinedHtml(), appendSuffixes(target.output!)],
     server: {
       port: 3000,

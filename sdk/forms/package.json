@@ -9,9 +9,6 @@
   "files": [
     "dist"
   ],
-  "bundledDependencies": [
-    "@piiano/vault-client"
-  ],
   "keywords": [
     "Piiano",
     "pvault",
