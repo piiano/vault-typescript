@@ -1,6 +1,6 @@
 {
   "name": "@piiano/forms",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "Piiano Forms SDK",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
   "type": "module",
@@ -36,7 +36,7 @@
     "test:unit": "vitest --dir src --run",
     "test:e2e": "yarn playwright install && playwright test",
     "push:module": "yarn publish --access=public",
-    "push:cdn": "aws s3 sync dist/ s3://vault-saas-prod-cdn/ && aws cloudfront create-invalidation --distribution-id E10ZFREQ3633MO --paths '/*'",
+    "push:cdn": "aws s3 sync dist/ s3://vault-saas-prod-cdn/ && aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
     "push": "yarn push:module && yarn push:cdn",
     "format": "prettier . --write",
     "lint": "eslint --ext .ts src --max-warnings 0"
