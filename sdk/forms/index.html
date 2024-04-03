@@ -5,8 +5,8 @@
     <title>Test Forms</title>
     <!-- Include Piiano Vault Client -->
     <script type="module">
-      import { pvault } from './src/lib.ts';
-      const form = pvault.createProtectedForm('#form-container', {
+      import { createProtectedForm } from './src/index.ts';
+      const form = createProtectedForm('#form-container', {
         vaultURL: `http://localhost:${import.meta.env.VITE_VAULT_PORT}`,
         apiKey: 'pvaultauth',
         collection: 'credit_cards',

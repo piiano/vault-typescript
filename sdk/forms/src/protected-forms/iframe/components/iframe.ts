@@ -2,10 +2,9 @@ import { IframeOptions, ResultType } from '../../../options';
 import { sendSizeEvents } from '../../common/size';
 import { VaultClient } from '@piiano/vault-client';
 import { Form } from './form';
-import { Sender } from '../../common/events';
-import { Logger } from '../../common/logger';
-import { StyleValidator } from '../../common/models';
-import { Infer } from '../../common/schema';
+import type { Sender } from '../../common/events';
+import type { Logger } from '../../common/logger';
+import type { Style } from '../../common/models';
 
 export function renderForm(
   log: Logger,
@@ -20,9 +19,34 @@ export function renderForm(
   return form;
 }
 
-function applyStyle({ theme, css, variables }: Infer<typeof StyleValidator> = {}) {
+export function updateForm(
+  log: Logger,
+  sendToParent: Sender,
+  oldForm: HTMLFormElement,
+  oldStyle: Style | undefined,
+  { vaultURL, apiKey, fields, submitButton, style, ...submitOptions }: IframeOptions<ResultType>,
+) {
+  const client = new VaultClient({ apiKey, vaultURL });
+  const newForm = Form({ log, sendToParent, fields, submitButton, ...submitOptions, client });
+  new FormData(oldForm).forEach((value, key) => {
+    if (key in newForm.elements) {
+      newForm[key].value = value;
+    }
+  });
+
+  document.body.removeChild(oldForm);
+  removeStyle(oldStyle);
+  applyStyle(style);
+  document.body.appendChild(newForm);
+
+  sendSizeEvents(sendToParent, 'content-size', newForm);
+  return newForm;
+}
+
+function applyStyle({ theme, css, variables }: Style = {}) {
   if (css) {
     const style = document.createElement('style');
+    style.id = 'iframe-style';
     style.innerText = css;
     document.body.prepend(style);
   }
@@ -32,6 +56,20 @@ function applyStyle({ theme, css, variables }: Infer<typeof StyleValidator> = {}
   if (variables) {
     Object.entries(variables).forEach(([key, value]) => {
       document.documentElement.style.setProperty(`--${key}`, value);
+    });
+  }
+}
+
+function removeStyle({ theme, css, variables }: Style = {}) {
+  if (css) {
+    document.getElementById('iframe-style')?.remove();
+  }
+  if (theme) {
+    document.body.classList.remove(theme);
+  }
+  if (variables) {
+    Object.entries(variables).forEach(([key, value]) => {
+      document.documentElement.style.removeProperty(`--${key}`);
     });
   }
 }

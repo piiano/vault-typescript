@@ -1,9 +1,10 @@
-import { renderForm } from './components/iframe';
-import { Logger, newLogger } from '../common/logger';
-import { newSenderToSource, Sender } from '../common/events';
-import { IframeEventValidator } from '../common/models';
+import { renderForm, updateForm } from './components/iframe';
+import { type Logger, newLogger } from '../common/logger';
+import { newSenderToSource, type Sender } from '../common/events';
+import { IframeEventValidator, type Style } from '../common/models';
 
 let form: HTMLFormElement | undefined;
+let style: Style | undefined;
 
 let sendToParent: Sender = () => {};
 let log: Logger = () => {};
@@ -40,8 +41,13 @@ window.onmessage = ({ source, data }) => {
       // sendToParent = newSenderToTarget(window.parent, log);
       if (form) return sendToParent('error', { type: 'initialization', message: 'Form already initialized' });
       form = renderForm(log, sendToParent, data.payload);
+      style = data.payload.style;
       sendToParent('ready');
       return;
+    case 'update':
+      if (!form) return sendToParent('error', { type: 'initialization', message: 'Form not initialized' });
+      form = updateForm(log, sendToParent, form, style, data.payload);
+      break;
     case 'submit':
       if (!form) return sendToParent('error', { type: 'initialization', message: 'Form not initialized' });
       form.requestSubmit();

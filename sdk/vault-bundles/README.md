@@ -1,4 +1,4 @@
-# @piiano/bundles
+# @piiano/vault-bundles
 
 This is a TypeScript package that provides type definitions for [Piiano Vault Bundles](https://docs.piiano.com/guides/reference/bundles).
 
