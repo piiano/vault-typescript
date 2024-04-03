@@ -1,0 +1,43 @@
+{
+  "name": "@piiano/react-collect-pii-form",
+  "version": "1.0.31",
+  "description": "Piiano Forms SDK",
+  "author": "Ori Shalom <ori.shalom@piiano.com>",
+  "private": true,
+  "keywords": [
+    "Piiano",
+    "pvault",
+    "vault",
+    "pci",
+    "pii",
+    "form",
+    "privacy",
+    "client",
+    "sdk"
+  ],
+  "license": "MIT",
+  "repository": "git://github.com/piiano/vault-typescript.git",
+  "homepage": "https://github.com/piiano/vault-typescript#readme",
+  "scripts": {
+    "dev": "vite --mode dev",
+    "format": "prettier . --write",
+    "lint": "eslint --ext .ts src --max-warnings 0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@piiano/testcontainers-vault": "^1.1.2",
+    "@types/react": "^18.2.74",
+    "@types/react-dom": "^18.2.23",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "3.2.4",
+    "typescript": "^5.4.3",
+    "vite": "^5.0.12"
+  }
+}

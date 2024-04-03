@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "ES2022",
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
+    "jsx": "react",
+  },
+  "exclude": ["node_modules", "dist"],
+}
