@@ -1,12 +1,13 @@
-import { Hooks, IframeOptions, ProtectedFormOptions, Result, ResultType } from '../options';
+import type { Hooks, IframeOptions, ProtectedFormOptions, Result, ResultType } from '../options';
 import { sendSizeEvents } from './common/size';
 import { getElement } from '../element-selector';
-import { newSenderToTarget, Sender } from './common/events';
-import { Logger, newLogger } from './common/logger';
+import { newSenderToTarget, type Sender } from './common/events';
+import { type Logger, newLogger } from './common/logger';
 import { InitOptionsValidator } from './common/models';
 
 export type Form<T extends ResultType> = {
   submit: () => Promise<Result<T>>;
+  destroy: () => void;
 };
 
 export function createProtectedForm<T extends ResultType = 'fields'>(
@@ -71,6 +72,9 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
 
       return resultPromise;
     },
+    destroy() {
+      container.removeChild(iframe);
+    },
   };
 }
 
@@ -78,6 +82,7 @@ function registerHooks<T extends ResultType>(log: Logger, iframe: HTMLIFrameElem
   return new Promise((resolve, reject) => {
     let ready = false;
     window.onmessage = ({ origin, data: { event, payload } }) => {
+      // @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const iframeOrigin = import.meta.env.VITE_IFRAME_ORIGIN;
       // if the message is not from the iframe, ignore it
@@ -96,7 +101,7 @@ function registerHooks<T extends ResultType>(log: Logger, iframe: HTMLIFrameElem
         case 'submit':
           hooks?.onSubmit?.(payload);
           break;
-        case 'error':
+        case 'error': {
           const error = Object.assign(new Error(payload.message), payload);
           // when error is fired before the ready event it is an initialization error and we reject.
           if (!ready) {
@@ -105,6 +110,7 @@ function registerHooks<T extends ResultType>(log: Logger, iframe: HTMLIFrameElem
           }
           hooks?.onError?.(error);
           break;
+        }
       }
     };
   });

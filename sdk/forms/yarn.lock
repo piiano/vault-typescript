@@ -218,10 +218,10 @@
   dependencies:
     testcontainers "^10.6.0"
 
-"@piiano/vault-client@^1.0.24":
-  version "1.0.30"
-  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.30.tgz#d63cc01c6f84310fa1684a3490b5cb7ff8af0d6b"
-  integrity sha512-OxsKvMRb86T6sz8uy2ZyJeaoOzYRxpA4/qQhvbSSb8S4ptWiFqrmR9+hN57iw37ZoM/ru0HLMEk2tGJWHLsYFw==
+"@piiano/vault-client@^1.0.31":
+  version "1.0.31"
+  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.31.tgz#22b636c269a89174d574de55789c1edbcea93800"
+  integrity sha512-e1hFidM8mP+TJPV3a8ogt69c01Vg1GoQ6CZXVHwSPLMdkZEtHsz1yCaj3Y7Dv7MRa+mR0QOa4F7HaKfyJDY9jQ==
 
 "@pkgr/core@^0.1.0":
   version "0.1.1"

@@ -1,5 +1,5 @@
-import { Result, ResultType, SubmitOptions } from './options';
-import { VaultClient } from '@piiano/vault-client';
+import type { Result, ResultType, SubmitOptions } from './options';
+import type { VaultClient } from '@piiano/vault-client';
 
 export type SubmitRequest<T extends ResultType = ResultType> = SubmitOptions<T> & {
   client: VaultClient;

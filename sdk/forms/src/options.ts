@@ -1,4 +1,4 @@
-import { InitOptions } from './protected-forms/common/models';
+import type { InitOptions } from './protected-forms/common/models';
 
 export type ProtectedFormOptions<T extends ResultType> = Omit<InitOptions, 'strategy'> & {
   // we omit the strategy from init options and declare it here, so we can infer the result type from it.
