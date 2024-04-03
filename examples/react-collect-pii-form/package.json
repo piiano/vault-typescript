@@ -25,7 +25,8 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@piiano/forms": "^1.0.32"
   },
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.1.2",
