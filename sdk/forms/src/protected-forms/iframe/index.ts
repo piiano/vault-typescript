@@ -5,6 +5,7 @@ import { IframeEventValidator, type Style } from '../common/models';
 
 let form: HTMLFormElement | undefined;
 let style: Style | undefined;
+let allowUpdates = false;
 
 let sendToParent: Sender = () => {};
 let log: Logger = () => {};
@@ -42,11 +43,17 @@ window.onmessage = ({ source, data }) => {
       if (form) return sendToParent('error', { type: 'initialization', message: 'Form already initialized' });
       form = renderForm(log, sendToParent, data.payload);
       style = data.payload.style;
+      allowUpdates = Boolean(data.payload.allowUpdates);
       sendToParent('ready');
       return;
     case 'update':
       if (!form) return sendToParent('error', { type: 'initialization', message: 'Form not initialized' });
+
+      if (!allowUpdates) return sendToParent('error', { type: 'update', message: 'Updates are not allowed' });
+
       form = updateForm(log, sendToParent, form, style, data.payload);
+      style = data.payload.style;
+      allowUpdates = Boolean(data.payload.allowUpdates);
       break;
     case 'submit':
       if (!form) return sendToParent('error', { type: 'initialization', message: 'Form not initialized' });

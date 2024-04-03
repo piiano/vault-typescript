@@ -108,6 +108,10 @@ export const InitOptionsValidator = object({
    */
   debug: boolean().optional(),
   /**
+   * Whether to allow updates to the form after it has been initialized. Default is false.
+   */
+  allowUpdates: boolean().optional(),
+  /**
    * The strategy to use to submit the form.
    */
   strategy: StrategyValidator.optional(),
