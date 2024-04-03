@@ -18,7 +18,7 @@ To run the example, please follow these steps:
    ```bash
     yarn
     ```
-4. Build the bundle defined in [index.ts](./src/Findex.ts)
+4. Build the bundle defined in [index.ts](./src/index.ts)
    ```bash
     yarn build
     ```
