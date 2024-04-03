@@ -6,6 +6,12 @@
   "type": "module",
   "module": "dist/module/index.js",
   "types": "dist/module/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "bundledDependencies": [
+    "@piiano/vault-client"
+  ],
   "keywords": [
     "Piiano",
     "pvault",

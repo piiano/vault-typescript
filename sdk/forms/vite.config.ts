@@ -66,6 +66,7 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
       rollupOptions: {
         input: target.input,
         preserveEntrySignatures: 'exports-only',
+        external: ['@piiano/vault-client'],
         output: {
           preserveModules: process.env.BUILD_TARGET === 'module',
           inlineDynamicImports: process.env.BUILD_TARGET !== 'module',
