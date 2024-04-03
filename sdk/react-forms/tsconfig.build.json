@@ -7,8 +7,9 @@
     "declarationMap": false,
     "experimentalDecorators": false,
     "emitDecoratorMetadata": false,
-    "jsx": "react",
+    "jsx": "react"
   },
-  "include": ["src/example"],
-  "exclude": ["node_modules", "dist", "src/lib"]
+  "include": ["src/lib"],
+  "files": ["src/lib/index.ts"],
+  "exclude": ["node_modules", "dist", "src/example"]
 }

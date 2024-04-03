@@ -10,6 +10,20 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
   process.env.VITE_VAULT_API_KEY = `pvaultauth`;
 
   return {
+    build: {
+      copyPublicDir: false,
+      emptyOutDir: false,
+      lib: {
+        entry: path.resolve(__dirname, 'src/lib/index.ts'),
+        formats: ['es'],
+      },
+      rollupOptions: {
+        external: ['react', 'react-dom', 'react/jsx-runtime'],
+        output: {
+          entryFileNames: '[name].js',
+        },
+      },
+    },
     server: {
       port: 3000,
     },

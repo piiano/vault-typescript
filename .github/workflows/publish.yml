@@ -42,6 +42,12 @@ on:
         default: patch
         type: choice
         options: [none, patch, minor, major]
+      bump-react-forms:
+        description: Bump `@piiano/react-forms` version
+        required: false
+        default: patch
+        type: choice
+        options: [none, patch, minor, major]
       bump-vault-bundles:
         description: Bump `@piiano/vault-bundles` version
         required: false
@@ -101,6 +107,7 @@ jobs:
           - vault-client
           - typeorm-encryption
           - forms
+          - react-forms
       # we need to run jobs sequentially because of the way packages depend on each other
       max-parallel: 1
       fail-fast: true
