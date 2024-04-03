@@ -199,6 +199,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@piiano/forms@../../sdk/forms/piiano-forms-1.0.31.tgz":
+  version "1.0.31"
+  resolved "../../sdk/forms/piiano-forms-1.0.31.tgz#074d79280931a5c64c5c0bd0fc26ef4f04fe93e2"
+  dependencies:
+    "@piiano/vault-client" "^1.0.31"
+
 "@piiano/forms@^1.0.32":
   version "1.0.32"
   resolved "https://registry.yarnpkg.com/@piiano/forms/-/forms-1.0.32.tgz#d8770371340843dcebb35a06ef63686e62a5d5f6"
@@ -1869,9 +1875,9 @@ util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
 
 vite@^5.0.12:
-  version "5.2.7"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-5.2.7.tgz#e1b8a985eb54fcb9467d7f7f009d87485016df6e"
-  integrity sha512-k14PWOKLI6pMaSzAuGtT+Cf0YmIx12z9YGon39onaJNy8DLBfBJrzg9FQEmkAM5lpHBZs9wksWAsyF/HkpEwJA==
+  version "5.2.8"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-5.2.8.tgz#a99e09939f1a502992381395ce93efa40a2844aa"
+  integrity sha512-OyZR+c1CE8yeHw5V5t59aXsUPPVTHMDjEZz8MgguLL/Q7NblxhZUlTu9xSPqlsUO/y+X7dlU05jdhvyycD55DA==
   dependencies:
     esbuild "^0.20.1"
     postcss "^8.4.38"
