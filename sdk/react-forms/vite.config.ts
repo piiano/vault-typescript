@@ -40,7 +40,7 @@ async function initDevelopmentVault(): Promise<Vault> {
       PVAULT_DEVMODE: true,
       PVAULT_SENTRY_ENABLE: false,
       PVAULT_LOG_DATADOG_ENABLE: 'none',
-      // The iframe is loaded from this domain so vault needs to allow it.
+      // The iframe is loaded from this domain so Vault needs to allow it.
       PVAULT_SERVICE_ALLOW_ORIGINS: 'https://cdn.piiano.com',
     },
   });
