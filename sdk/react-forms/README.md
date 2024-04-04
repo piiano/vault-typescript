@@ -91,7 +91,9 @@ import { ProtectedForm } from '@piiano/react-form';
 
 ## Usage
 
-The following example shows how to use the `ProtectedForm` component to collect credit card information from a user and store it in Piiano Vault collection with the following schema:
+The following example shows how to use the `ProtectedForm` component to collect credit card information from a user and store it in Piiano Vault.
+
+For storing the information we will define a collection in Vault with the following [PVSchema](https://docs.piiano.com/guides/reference/pvschema):
 
 ```sql
 credit_cards DATA (
@@ -101,6 +103,10 @@ credit_cards DATA (
     card_number CC_NUMBER
 );
 ```
+
+> **Note:**
+> 
+> You can also define the collection from within the [Vault SaaS](https://app.piiano.io/) that provides a UI for defining the schema.
 
 Using the `ProtectedForm` component we can easily define a form that will run in a different browsing context (iframe) and will securely collect the credit card information from the user and store it in the Vault.
 
@@ -156,33 +162,41 @@ function App() {
 
 The `ProtectedForm` component accepts the following props:
 
-- `vaultURL` - `string` - The URL of your Vault.
-- `apiKey` - `string` - The API key to use to access the Vault. Make sure to use a key that has access to the `tokenize` endpoint only and not read or detokenize Vault data since this key will be exposed to the client.
-- `ref` - `React.RefObject<Form<any>>` (optional) - A ref to the form handler instance. This can be used to programmatically submit the form instead of using the submit button provided by the form.
-- `debug` - `boolean` (optional) - Print debug information to console. This will not print sensitive information.
-- `allowUpdates` - `boolean` (optional) - Whether to allow updates to the form after it has been initialized. Default is `false`. If you require updates to the form configuration dynamically after initialization, set this to `true`.
-- `strategy` - `string` (optional) - The strategy to use to submit the form.
-  Can be one of the following:
-  - `tokenize-fields` - Tokenize the fields and submit the form.
-- `globalVaultIdentifiers` - `boolean` (optional) - Whether to use global vault identifiers in returned values.
-- `collection` - `string` - The name of the collection to store the tokenized data in.
-- `tenantId` - `string` (optional) - If you are using a multi-tenant Vault, you can specify the tenant ID to use for this form.
-- `reason` - `string` (optional) - The reason for the tokenization. This will be used by the Vault to audit the tokenization. Defaults to `AppFunctionality`.
-- `expiration` - `number` (optional) - The time in seconds for the token/object/ciphertext to expire. If not provided, the default expiration time of the Vault will be used. Set to `-1` for no expiration.
-- `fields` - `Field[]` - An array of field definitions for the form.
-  - `name` - `string` - The name of the field as defined in the collection schema.
-  - `dataTypeName` - `string` - The data type for the field as defined in the collection schema.
-  - `label` - `string` - The label for the field to display in the form.
-  - `required` - `boolean` - Whether the field is required or not.
-  - `placeholder` - `string` - The placeholder text for the field.
-  - `value` - `string` - The initial value for the field.
-- `submitButton` - `string` (optional) - The name of the submit button. If provided, a submit button will be rendered. If not provided, the form is expected to be submitted programmatically by the form handler.
-- `style` - `Style` (optional) - Style options to apply to the form.
-  - `theme` - `string` (optional) - The theme to use for the form. Can be one of the following:
-    - `default` - Default theme.
-    - `floating-label` - Floating label theme.
-  - `css` - `string` (optional) - Custom CSS to apply to the form.
-  - `variables` - `Record<string, string>` (optional) - Custom CSS variables to apply to the form. Available variables from the themes are: `primary`, `primaryDark`, `background`, `focusBackground`, `placeholderColor`, and `borderColor`.
+| Property                 | Type                                    |       Default        | Description                                                                                                                                                                                        |
+|--------------------------|-----------------------------------------|:--------------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `vaultURL`               | `string`                                |         N/A          | The URL of your Vault.                                                                                                                                                                             |
+| `apiKey`                 | `string`                                |         N/A          | The API key to use to access the Vault. Make sure to use a key that has access to the `tokenize` endpoint only and not read or detokenize Vault data since this key will be exposed to the client. |
+| `ref`                    | `React.RefObject<Form<any>>` (optional) |         N/A          | A ref to the form handler instance. This can be used to programmatically submit the form instead of using the submit button provided by the form.                                                  |
+| `allowUpdates`           | `boolean` (optional)                    |       `false`        | Whether to allow updates to the form after it has been initialized. Default is `false`. If you require updates to the form configuration dynamically after initialization, set this to `true`.     |
+| `debug`                  | `boolean` (optional)                    |       `false`        | Print debug information to console. This will not print sensitive information.                                                                                                                     |
+| `strategy`               | `string` (optional)                     | `"toeknize-fields"`  | The strategy to use to submit the form. See [supported strategies](#supported-strategies).                                                                                                         |
+| `globalVaultIdentifiers` | `boolean` (optional)                    |        `true`        | Whether to use global vault identifiers in returned values.                                                                                                                                        |
+| `collection`             | `string`                                |         N/A          | The name of the collection to store the tokenized data in.                                                                                                                                         |
+| `fields[*].name`         | `string`                                |         N/A          | The name of the field as defined in the collection schema.                                                                                                                                         |
+| `fields[*].dataTypeName` | `string`                                |         N/A          | The data type for the field as defined in the collection schema.                                                                                                                                   |
+| `fields[*].label`        | `string` (optional)                     |         N/A          | The label for the field to display in the form.                                                                                                                                                    |
+| `fields[*].required`     | `boolean`                               |       `false`        | Whether the field is required or not.                                                                                                                                                              |
+| `fields[*].placeholder`  | `string` (optional)                     |         N/A          | The placeholder text for the field.                                                                                                                                                                |
+| `fields[*].value`        | `string` (optional)                     |         N/A          | The initial value for the field.                                                                                                                                                                   |
+| `tenantId`               | `string` (optional)                     |         N/A          | If you are using a multi-tenant Vault, you can specify the tenant ID to use for this form.                                                                                                         |
+| `reason`                 | `string` (optional)                     | `"AppFunctionality"` | The reason for the tokenization. This will be used by the Vault to audit the tokenization. Defaults to `AppFunctionality`.                                                                         |
+| `expiration`             | `number` (optional)                     |         N/A          | The time in seconds for the token/object/ciphertext to expire. If not provided, the default expiration time of the Vault will be used. Set to `-1` for no expiration.                              |
+| `submitButton`           | `string` (optional)                     |         N/A          | The name of the submit button. If provided, a submit button will be rendered. If not provided, the form is expected to be submitted programmatically by the form handler.                          |
+| `style.theme`            | `string` (optional)                     |     `"default"`      | The theme to use for the form. Can be one of the following: `default` - Default theme, `floating-label` - Floating label theme, `none` - No theme.                                                 |
+| `style.css`              | `string` (optional)                     |         N/A          | Custom CSS to apply to the form.                                                                                                                                                                   |
+| `style.variables`        | `Record<string, string>` (optional)     |         N/A          | Custom CSS variables to apply to the form. Available variables from the themes are: `primary`, `primaryDark`, `background`, `focusBackground`, `placeholderColor`, and `borderColor`.              |
+
+### Supported Strategies
+
+The `strategy` prop can be one of the following:
+
+| Value                       | Description                                                                             |
+|-----------------------------|-----------------------------------------------------------------------------------------|
+| `tokenize-fields` (default) | Tokenize each field independently and return a token for each field.                    |
+| `tokenize-object`           | Tokenize the entire object and return a single token.                                   |
+| `encrypt-fields`            | Encrypt each field independently and return an object with a ciphertext for each field. |
+| `encrypt-object`            | Encrypt the entire object and return a single encrypted object ciphertext.              |
+| `store-object`              | Store the entire object and return an object ID.                                        |
 
 ## Peer Dependencies
 
