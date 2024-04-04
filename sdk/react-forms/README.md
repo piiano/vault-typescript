@@ -86,7 +86,7 @@ yarn add @piiano/react-forms
 You can import the components from the package like this:
 
 ```tsx
-import { ProtectedForm } from '@piiano/react-form';
+import { ProtectedForm } from '@piiano/react-forms';
 ```
 
 ## Usage
@@ -118,7 +118,7 @@ Here is an example of how to use the `ProtectedForm` component:
 
 ```tsx
 import React, { useCallback, useState } from 'react';
-import { ProtectedForm, Result, ResultType } from '@piiano/react-form';
+import { ProtectedForm, Result, ResultType } from '@piiano/react-forms';
 
 const fields = [
   { name: 'card_holder', dataTypeName: 'CC_HOLDER_NAME', label: 'Name', required: true, placeholder: 'John Doe' },
