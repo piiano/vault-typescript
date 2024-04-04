@@ -1,0 +1,59 @@
+{
+  "name": "@piiano/react-forms",
+  "version": "1.0.33",
+  "description": "Piiano Forms SDK for React",
+  "author": "Ori Shalom <ori.shalom@piiano.com>",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "Piiano",
+    "pvault",
+    "vault",
+    "pci",
+    "pii",
+    "form",
+    "forms",
+    "privacy",
+    "client",
+    "react",
+    "sdk"
+  ],
+  "license": "MIT",
+  "repository": "git://github.com/piiano/vault-typescript.git",
+  "homepage": "https://github.com/piiano/vault-typescript#readme",
+  "scripts": {
+    "dev": "vite --mode dev",
+    "test": "echo \"no tests for this package\"",
+    "build": "tsc --p tsconfig.build.json && vite build",
+    "push": "yarn publish --access=public",
+    "format": "prettier . --write",
+    "lint": "eslint --ext .ts src --max-warnings 0"
+  },
+  "dependencies": {
+    "@piiano/forms": "^1.0.33"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@piiano/testcontainers-vault": "^1.1.2",
+    "@types/react": "^18.2.74",
+    "@types/react-dom": "^18.2.23",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "@typescript-eslint/parser": "^6.19.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "3.2.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.4.3",
+    "vite": "^5.0.12"
+  }
+}
