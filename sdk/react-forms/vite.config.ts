@@ -3,11 +3,13 @@ import * as path from 'path';
 import { Vault } from '@piiano/testcontainers-vault';
 
 // https://vitejs.dev/config/
-const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
-  const vault = await initDevelopmentVault();
-  const port = await vault.start();
-  process.env.VITE_VAULT_ENDPOINT = `http://localhost:${port}`;
-  process.env.VITE_VAULT_API_KEY = `pvaultauth`;
+const config: UserConfigFnPromise = async ({ command }): Promise<UserConfig> => {
+  if (command !== 'build') {
+    const vault = await initDevelopmentVault();
+    const port = await vault.start();
+    process.env.VITE_VAULT_ENDPOINT = `http://localhost:${port}`;
+    process.env.VITE_VAULT_API_KEY = `pvaultauth`;
+  }
 
   return {
     build: {
