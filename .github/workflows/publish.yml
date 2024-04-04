@@ -59,7 +59,7 @@ jobs:
   update-readme:
     name: Update README
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && inputs.vault_version != 'none'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
