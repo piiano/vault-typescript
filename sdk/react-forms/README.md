@@ -122,8 +122,8 @@ const fields = [
 ];
 
 function App() {
-  const vaultURL = '';
-  const apiKey = '';
+  const vaultURL = ''; // Fill this field.
+  const apiKey = '';  // Fill this field.
   const [result, setResult] = useState<string>();
   const onError = useCallback((error: Error) => {
     setResult(error.message);
