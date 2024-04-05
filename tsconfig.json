@@ -15,5 +15,17 @@
     "strictPropertyInitialization": false,    /* Enable strict checking of property initialization in classes. */
     "experimentalDecorators": true,           /* Enables experimental support for ES7 decorators. */
     "emitDecoratorMetadata": true             /* Enables experimental support for emitting type metadata for decorators. */
-  }
+  },
+  "references": [
+    { "path": "./sdk/forms/tsconfig.build.json" },
+    { "path": "./sdk/react-forms/tsconfig.json" },
+    { "path": "./sdk/react-forms/tsconfig.build.json" },
+    { "path": "./sdk/vault-client/tsconfig.build.json" },
+    { "path": "./sdk/vault-client/tsconfig.test.json" },
+    { "path": "./sdk/vault-bundles/tsconfig.json" },
+    { "path": "./sdk/testcontainers-vault/tsconfig.build.json" },
+    { "path": "./sdk/testcontainers-vault/tsconfig.test.json" },
+    { "path": "./sdk/typeorm-encryption/tsconfig.build.json" },
+    { "path": "./sdk/typeorm-encryption/tsconfig.test.json" },
+  ]
 }

@@ -1,26 +1,24 @@
-import React, { ComponentProps, ForwardedRef, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
-import { createProtectedForm, type Form, type ProtectedFormOptions, type ResultType } from '@piiano/forms';
+import React, { ForwardedRef, forwardRef, ReactNode, RefAttributes, useEffect, useMemo, useRef } from 'react';
+import { createProtectedForm, type Form, type Hooks, type ProtectedFormOptions, type ResultType } from '@piiano/forms';
 
 export function useProtectedForm<T extends ResultType = 'fields'>(options: ProtectedFormOptions<T>) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [form, setForm] = useState<Form<T>>();
+  const form = useRef<Form<T>>();
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    if (!form) {
-      const form = createProtectedForm(containerRef.current, options);
-      setForm(form);
+    if (!form.current) {
+      form.current = createProtectedForm(containerRef.current, options);
     } else {
-      form.update(options);
+      if (options.allowUpdates) form.current.update(options);
     }
   }, [options]);
 
-  return { containerRef, form };
+  return { containerRef, form: form.current };
 }
 
-type ProtectedFormProps<T extends ResultType> = Omit<ProtectedFormOptions<T>, 'hooks'> &
-  ProtectedFormOptions<T>['hooks'];
+type ProtectedFormProps<T extends ResultType> = Omit<ProtectedFormOptions<T>, 'hooks'> & Hooks<T>;
 
 export const ProtectedForm = forwardRef(function ProtectedForm<T extends ResultType = 'fields'>(
   { onError, onSubmit, ...props }: ProtectedFormProps<T>,
@@ -41,4 +39,4 @@ export const ProtectedForm = forwardRef(function ProtectedForm<T extends ResultT
   if (formRef && typeof formRef === 'object') formRef.current = form;
 
   return <div ref={containerRef} />;
-});
+}) as <T extends ResultType = 'fields'>(props: ProtectedFormProps<T> & RefAttributes<Form<T>>) => ReactNode;
