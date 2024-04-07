@@ -35,7 +35,7 @@
     "lint": "eslint --ext .ts src --max-warnings 0"
   },
   "dependencies": {
-    "@piiano/forms": "^1.0.33"
+    "@piiano/forms": "^1.0.34"
   },
   "peerDependencies": {
     "react": "^18.2.0",
