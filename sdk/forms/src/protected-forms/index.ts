@@ -5,6 +5,8 @@ import { newSenderToTarget, type Sender } from './common/events';
 import { type Logger, newLogger } from './common/logger';
 import { InitOptionsValidator } from './common/models';
 
+export type { Theme, Style, Variables, Field } from './common/models';
+
 export type Form<T extends ResultType> = {
   submit: () => Promise<Result<T>>;
   destroy: () => void;
@@ -73,10 +75,12 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
 
       return resultPromise;
     },
-    destroy() {
+    async destroy() {
+      await ready;
       container.removeChild(iframe);
     },
-    update({ hooks: newHooks, ...options }: ProtectedFormOptions<T>) {
+    async update({ hooks: newHooks, ...options }: ProtectedFormOptions<T>) {
+      await ready;
       if (!InitOptionsValidator.parse(options)) {
         throw new Error('Invalid options provided');
       }
