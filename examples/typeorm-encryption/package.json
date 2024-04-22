@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@piiano/typeorm-encryption": "^1.0.23",
-    "@piiano/vault-client": "^1.0.24",
+    "@piiano/vault-client": "^1.0.32",
     "express": "^4.18.2",
     "reflect-metadata": "^0.2.1",
     "sqlite3": "^5.1.7",
