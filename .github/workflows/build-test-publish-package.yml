@@ -66,10 +66,14 @@ jobs:
         id: bump
         if: inputs.bump != 'none'
         run: |
+          echo "old_version=$(jq -r '.version' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
+
           pnpm version -C ${{ inputs.path }} \
             --no-git-tag-version \
             --no-commit-hooks \
             ${{ inputs.bump }}
+          
+          new_ver=$(jq -r '.version' ${{ inputs.path }}/package.json)
           
           echo "package_name=$(jq -r '.name' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
           echo "version=$(jq -r '.version' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
