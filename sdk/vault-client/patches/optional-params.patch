@@ -1,0 +1,137 @@
+diff --git b/sdk/vault-client/src/generated/services/ActionsClient.ts a/sdk/vault-client/src/generated/services/ActionsClient.ts
+index c359adf..8e36515 100644
+--- b/sdk/vault-client/src/generated/services/ActionsClient.ts
++++ a/sdk/vault-client/src/generated/services/ActionsClient.ts
+@@ -32,7 +32,7 @@ export class ActionsClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<Array<Action>> {
++  } = {}): CancelablePromise<Array<Action>> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/ctl/actions',
+diff --git b/sdk/vault-client/src/generated/services/BundlesClient.ts a/sdk/vault-client/src/generated/services/BundlesClient.ts
+index b83dc89..5a67656 100644
+--- b/sdk/vault-client/src/generated/services/BundlesClient.ts
++++ a/sdk/vault-client/src/generated/services/BundlesClient.ts
+@@ -25,7 +25,7 @@ export class BundlesClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<Array<Bundle>> {
++  } = {}): CancelablePromise<Array<Bundle>> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/ctl/bundles',
+diff --git b/sdk/vault-client/src/generated/services/ConfigVarsClient.ts a/sdk/vault-client/src/generated/services/ConfigVarsClient.ts
+index d51f94c..05485fd 100644
+--- b/sdk/vault-client/src/generated/services/ConfigVarsClient.ts
++++ a/sdk/vault-client/src/generated/services/ConfigVarsClient.ts
+@@ -29,7 +29,7 @@ export class ConfigVarsClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<any> {
++  } = {}): CancelablePromise<any> {
+     return this.httpRequest.request({
+       method: 'DELETE',
+       url: '/api/pvlt/1.0/system/confvar',
+diff --git b/sdk/vault-client/src/generated/services/IamClient.ts a/sdk/vault-client/src/generated/services/IamClient.ts
+index 871c7c2..67b1b6b 100644
+--- b/sdk/vault-client/src/generated/services/IamClient.ts
++++ a/sdk/vault-client/src/generated/services/IamClient.ts
+@@ -30,7 +30,7 @@ export class IamClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<IAMConfig> {
++  } = {}): CancelablePromise<IAMConfig> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/ctl/iam/conf',
+diff --git b/sdk/vault-client/src/generated/services/SystemClient.ts a/sdk/vault-client/src/generated/services/SystemClient.ts
+index 426a784..482a692 100644
+--- b/sdk/vault-client/src/generated/services/SystemClient.ts
++++ a/sdk/vault-client/src/generated/services/SystemClient.ts
+@@ -34,7 +34,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<Health> {
++  } = {}): CancelablePromise<Health> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/data/info/health',
+@@ -69,7 +69,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<Health> {
++  } = {}): CancelablePromise<Health> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/ctl/info/health',
+@@ -108,7 +108,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<AllGenerations> {
++  } = {}): CancelablePromise<AllGenerations> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/ctl/info/cluster',
+@@ -264,7 +264,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<Config> {
++  } = {}): CancelablePromise<Config> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/system/info/configuration',
+@@ -301,7 +301,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<License> {
++  } = {}): CancelablePromise<License> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/system/info/license',
+@@ -378,7 +378,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<ProductVersion> {
++  } = {}): CancelablePromise<ProductVersion> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/system/info/version',
+@@ -419,7 +419,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<any> {
++  } = {}): CancelablePromise<any> {
+     return this.httpRequest.request({
+       method: 'POST',
+       url: '/api/pvlt/1.0/system/admin/keys/rotate',
+@@ -458,7 +458,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<ExportKeyResponse> {
++  } = {}): CancelablePromise<ExportKeyResponse> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/system/admin/export_key',
+@@ -495,7 +495,7 @@ export class SystemClient {
+      * Every request includes a random ID that identifies the request. This ID is logged under `trace_id`. A request can override the generated value using either the `X-Pvault-Request-ID` or `X-Request-ID` headers.
+      */
+     xPvaultRequestId?: string,
+-  }): CancelablePromise<KMSStatusResponse> {
++  } = {}): CancelablePromise<KMSStatusResponse> {
+     return this.httpRequest.request({
+       method: 'GET',
+       url: '/api/pvlt/1.0/system/info/kms',
