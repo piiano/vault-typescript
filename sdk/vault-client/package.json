@@ -1,6 +1,6 @@
 {
   "name": "@piiano/vault-client",
-  "version": "1.0.34",
+  "version": "1.0.35",
   "description": "Piiano Vault generated typescript client",
   "module": "dist/index.js",
   "type": "commonjs",
