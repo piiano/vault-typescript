@@ -200,9 +200,9 @@
     fastq "^1.6.0"
 
 "@piiano/forms@^1.0.34":
-  version "1.0.39"
-  resolved "https://registry.yarnpkg.com/@piiano/forms/-/forms-1.0.39.tgz#88a1d5dfe8b210428536563776a9ae2f7b43b9d6"
-  integrity sha512-5anZrRkD1lCMHabZSkWIn6nh2MiW5QK6N0Q0NXYU2qUGgMDaBkmkfA8+/Q14TflaTg4XQqhMqo6qLBuUW8lZUQ==
+  version "1.0.40"
+  resolved "https://registry.yarnpkg.com/@piiano/forms/-/forms-1.0.40.tgz#725f17e18e77b88bd69548fb49c9fb11ebe260e4"
+  integrity sha512-6hjAsKzKC3Lcc1xbdc85yWK9os7xkSrgoFTa2NwhkDSGZD7kLzImK2t5WuhJAbVIe2CY/bq7C6vn7moPmxCKhw==
   dependencies:
     "@piiano/vault-client" "^1.0.31"
 
@@ -214,9 +214,9 @@
     testcontainers "^10.6.0"
 
 "@piiano/vault-client@^1.0.31":
-  version "1.0.36"
-  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.36.tgz#46cb7893e2937c646ccef95812f6f6c2d3c5fcaa"
-  integrity sha512-DsMQG+t6YxBrBhn2bYi0lmY6Nxe/kw8dpaS98Mjv3Tjh8cUvRGoYBNG0L08/+uVDygRgg7mWYCsg0RYC9wMA+g==
+  version "1.0.37"
+  resolved "https://registry.yarnpkg.com/@piiano/vault-client/-/vault-client-1.0.37.tgz#362ae461e98a2897860f05b963fed9b6bafb4b40"
+  integrity sha512-uNmJSTnjHYUWn+R4wSYJOboE+pNkxCGEzdx1MUN5KpSB0O2e2BbWj9RDfgQVyW7M4SJvTBkDZYNA4j7EeAttgw==
 
 "@pkgr/core@^0.1.0":
   version "0.1.1"
