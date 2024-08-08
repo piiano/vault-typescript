@@ -208,6 +208,26 @@ This Piiano Vault resource enables you to retrieve details about the status of s
 - `VaultClient.system.rotateKeys()`
 - `VaultClient.system.getKms()`
 
+## Additional Headers
+
+You can add additional headers for any request by passing the `additionalHeaders` option in the request object of any method.
+This can be useful for adding custom headers like [`X-Pvault-Request-ID`](https://docs.piiano.com/guides/monitor/about-system-logs#trace-id) for tracing requests or the [`X-Pvault-Delegation`](https://docs.piiano.com/guides/manage-users-and-policies/role-delegation) header.
+
+For example:
+```typescript
+vaultClient.objects.addObject({
+  collection: 'customers',
+  reason: 'AppFunctionality',
+  requestBody: {
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+  },
+  additionalHeaders: {
+    'X-Pvault-Request-ID': '1234567890', // Will be added to the request headers
+  },
+});
+```
+
 ## License
 
 This package is licensed under the MIT License.
