@@ -23,7 +23,7 @@ yarn add -D @piiano/vault-bundles
 
 ## Usage
 
-Check this [usage example](../../examples/custom-data-types) showing how to define a custom data type using a bundle typed with `@piiano/vault-bundles` package.
+Check this [example](../../examples/custom-data-types) that shows how to define a custom data type using a bundle typed with this package.
 
 ## License
 
