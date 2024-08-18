@@ -1,6 +1,6 @@
 {
   "name": "@piiano/react-forms",
-  "version": "1.0.43",
+  "version": "1.0.44",
   "description": "Piiano Forms SDK for React",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
   "type": "module",
