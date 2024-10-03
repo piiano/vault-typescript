@@ -76,7 +76,7 @@ The form is pretty standard, but we need to add a few things to make it work wit
 First, we need to include the Piiano Forms SDK using one of the following methods:
 - Include the SDK from Piiano CDN by including the Piiano Forms SDK in the head of the page:
   ```html
-  <script src="https://cdn.piiano.com/pvault-forms-lib-v1.0.24.js"></script>
+  <script src="https://cdn.piiano.com/pvault-forms-lib-v1.0.36.js"></script>
   ```
 - Install the SDK using npm:
   ```bash
