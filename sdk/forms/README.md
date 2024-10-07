@@ -10,130 +10,231 @@
 
 # @piiano/forms
 
-Make your forms compliant with PCI or any other privacy regulation by tokenizing sensitive data before submitting it to
-your backend.
+Make your forms compliant with PCI or any other privacy regulation by securely managing sensitive data before submitting it to your backend. Using `@piiano/forms`, you can tokenize, encrypt, or store sensitive data directly in Piiano Vault without exposing it to your backend.
 
-## When to use Piiano Forms
+## Table of Contents
 
-If you want to make sure that your backend never sees sensitive data, but can still use it with relevant services,
-Piiano Forms is for you.
+- [When to Use Piiano Forms](#when-to-use-piiano-forms)
+  - [Example Use Cases](#example-use-cases)
+- [How It Works](#how-it-works)
+- [API](#api)
+  - [createProtectedForm](#createprotectedform)
+    - [Overview](#overview)
+    - [Goal](#goal)
+    - [Usage](#usage)
+  - [createProtectedView](#createprotectedview)
+    - [Overview](#overview-1)
+    - [Goal](#goal-1)
+    - [Usage](#usage-1)
+  - [controlForm](#controlform)
+    - [Overview](#overview-2)
+    - [Goal](#goal-2)
+    - [Usage](#usage-2)
+- [Recommended Vault Authorization Techniques](#recommended-vault-authorization-techniques)
+- [Benefits of Using Piiano Vault with Piiano Forms](#benefits-of-using-piiano-vault-with-piiano-forms)
+- [Getting Started](#getting-started)
 
-- Save credit card details in Vault, and use Vault to pass them to payment gateways when needed without making your
-  entire backend PCI compliant.
-- Save personal contact information such as phone numbers and emails in Vault, and use Vault to pass them to your
-  marketing automation tools so you can send emails and SMS without exposing your customers' contact information to your
-  backend and other third parties.
-- Save addresses in Vault, and use Vault to pass them to your shipping providers so you can ship products without
-  exposing your customers' addresses to your backend and other third parties.
+## When to Use Piiano Forms
 
-## How it works
+Piiano Forms is ideal for any use case where you want to collect sensitive information (e.g., credit card details, personal contact information) securely and make sure that it does not reach your backend in raw form.
 
-Let's take a look at a simple form that collects credit card details for easy payments.
+### Example Use Cases:
 
-In the naive unsecure approach, a form will submit the card details to your backend where the backend can save them in
-the database for future use and per your client demand, send a request to payment service to process the card.
-This will require your backend to be PCI compliant which is a lot of work and require a lot of care on how you handle
-the card details.
+- **Credit Card Payments**: Save credit card details in Vault and use Vault to pass them to payment gateways when
+  needed, without making your entire backend PCI compliant.
+- **Marketing Automation**: Save personal contact information like phone numbers and emails in Vault, and use Vault to
+  send it to marketing tools for sending emails and SMS, without exposing this data to your backend.
+- **Shipping Addresses**: Store addresses in Vault, and use it to pass them to shipping providers for deliveries,
+  maintaining complete privacy.
 
-> A partial list of the things you need to do to be PCI compliant if you were to store the card details on your own:
->
-> - Payment details are encrypted at rest.
-> - Payment details are encrypted in transit.
-> - Payment details are not stored in logs.
-> - Third party you use to process the payment details is also PCI compliant
-> - Third party libraries are up to date and does not have any known vulnerabilities.
-> - Full audit of your code and processes to get PCI compliance certification.
-> - Full audit log of all access to the payment details.
-> - Full permission and access control on any access to payment details.
-> - Full network and infrastructure isolation of your environment.
->
-> And this is just a partial list...
+## How It Works
 
-With Piiano Vault and the Piiano Forms SDK, you can eliminate the need to handle all of this by storing the card details
-in Piiano Vault.
-Vault can store the card details securely and give you a secured tokens you can pass to your backend instead.
-Using the tokens you can then charge the card, without ever exposing the card details to your backend.
+Piiano Forms interacts exclusively with Piiano Vault, ensuring that all sensitive data is securely tokenized, encrypted, or stored before any further processing. This interaction happens directly between the form and Piiano Vault, without involving your backend. This approach is beneficial as:
 
-Let's take a look at the form:
+1. The Vault can be configured to allow communication only from the allowed origin of the form.
+2. The form iframe is served with strict CSP (Content Security Policy) headers, making it a sandbox that prevents PII from leaking out, while allowing exclusive communication with the Vault.
 
-```html
-<form action="/cards" method="post">
-  <h1>Add payment details</h1>
-  <label for="card_number">Card Number</label>
-  <input type="text" id="card_number" name="card_number" />
-  <label for="card_holder">Card Holder</label>
-  <input type="text" id="card_holder" name="card_holder" />
-  <label for="card_expiry">Card Expiry</label>
-  <input type="text" id="card_expiry" name="card_expiry" />
-  <label for="card_cvv">Card CVV</label>
-  <input type="text" id="card_cvv" name="card_cvv" />
-  <button type="submit">Add card</button>
-</form>
+This architecture ensures that even if the user frontend is compromised (e.g., via a malicious package or XSS attack), the attacker cannot access the iframe content or manipulate the communication with the Vault.
+
+## API
+
+### `createProtectedForm`
+
+#### Overview
+
+`createProtectedForm` allows you to create and manage a secure form for collecting sensitive data like credit card information or personally identifiable information (PII). This form handles the entire interaction with Piiano Vault, ensuring secure storage, encryption, or tokenization of data.
+
+#### Goal
+
+Use `createProtectedForm` when you need to securely collect and manage sensitive data, and wish to ensure that it is processed securely by Piiano Vault. This function is suitable when you do not want the backend to handle raw PII.
+
+#### Usage
+
+##### Parameters
+
+- `selector`: A CSS selector or an HTML container element where the form will be rendered.
+- `options`: An object containing configuration options:
+  - `vaultURL` (string): The URL of the Piiano Vault instance.
+  - `apiKey` (string): API key for interacting with the Vault.
+  - `fields` (array): Field definitions specifying field names, labels, data types, etc.
+  - `strategy` (optional string): Strategy for handling data:
+    - `"tokenize-fields"` or `"store-object"`: Stores data in the Vault and returns an object ID or token ID.
+    - `"encrypt-object"`: Uses the Vault to encrypt the data and return a ciphertext in base64 format.
+  - `submitButton` (optional string): Text for the automatically generated submit button.
+  - `style` (optional object): Custom styles for the form.
+  - `hooks` (optional object): Hooks to manage the form lifecycle:
+    - `onSubmit(result)`: Called when the form is submitted successfully. Use the response (object ID/token ID/ciphertext) for further processing.
+    - `onError(error)`: Called when an error occurs.
+
+##### Returned Object
+
+The `createProtectedForm` function returns an object that provides the following methods:
+
+- `destroy()`: Removes the form instance from the DOM.
+- `update(options)`: Updates form configuration.
+- `submit()`: Programmatically submits the form and returns the result.
+
+##### Usage Example
+
+```javascript
+import {createProtectedForm} from '@piiano/forms';
+
+const form = createProtectedForm('#form-container', {
+  vaultURL: 'https://your-vault-url.com',
+  apiKey: 'your-api-key',
+  fields: [
+    {name: 'card_number', label: 'Card Number', dataTypeName: 'CC_NUMBER', required: true},
+    {name: 'card_holder', label: 'Card Holder', dataTypeName: 'CC_HOLDER_NAME', required: true},
+  ],
+  strategy: 'tokenize-fields',
+  submitButton: 'Submit Payment',
+  hooks: {
+    onSubmit: (result) => {
+      console.log('Form submitted with tokenized data:', result);
+      // Store the token ID or object ID in your database
+    },
+    onError: (error) => {
+      console.error('Error during form submission:', error);
+    },
+  },
+});
 ```
 
-The form is pretty standard, but we need to add a few things to make it work with Piiano Forms.
+### `createProtectedView`
 
-First, we need to include the Piiano Forms SDK using one of the following methods:
-- Include the SDK from Piiano CDN by including the Piiano Forms SDK in the head of the page:
-  ```html
-  <script src="https://cdn.piiano.com/pvault-forms-lib-v1.0.24.js"></script>
-  ```
-- Install the SDK using npm:
-  ```bash
-  npm install @piiano/forms
-- Install the SDK using yarn:
-  ```bash
-  yarn add @piiano/forms
-  ```
+#### Overview
 
-Next, add a `data-piiano-proxy-options` attribute to the form and set it to a JSON configuration object:
+`createProtectedView` creates a secure view component to display sensitive data stored in Piiano Vault, ensuring that sensitive data is never directly exposed to the frontend.
 
-```html
-<form
-  action="/cards"
-  method="post"
-  data-piiano-proxy-options='{
-        "collection":"credit_cards",
-        "hijack":true,
-        "vaultURL":"https://xxxxxxxxxx.us-east-2.awsapprunner.com"
-      }'
->
-  <h1>Add payment details</h1>
-  <label for="card_number">Card Number</label>
-  <input type="text" id="card_number" name="card_number" />
-  <label for="card_holder">Card Holder</label>
-  <input type="text" id="card_holder" name="card_holder" />
-  <label for="card_expiry">Card Expiry</label>
-  <input type="text" id="card_expiry" name="card_expiry" />
-  <label for="card_cvv">Card CVV</label>
-  <input type="text" id="card_cvv" name="card_cvv" />
-  <button type="submit">Add card</button>
-</form>
+#### Goal
+
+Use `createProtectedView` when you need to securely display sensitive data on the frontend without exposing raw data.
+
+#### Usage
+
+##### Parameters
+
+- `selector`: A CSS selector or an HTML container element where the view will be rendered.
+- `options`: Configuration options:
+  - `vaultURL` (string): The URL of the Piiano Vault instance.
+  - `apiKey` (string): API key for accessing the Vault.
+  - `collection` (string): Name of the collection containing the data.
+  - `objects` (array): IDs of objects to be displayed.
+  - `props` (array): Properties to display from each object.
+  - `style` (optional object): Custom styles.
+
+##### Returned Object
+
+The `createProtectedView` function returns an object that provides:
+
+- `destroy()`: Removes the view instance from the DOM.
+- `update(options)`: Updates the view’s configuration.
+
+##### Usage Example
+
+```javascript
+import {createProtectedView} from '@piiano/forms';
+
+const view = createProtectedView('#view-container', {
+  vaultURL: 'https://your-vault-url.com',
+  apiKey: 'your-api-key',
+  collection: 'customers',
+  objects: ['customer-id-123'],
+  props: ['name', 'email'],
+  style: {
+    css: `
+      .customer-info { font-weight: bold; }
+    `,
+  },
+});
 ```
 
-With this configuration, the form will be submitted by Piiano Forms SDK to the Vault instead of your backend.
-The form will be submitted to the `vaultURL` you specified in the configuration and the data will be stored in
-the `collection` you specified.
+### `controlForm`
 
-The `hijack` option is used to tell the SDK to hijack the form original submit events and resubmit the forms to the
-original destination only once the card details are tokenized.
+#### Overview
 
-The SDK will intercept the form submission and tokenize the card details, then it will submit the form to your backend
-with the card details replaced with the tokenized values.
+`controlForm` enhances an existing form element, allowing secure data processing through Piiano Vault. It ensures that sensitive fields are securely encrypted, tokenized, or stored before submission, but without creating a sandboxed environment.
 
-To get a Vault URL, you need to create a Piiano account and create a new Vault.
-You can get a new Vault by registering to our Vault SaaS at https://app.piiano.io.
+#### Goal
 
-## Configuration
+Use `controlForm` to add secure handling to an existing form without redesigning it from scratch. This method is ideal for forms that need basic security, such as marketing forms, where sensitive data should be protected but compliance requirements like PCI do not apply.
 
-The `data-piiano-proxy-options` attribute supports the following configuration options:
+#### Usage
 
-- `vaultURL` - `string` - The URL of your Vault.
-- `apiKey` - `string` - The API key to use to access the Vault. Make sure to use a key that has access to the `tokenize`
-  endpoint only and not read or detokenize Vault data since this key will be exposed to the client.
-- `collection` - `string` - The name of the collection to store the tokenized data in.
-- `hijack` - `boolean` - If set to `true`, the SDK will hijack the form submission and submit the form once the card
-  details are tokenized. Otherwise, the SDK will only tokenize the card details and will not submit the form.
-- `reason` - `string` - The reason for the tokenization. This will be used by the Vault to audit the tokenization.
-  Defaults to `AppFunctionality`.
-- `tenantId` - `string` - If you are using a multi-tenant Vault, you can specify the tenant ID to use for this form.
+##### Parameters
+
+- `formOrSelector`: A CSS selector or an HTML form element to control.
+- `options`: Configuration options:
+  - `vaultURL` (string): URL of the Piiano Vault instance.
+  - `apiKey` (string): API key for interacting with the Vault.
+  - `strategy` (optional string): Strategy for handling data (e.g., `"encrypt-fields"`).
+  - `replayOriginalEvents` (optional boolean): Whether to replay the original form submission event after tokenization.
+  - `hooks` (optional object): Lifecycle hooks:
+    - `onSubmit(result)`: Called on successful form submission. The response should be used for further processing.
+    - `onError(error)`: Called when an error occurs.
+
+> **Note**
+> Unlike `createProtectedForm` and `createProtectedView`, `controlForm` does not create a sandbox for the form using an
+  iframe.
+> Instead, it simply intercepts form submit events. As a result, this option is recommended for marketing forms
+  but is **not suitable for use cases requiring PCI compliance**.
+
+##### Usage Example
+
+```javascript
+import {controlForm} from '@piiano/forms';
+
+controlForm('#existing-form', {
+  vaultURL: 'https://your-vault-url.com',
+  apiKey: 'your-api-key',
+  strategy: 'encrypt-fields',
+  replayOriginalEvents: true,
+  hooks: {
+    onSubmit: (result) => {
+      console.log('Controlled form submitted with encrypted data:', result);
+      // Store the ciphertext or token ID in your database
+    },
+    onError: (error) => {
+      console.error('Error during controlled form submission:', error);
+    },
+  },
+});
+```
+
+## Recommended Vault Authorization Techniques
+
+To further enhance the security of your integration with Piiano Vault, it is recommended to apply advanced Vault authorization techniques alongside this library:
+
+- **Minimize Permissions**: Limit the API key permissions to allow only the necessary operations (e.g., tokenization or encryption) and avoid excessive access.
+- **Use JWTs Instead of API Keys**: Use JSON Web Tokens (JWTs) to enforce fine-grained authorization rules. JWTs can include enforcements that restrict users to insert or read only the data they own. This is especially important when using `createProtectedView` to ensure that data access is scoped appropriately.
+
+## Benefits of Using Piiano Vault with Piiano Forms
+
+- **Security**: Sensitive data is never exposed to your backend; it’s handled directly by Piiano Vault.
+- **Privacy Compliance**: Easily meet privacy regulations (e.g., PCI) by securing sensitive data through tokenization, encryption, and safe storage.
+- **Minimized Risk**: By isolating sensitive data collection in a secure iframe, the risk of compromise through frontend vulnerabilities (such as XSS attacks) is significantly reduced.
+
+## Getting Started
+
+- [Set Up Vault](https://piiano.com/docs/setup) to start collecting, storing, and managing sensitive data securely.
+- Install `@piiano/forms` via npm or yarn and follow the examples above to integrate secure forms into your application.

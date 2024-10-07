@@ -1,4 +1,4 @@
-import type { Hooks, IframeOptions, ProtectedFormOptions, Result, ResultType } from '../options';
+import { ErrorHook, ProtectedViewOptions, ViewIframeOptions } from '../options';
 import { sendSizeEvents } from './common/size';
 import { getElement } from '../element-selector';
 import { newSenderToTarget, type Sender } from './common/events';
@@ -7,16 +7,15 @@ import { InitOptionsValidator } from './common/models';
 
 export type { Theme, Style, Variables, Field } from './common/models';
 
-export type Form<T extends ResultType> = {
-  submit: () => Promise<Result<T>>;
+export type View = {
   destroy: () => void;
-  update: (options: ProtectedFormOptions<T>) => void;
+  update: (options: ProtectedViewOptions) => void;
 };
 
-export function createProtectedForm<T extends ResultType = 'fields'>(
+export function createProtectedView(
   containerOrSelector: string | HTMLDivElement,
-  { hooks, ...options }: ProtectedFormOptions<T>,
-): Form<T> {
+  { hooks, ...options }: ProtectedViewOptions,
+): View {
   if (!InitOptionsValidator.parse(options)) {
     throw new Error('Invalid options provided');
   }
@@ -25,7 +24,7 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
   const iframe = document.createElement('iframe');
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const iframeURL = import.meta.env.VITE_FORM_IFRAME_URL;
+  const iframeURL = import.meta.env.VITE_VIEW_IFRAME_URL;
   const log = newLogger('parent', options.debug);
   let sendToIframe: Sender;
   iframe.src = iframeURL;
@@ -38,20 +37,15 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
       sendToIframe = newSenderToTarget(iframe.contentWindow!, log);
       // sendToIframe = newSender(iframe.contentWindow!, parentLogger, iframeURL);
       // type assertion to verify we don't pass hooks to the iframe as they are serializable and can't be passed with postMessage
-      const iframeOptions: IframeOptions<T> = options;
+      const iframeOptions: ViewIframeOptions = options;
       sendToIframe('init', iframeOptions);
       sendSizeEvents(sendToIframe, 'container-size', container);
     });
   };
 
-  let resultPromise: Promise<Result<T>> | undefined;
-  let promiseCallbacks: { submit: (result: Result<T>) => void; error: (err: Error) => void } | undefined;
+  let promiseCallbacks: { error: (err: Error) => void } | undefined;
 
-  const ready = registerHooks<T>(log, iframe, {
-    onSubmit(r) {
-      hooks?.onSubmit?.(r);
-      promiseCallbacks?.submit?.(r);
-    },
+  const ready = registerHooks(log, iframe, {
     onError(e) {
       hooks?.onError?.(e);
       promiseCallbacks?.error?.(e);
@@ -61,25 +55,11 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
   container.appendChild(iframe);
 
   return {
-    async submit() {
-      await ready;
-      if (resultPromise) return resultPromise;
-
-      resultPromise = new Promise<Result<T>>((resolve, reject) => {
-        promiseCallbacks = { submit: resolve, error: reject };
-        sendToIframe('submit');
-      }).finally(() => {
-        promiseCallbacks = undefined;
-        resultPromise = undefined;
-      });
-
-      return resultPromise;
-    },
     async destroy() {
       await ready;
       container.removeChild(iframe);
     },
-    async update({ hooks: newHooks, ...options }: ProtectedFormOptions<T>) {
+    async update({ hooks: newHooks, ...options }: ProtectedViewOptions) {
       await ready;
       if (!InitOptionsValidator.parse(options)) {
         throw new Error('Invalid options provided');
@@ -90,7 +70,7 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
   };
 }
 
-function registerHooks<T extends ResultType>(log: Logger, iframe: HTMLIFrameElement, hooks: Hooks<T>): Promise<void> {
+function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ErrorHook): Promise<void> {
   return new Promise((resolve, reject) => {
     let ready = false;
     window.onmessage = ({ origin, data: { event, payload } }) => {
@@ -111,8 +91,6 @@ function registerHooks<T extends ResultType>(log: Logger, iframe: HTMLIFrameElem
           iframe.style.width = payload.width + 'px';
           break;
         case 'submit':
-          hooks?.onSubmit?.(payload);
-          break;
         case 'error': {
           const error = Object.assign(new Error(payload.message), payload);
           // when error is fired before the ready event it is an initialization error and we reject.

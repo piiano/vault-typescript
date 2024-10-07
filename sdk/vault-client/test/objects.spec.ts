@@ -5,7 +5,7 @@ import * as chaiAsPromised from "chai-as-promised";
 
 use(chaiAsPromised)
 
-describe('crypto',  function () {
+describe('objects',  function () {
 
   const testCollection: Collection = {
     name: 'test_objects_collection',

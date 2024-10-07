@@ -42,11 +42,14 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
     process.env,
     mode === 'dev'
       ? {
-          VITE_IFRAME_URL: './src/protected-forms/iframe/index.html',
-          VITE_IFRAME_ORIGIN: 'http://localhost:3000',
+          VITE_VIEW_IFRAME_URL: './src/protected-view/iframe/index.html',
+          VITE_FORM_IFRAME_URL: './src/protected-forms/iframe/index.html',
+          VITE_IFRAME_ORIGIN: 'https://gvc7p6h22p.us-east-2.awsapprunner.com',
+          // VITE_IFRAME_ORIGIN: 'http://localhost:3000',
         }
       : {
-          VITE_IFRAME_URL: `https://cdn.piiano.com/pvault-forms-iframe-v${version}.html`,
+          VITE_VIEW_IFRAME_URL: `https://cdn.piiano.com/pvault-view-iframe-v${version}.html`,
+          VITE_FORM_IFRAME_URL: `https://cdn.piiano.com/pvault-forms-iframe-v${version}.html`,
           VITE_IFRAME_ORIGIN: 'https://cdn.piiano.com',
         },
   );
