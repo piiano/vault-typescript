@@ -2,11 +2,14 @@ import { renderView } from './components/iframe';
 import { type Logger, newLogger } from '../common/logger';
 import { newSenderToSource, type Sender } from '../common/events';
 import { IframeEventValidator, type Style } from '../common/models';
-import { VaultClient } from '@piiano/vault-client';
+import { ObjectFields, VaultClient } from '@piiano/vault-client';
+import { ViewIframeOptions } from '../../options';
 
-let view: HTMLDivElement | undefined;
-let style: Style | undefined;
 let allowUpdates = false;
+let fetchObjectsOptions: Omit<ViewIframeOptions, 'debug' | 'dynamic' | 'style'> | undefined = undefined;
+let initialized = false;
+let objects: Promise<ObjectFields[]> | undefined = undefined;
+let ready: Promise<void> | undefined = undefined;
 
 let sendToParent: Sender = () => {};
 let log: Logger = () => {};
@@ -38,44 +41,85 @@ window.onmessage = ({ source, data }) => {
       if (source === null) {
         return;
       }
+
       // Update sender to always send messages to the source of the init message.
       sendToParent = newSenderToSource(source, log);
-      // sendToParent = newSenderToTarget(window.parent, log);
-      if (view) return sendToParent('error', { type: 'initialization', message: 'View already initialized' });
 
-      const { dynamic, apiKey, vaultURL, collection, reason = 'AppFunctionality', props, objects: ids } = data.payload;
-      allowUpdates = Boolean(dynamic);
-      style = data.payload.style;
+      if (initialized) return sendToParent('error', { type: 'initialization', message: 'View already initialized' });
+      initialized = true;
 
-      if (ids.length > 10) return sendToParent('error', { type: 'initialization', message: 'Too many objects' });
-      if (ids.some((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id))) {
-        return sendToParent('error', { type: 'initialization', message: 'Invalid object ID' });
-      }
-
-      const client = new VaultClient({ apiKey, vaultURL });
-      client.objects
-        .listObjects({ collection, reason, props, ids })
-        .then((result) => {
-          view = renderView(sendToParent, style!, result.results);
+      ready = render(data.payload)
+        ?.then(() => {
           sendToParent('ready');
         })
         .catch((error) => {
           log(error);
-          sendToParent('error', { type: 'initialization', message: 'Failed to fetch objects', error });
+          sendToParent('error', { type: 'initialization', message: error.message });
         });
       return;
-    // case 'update':
-    //   if (!view) return sendToParent('error', { type: 'initialization', message: 'View not initialized' });
-    //
-    //   if (!allowUpdates) return sendToParent('error', { type: 'update', message: 'Updates are not allowed' });
-    //
-    //   view = updateForm(log, sendToParent, form, style, data.payload);
-    //   style = data.payload.style;
-    //   allowUpdates = Boolean(data.payload.allowUpdates);
-    //   break;
+    case 'update':
+      ready?.then(() => {
+        if (!initialized) return sendToParent('error', { type: 'initialization', message: 'View not initialized' });
+
+        if (!allowUpdates) return sendToParent('error', { type: 'update', message: 'Updates are not allowed' });
+
+        render(data.payload)?.catch((error) => {
+          log(error);
+          sendToParent('error', { type: 'update', message: error.message });
+        });
+      });
+      break;
     case 'container-size':
       document.body.style.height = data.payload.height + 'px';
       document.body.style.width = data.payload.width + 'px';
       break;
   }
 };
+
+function didFetchObjectOptionsChange(next: ViewIframeOptions) {
+  const prev = fetchObjectsOptions;
+  return (
+    prev === undefined ||
+    prev.apiKey !== next.apiKey ||
+    prev.vaultURL !== next.vaultURL ||
+    prev.collection !== next.collection ||
+    prev.reason !== next.reason ||
+    prev.props !== next.props ||
+    prev.ids.length !== next.ids.length ||
+    prev.ids.some((id, i) => id !== next.ids[i])
+  );
+}
+
+function render(payload: ViewIframeOptions) {
+  allowUpdates = Boolean(payload.dynamic);
+  if (didFetchObjectOptionsChange(payload)) objects = fetchObjects(payload);
+  return objects?.then((objects) => {
+    renderView(sendToParent, objects, payload.css);
+  });
+}
+
+async function fetchObjects({
+  apiKey,
+  vaultURL,
+  collection,
+  reason = 'AppFunctionality',
+  props,
+  ids,
+}: Omit<ViewIframeOptions, 'debug' | 'style'>) {
+  if (ids.length > 10) throw new Error('Too many objects');
+  if (ids.some((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id))) {
+    throw new Error('Invalid object ID');
+  }
+
+  const client = new VaultClient({ apiKey, vaultURL });
+  const objects = await client.objects.listObjects({ collection, reason, props, ids });
+
+  // make the object fields order consistent with the provided props order.
+  return objects.results.map((object) =>
+    Object.fromEntries(
+      Object.entries(object).sort(([keyA], [keyB]) => {
+        return props.indexOf(keyA) - props.indexOf(keyB);
+      }),
+    ),
+  );
+}

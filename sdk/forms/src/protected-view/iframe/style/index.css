@@ -1,1 +1,36 @@
-@import url('./base.css');
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.view {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.object {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+}
+
+.value {
+  white-space: nowrap;
+  color: #222;
+  font-weight: 600;
+}
+
+label {
+  color: #666;
+}

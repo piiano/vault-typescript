@@ -1,3 +1,13 @@
+<!--
+
+# WARNING!
+
+The following HTML file is used for local development purposes only.
+It is not intended to be used in production or as a reference for a production implementation.
+
+For production use, please refer to the official documentation or consult with a Piiano representative.
+-->
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,24 +16,23 @@
     <!-- Include Piiano Vault Client -->
     <script type="module">
       import { createProtectedView } from './src/index.ts';
-      const view = createProtectedView('#view-container', {
-        vaultURL: `https://gvc7p6h22p.us-east-2.awsapprunner.com`,
-        apiKey: '5W85H2huA7dG1SZXB9a4UY9Cql7TMGqW0C0n2MbuEB4=',
-        collection: 'test',
-        objects: ['8f30bd9e-31d8-4829-bf0f-6ffdbc88e066'],
-        props: ['json_field'],
+
+      const options = {
+        vaultURL: `http://localhost:${import.meta.env.VITE_VAULT_PORT}`,
+        apiKey: 'pvaultauth',
+        collection: 'credit_cards',
+        ids: [import.meta.env.VITE_TEST_OBJECT_ID],
+        props: ['card_holder', 'card_number'],
         debug: true,
-        style: {
-          css: `
-[data-name="json_field"] > label {
-   display: none;
-}
-[data-name="json_field"] {
-   display: flex;
-}
-`,
-        },
-      });
+        dynamic: true,
+        hooks: { onError: console.error },
+      };
+      const view = createProtectedView('#view-container', options);
+
+      // For debugging purposes expose the view and options as globals.
+      // This SHOULD NOT be done in production.
+      window.options = options
+      window.view = view
     </script>
     <style>
       body {

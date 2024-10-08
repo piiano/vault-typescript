@@ -1,4 +1,4 @@
-import { ErrorHook, ProtectedViewOptions, ViewIframeOptions } from '../options';
+import { type ErrorHook, type ProtectedViewOptions, type ViewIframeOptions } from '../options';
 import { sendSizeEvents } from './common/size';
 import { getElement } from '../element-selector';
 import { newSenderToTarget, type Sender } from './common/events';
@@ -43,14 +43,14 @@ export function createProtectedView(
     });
   };
 
-  let promiseCallbacks: { error: (err: Error) => void } | undefined;
-
   const ready = registerHooks(log, iframe, {
     onError(e) {
       hooks?.onError?.(e);
-      promiseCallbacks?.error?.(e);
     },
   });
+
+  // if the user doesn't call destroy or update, and the init return with an error, we don't want to keep it as an unhandled promise
+  ready.catch((e) => void 0);
 
   container.appendChild(iframe);
 
@@ -90,15 +90,14 @@ function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ErrorHook)
           iframe.style.height = payload.height + 'px';
           iframe.style.width = payload.width + 'px';
           break;
-        case 'submit':
         case 'error': {
           const error = Object.assign(new Error(payload.message), payload);
-          // when error is fired before the ready event it is an initialization error and we reject.
+          hooks?.onError?.(error);
           if (!ready) {
+            // when error is fired before the ready event it is an initialization error and we reject.
             reject(error);
             return;
           }
-          hooks?.onError?.(error);
           break;
         }
       }

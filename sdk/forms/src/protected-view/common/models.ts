@@ -120,17 +120,17 @@ export const InitOptionsValidator = object({
    */
   reason: ReasonValidator.optional(),
   /**
-   * The objects to fetch from the Vault and show in the view.
+   * The ids of objects to fetch from the Vault and show in the view.
    */
-  objects: array(string()),
+  ids: array(string()),
   /**
    * The props to fetch for each object and show in the view.
    */
   props: array(string()),
   /**
-   * Style options to apply to the form.
+   * Custom CSS to apply to the form.
    */
-  style: StyleValidator.optional(),
+  css: string().optional(),
 });
 
 export type InitOptions = Infer<typeof InitOptionsValidator>;

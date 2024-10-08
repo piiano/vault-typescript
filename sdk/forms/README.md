@@ -17,6 +17,7 @@ Make your forms compliant with PCI or any other privacy regulation by securely m
 - [When to Use Piiano Forms](#when-to-use-piiano-forms)
   - [Example Use Cases](#example-use-cases)
 - [How It Works](#how-it-works)
+- [Setup](#setup)
 - [API](#api)
   - [createProtectedForm](#createprotectedform)
     - [Overview](#overview)
@@ -55,6 +56,49 @@ Piiano Forms interacts exclusively with Piiano Vault, ensuring that all sensitiv
 2. The form iframe is served with strict CSP (Content Security Policy) headers, making it a sandbox that prevents PII from leaking out, while allowing exclusive communication with the Vault.
 
 This architecture ensures that even if the user frontend is compromised (e.g., via a malicious package or XSS attack), the attacker cannot access the iframe content or manipulate the communication with the Vault.
+
+## Setup
+
+To use Piiano Forms, you need to have a Piiano Vault instance set up.
+
+If you don’t have one, you can [sign up for a free sandbox vault](https://app.piiano.io/register) to get started.
+
+Once you have your Vault set up, you can include the `@piiano/forms` package in your project with a package manager or directly from our CDN.
+
+### npm
+
+```bash
+npm install @piiano/forms
+```
+
+### yarn
+
+```bash
+yarn add @piiano/forms
+```
+
+### pnpm
+
+```bash
+pnpm add @piiano/forms
+```
+
+### CDN
+
+```html
+<script src="https://cdn.piiano.com/pvault-forms-lib-v1.0.43.js"></script>
+```
+
+> **Note**
+> 
+> The CDN version of the library is available in few versions:
+> - `pvault-forms-lib-latest.js`: The latest version of the library.
+> - `pvault-forms-lib-v1.js`: The latest version with the v1 major version.
+> - `pvault-forms-lib-v1.0.js`: The latest version in the v1.0 major & minor version.
+> - `pvault-forms-lib-v1.0.43.js`: Get an exact version of the library by specifying the version number.
+> 
+> It is recommended to use the exact version of the library in production to avoid breaking changes.
+> To get a list of the exact versions available, you can check the [@piiano/forms](https://www.npmjs.com/package/@piiano/forms?activeTab=versions) package versions page.
 
 ## API
 
@@ -139,16 +183,21 @@ Use `createProtectedView` when you need to securely display sensitive data on th
   - `vaultURL` (string): The URL of the Piiano Vault instance.
   - `apiKey` (string): API key for accessing the Vault.
   - `collection` (string): Name of the collection containing the data.
-  - `objects` (array): IDs of objects to be displayed.
+  - `ids` (array): IDs of objects to be displayed.
   - `props` (array): Properties to display from each object.
-  - `style` (optional object): Custom styles.
+  - `css` (optional string): Custom CSS styles to be added to the view.
+  - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
+  - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
+  - `hooks` (optional object): Lifecycle hooks:
+    - `onError(error)`: Called when an error occurs.
+  - `debug` (optional boolean): Whether to enable debug mode which adds additional logging (default: `false`).
 
 ##### Returned Object
 
-The `createProtectedView` function returns an object that provides:
+The `createProtectedView` function returns a View object that has the following methods:
 
 - `destroy()`: Removes the view instance from the DOM.
-- `update(options)`: Updates the view’s configuration.
+- `update(options)`: Updates the view’s configuration. For the `update` method to work, the `dynamic` option must be set to `true` in the initial configuration.
 
 ##### Usage Example
 
@@ -159,13 +208,9 @@ const view = createProtectedView('#view-container', {
   vaultURL: 'https://your-vault-url.com',
   apiKey: 'your-api-key',
   collection: 'customers',
-  objects: ['customer-id-123'],
+  ids: ['b8a42023-b63e-42a8-a3c4-c0cdfad2b755'],
   props: ['name', 'email'],
-  style: {
-    css: `
-      .customer-info { font-weight: bold; }
-    `,
-  },
+  css: `.view { font-weight: bold; }`,
 });
 ```
 
@@ -225,7 +270,7 @@ controlForm('#existing-form', {
 
 To further enhance the security of your integration with Piiano Vault, it is recommended to apply advanced Vault authorization techniques alongside this library:
 
-- **Minimize Permissions**: Limit the API key permissions to allow only the necessary operations (e.g., tokenization or encryption) and avoid excessive access.
+- **Minimize Permissions**: Limit the roles permissions to allow only the necessary operations (e.g., tokenization or encryption) and avoid excessive access.
 - **Use JWTs Instead of API Keys**: Use JSON Web Tokens (JWTs) to enforce fine-grained authorization rules. JWTs can include enforcements that restrict users to insert or read only the data they own. This is especially important when using `createProtectedView` to ensure that data access is scoped appropriately.
 
 ## Benefits of Using Piiano Vault with Piiano Forms
