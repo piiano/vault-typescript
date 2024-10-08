@@ -41,12 +41,10 @@ Piiano Forms is ideal for any use case where you want to collect sensitive infor
 
 ### Example Use Cases:
 
-- **Credit Card Payments**: Save credit card details in Vault and use Vault to pass them to payment gateways when
-  needed, without making your entire backend PCI compliant.
-- **Marketing Automation**: Save personal contact information like phone numbers and emails in Vault, and use Vault to
-  send it to marketing tools for sending emails and SMS, without exposing this data to your backend.
-- **Shipping Addresses**: Store addresses in Vault, and use it to pass them to shipping providers for deliveries,
-  maintaining complete privacy.
+- **Credit Card Payments**: Save credit card details in Vault and use Vault to pass them to payment gateways when needed, reducing the effort of making your application PCI compliant.
+- **Marketing Automation**: Save personal contact information like phone numbers and emails in Vault, and use Vault to send it to marketing tools for sending emails and SMS, without exposing this data to your backend.
+- **Shipping Addresses**: Store addresses in Vault, and use it to pass them to shipping providers for deliveries, maintaining complete privacy.
+- **Protected Data View**: Create a protected view for displaying sensitive data from the Vault or from third party services directly in your UI without exposing the data to your application directly.
 
 ## How It Works
 
@@ -55,7 +53,7 @@ Piiano Forms interacts exclusively with Piiano Vault, ensuring that all sensitiv
 1. The Vault can be configured to allow communication only from the allowed origin of the form.
 2. The form iframe is served with strict CSP (Content Security Policy) headers, making it a sandbox that prevents PII from leaking out, while allowing exclusive communication with the Vault.
 
-This architecture ensures that even if the user frontend is compromised (e.g., via a malicious package or XSS attack), the attacker cannot access the iframe content or manipulate the communication with the Vault.
+This architecture ensures that even if the parent browsing context is compromised (e.g., via a malicious package or XSS attack), the attacker cannot access the iframe content or manipulate the communication with the Vault.
 
 ## Setup
 
@@ -120,23 +118,32 @@ Use `createProtectedForm` when you need to securely collect and manage sensitive
 - `options`: An object containing configuration options:
   - `vaultURL` (string): The URL of the Piiano Vault instance.
   - `apiKey` (string): API key for interacting with the Vault.
+  - `collection` (string): Name of the collection where the data will be stored.
   - `fields` (array): Field definitions specifying field names, labels, data types, etc.
   - `strategy` (optional string): Strategy for handling data:
-    - `"tokenize-fields"` or `"store-object"`: Stores data in the Vault and returns an object ID or token ID.
-    - `"encrypt-object"`: Uses the Vault to encrypt the data and return a ciphertext in base64 format.
+    - `"tokenize-object"`: Tokenize the entire object and return a single token.
+    - `"tokenize-fields"`: Tokenize each field independently and return a token for each field.
+    - `"encrypt-object"`: Encrypt the entire object and return a single encrypted object ciphertext.
+    - `"encrypt-fields"`: Encrypt each field independently and return an object with a ciphertext for each field.
+    - `"store-object"`: Store the entire object and return an object ID.
+  - `globalVaultIdentifiers` (optional boolean): Whether to use [global vault identifiers](https://docs.piiano.com/guides/reference/http-call-request#vault-global-identifier) in returned values.
+  - `reason` (optional string): Reason used when sending the data to the Vault (will be logged in the Vault audit logs).
   - `submitButton` (optional string): Text for the automatically generated submit button.
   - `style` (optional object): Custom styles for the form.
+    - `css` (optional string): Custom CSS styles to be added to the form.
   - `hooks` (optional object): Hooks to manage the form lifecycle:
     - `onSubmit(result)`: Called when the form is submitted successfully. Use the response (object ID/token ID/ciphertext) for further processing.
     - `onError(error)`: Called when an error occurs.
+  - `debug` (optional boolean): Whether to enable debug mode which adds additional logging (default: `false`).
+  - `allowUpdates` (optional boolean): Whether to allow updates to the form after it has been initialized (default: `false`).
 
 ##### Returned Object
 
 The `createProtectedForm` function returns an object that provides the following methods:
 
 - `destroy()`: Removes the form instance from the DOM.
-- `update(options)`: Updates form configuration.
-- `submit()`: Programmatically submits the form and returns the result.
+- `update(options)`: Updates form configuration. For the `update` method to work, the `allowUpdates` option must be set to `true` in the initial configuration.
+- `submit()`: Programmatically submits the form and returns the result as a Promise.
 
 ##### Usage Example
 
@@ -146,6 +153,7 @@ import {createProtectedForm} from '@piiano/forms';
 const form = createProtectedForm('#form-container', {
   vaultURL: 'https://your-vault-url.com',
   apiKey: 'your-api-key',
+  collection: 'payments',
   fields: [
     {name: 'card_number', label: 'Card Number', dataTypeName: 'CC_NUMBER', required: true},
     {name: 'card_holder', label: 'Card Holder', dataTypeName: 'CC_HOLDER_NAME', required: true},
@@ -232,7 +240,15 @@ Use `controlForm` to add secure handling to an existing form without redesigning
 - `options`: Configuration options:
   - `vaultURL` (string): URL of the Piiano Vault instance.
   - `apiKey` (string): API key for interacting with the Vault.
-  - `strategy` (optional string): Strategy for handling data (e.g., `"encrypt-fields"`).
+  - `collection` (string): Name of the collection where the data will be stored.
+  - `strategy` (optional string): Strategy for handling data:
+    - `"tokenize-object"`: Tokenize the entire object and return a single token.
+    - `"tokenize-fields"`: Tokenize each field independently and return a token for each field.
+    - `"encrypt-object"`: Encrypt the entire object and return a single encrypted object ciphertext.
+    - `"encrypt-fields"`: Encrypt each field independently and return an object with a ciphertext for each field.
+    - `"store-object"`: Store the entire object and return an object ID.
+  - `globalVaultIdentifiers` (optional boolean): Whether to use [global vault identifiers](https://docs.piiano.com/guides/reference/http-call-request#vault-global-identifier) in returned values.
+  - `reason` (optional string): Reason used when sending the data to the Vault (will be logged in the Vault audit logs).
   - `replayOriginalEvents` (optional boolean): Whether to replay the original form submission event after tokenization.
   - `hooks` (optional object): Lifecycle hooks:
     - `onSubmit(result)`: Called on successful form submission. The response should be used for further processing.
@@ -252,6 +268,7 @@ import {controlForm} from '@piiano/forms';
 controlForm('#existing-form', {
   vaultURL: 'https://your-vault-url.com',
   apiKey: 'your-api-key',
+  collection: 'marketing',
   strategy: 'encrypt-fields',
   replayOriginalEvents: true,
   hooks: {
@@ -270,8 +287,8 @@ controlForm('#existing-form', {
 
 To further enhance the security of your integration with Piiano Vault, it is recommended to apply advanced Vault authorization techniques alongside this library:
 
-- **Minimize Permissions**: Limit the roles permissions to allow only the necessary operations (e.g., tokenization or encryption) and avoid excessive access.
-- **Use JWTs Instead of API Keys**: Use JSON Web Tokens (JWTs) to enforce fine-grained authorization rules. JWTs can include enforcements that restrict users to insert or read only the data they own. This is especially important when using `createProtectedView` to ensure that data access is scoped appropriately.
+- **Minimize Permissions**: [Limit the roles permissions](https://docs.piiano.com/guides/manage-users-and-policies/how-iam-works) to allow only the necessary operations (e.g., tokenization or encryption) and avoid excessive access.
+- **Use JWTs Instead of API Keys**: [Use JSON Web Tokens](https://docs.piiano.com/guides/manage-users-and-policies/direct-jwt-authentication) (JWTs) to enforce fine-grained authorization rules. JWTs can include enforcements that restrict users to insert or read only the data they own. This is especially important when using `createProtectedView` to ensure that data access is scoped appropriately.
 
 ## Benefits of Using Piiano Vault with Piiano Forms
 
