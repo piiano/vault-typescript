@@ -1,11 +1,11 @@
 import { type ErrorHook, type ProtectedViewOptions, type ViewIframeOptions } from '../options';
-import { sendSizeEvents } from './common/size';
+import { sendSizeEvents } from '../common/size';
 import { getElement } from '../element-selector';
-import { newSenderToTarget, type Sender } from './common/events';
-import { type Logger, newLogger } from './common/logger';
-import { InitOptionsValidator } from './common/models';
+import { newSenderToTarget, type Sender } from '../common/events';
+import { type Logger, newLogger } from '../common/logger';
+import { ViewInitOptionsValidator } from '../common/models';
 
-export type { Theme, Style, Variables, Field } from './common/models';
+export type { Theme, Style, Variables, Field } from '../common/models';
 
 export type View = {
   destroy: () => void;
@@ -16,7 +16,7 @@ export function createProtectedView(
   containerOrSelector: string | HTMLDivElement,
   { hooks, ...options }: ProtectedViewOptions,
 ): View {
-  if (!InitOptionsValidator.parse(options)) {
+  if (!ViewInitOptionsValidator.parse(options)) {
     throw new Error('Invalid options provided');
   }
 
@@ -61,7 +61,7 @@ export function createProtectedView(
     },
     async update({ hooks: newHooks, ...options }: ProtectedViewOptions) {
       await ready;
-      if (!InitOptionsValidator.parse(options)) {
+      if (!ViewInitOptionsValidator.parse(options)) {
         throw new Error('Invalid options provided');
       }
       hooks = newHooks;

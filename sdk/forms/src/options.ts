@@ -1,16 +1,15 @@
-import type { InitOptions as FormsInitOptions } from './protected-forms/common/models';
-import type { InitOptions as ViewInitOptions } from './protected-view/common/models';
+import type { FormInitOptions, ViewInitOptions } from './common/models';
 
 export type ProtectedViewOptions = ViewInitOptions & { hooks?: ErrorHook };
 
-export type ProtectedFormOptions<T extends ResultType> = Omit<FormsInitOptions, 'strategy'> & {
+export type ProtectedFormOptions<T extends ResultType> = Omit<FormInitOptions, 'strategy'> & {
   // we omit the strategy from init options and declare it here, so we can infer the result type from it.
   strategy?: Strategy<T>;
   hooks?: Hooks<T>;
 };
 
 export type ControlFormOptions<T extends ResultType> = Pick<
-  FormsInitOptions,
+  FormInitOptions,
   'globalVaultIdentifiers' | 'collection' | 'tenantId' | 'reason' | 'vaultURL' | 'apiKey'
 > & {
   // we omit the strategy from init options and declare it here, so we can infer the result type from it.
@@ -28,7 +27,7 @@ export type Result<T extends ResultType> = T extends 'object' ? string : Record<
 export type Strategy<T extends ResultType> = Exclude<`${'tokenize' | 'store' | 'encrypt'}-${T}`, 'store-fields'>;
 
 export type SubmitOptions<T extends ResultType> = Pick<
-  FormsInitOptions,
+  FormInitOptions,
   'globalVaultIdentifiers' | 'collection' | 'tenantId' | 'reason' | 'expiration'
 > & {
   strategy?: Strategy<T>;

@@ -1,8 +1,8 @@
-import { sendSizeEvents } from '../../common/size';
+import { sendSizeEvents } from '../../../common/size';
 import { ObjectFields } from '@piiano/vault-client';
-import type { Sender } from '../../common/events';
+import type { Sender } from '../../../common/events';
 import { View } from './view';
-import { component } from '../../common/component';
+import { component } from '../../../common/component';
 
 export function renderView(sendToParent: Sender, objects: Array<ObjectFields>, css?: string) {
   const style = Style({ css });

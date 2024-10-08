@@ -1,11 +1,11 @@
 import type { Hooks, IframeOptions, ProtectedFormOptions, Result, ResultType } from '../options';
-import { sendSizeEvents } from './common/size';
+import { sendSizeEvents } from '../common/size';
 import { getElement } from '../element-selector';
-import { newSenderToTarget, type Sender } from './common/events';
-import { type Logger, newLogger } from './common/logger';
-import { InitOptionsValidator } from './common/models';
+import { newSenderToTarget, type Sender } from '../common/events';
+import { type Logger, newLogger } from '../common/logger';
+import { FormInitOptionsValidator } from '../common/models';
 
-export type { Theme, Style, Variables, Field } from './common/models';
+export type { Theme, Style, Variables, Field } from '../common/models';
 
 export type Form<T extends ResultType> = {
   submit: () => Promise<Result<T>>;
@@ -17,7 +17,7 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
   containerOrSelector: string | HTMLDivElement,
   { hooks, ...options }: ProtectedFormOptions<T>,
 ): Form<T> {
-  if (!InitOptionsValidator.parse(options)) {
+  if (!FormInitOptionsValidator.parse(options)) {
     throw new Error('Invalid options provided');
   }
 
@@ -81,7 +81,7 @@ export function createProtectedForm<T extends ResultType = 'fields'>(
     },
     async update({ hooks: newHooks, ...options }: ProtectedFormOptions<T>) {
       await ready;
-      if (!InitOptionsValidator.parse(options)) {
+      if (!FormInitOptionsValidator.parse(options)) {
         throw new Error('Invalid options provided');
       }
       hooks = newHooks;

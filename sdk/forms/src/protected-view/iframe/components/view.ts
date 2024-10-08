@@ -1,5 +1,5 @@
 import { ObjectFields } from '@piiano/vault-client';
-import { component } from '../../common/component';
+import { component } from '../../../common/component';
 
 export const View = component(({ objects }: { objects: Array<ObjectFields> }) => {
   const view = document.createElement('div');
