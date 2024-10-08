@@ -97,7 +97,7 @@ pnpm add @piiano/forms
 > - `pvault-forms-lib-v1.0.js`: The latest version in the v1.0 major & minor version.
 > - `pvault-forms-lib-v1.0.43.js`: Get an exact version of the library by specifying the version number.
 > 
-> It is recommended to use the exact version of the library in production to avoid breaking changes.
+> It is recommended to use the specific version of the library in production and not the latest version to avoid breaking changes.
 > To get a list of the exact versions available, you can check the [@piiano/forms](https://www.npmjs.com/package/@piiano/forms?activeTab=versions) package versions page.
 
 ## API
