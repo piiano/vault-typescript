@@ -172,7 +172,7 @@ const form = createProtectedForm('#form-container', {
 
 #### Goal
 
-Use `createProtectedView` when you need to securely display sensitive data on the frontend without exposing raw data.
+Use `createProtectedView` when you need to securely display sensitive data on the frontend without exposing the original data to your frontend or backend systems.
 
 #### Usage
 
