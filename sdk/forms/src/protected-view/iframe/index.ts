@@ -49,7 +49,7 @@ window.onmessage = ({ source, data }) => {
       initialized = true;
 
       ready = render(data.payload)
-        ?.then(() => {
+        .then(() => {
           sendToParent('ready');
         })
         .catch((error) => {
@@ -90,12 +90,10 @@ function didFetchObjectOptionsChange(next: ViewIframeOptions) {
   );
 }
 
-function render(payload: ViewIframeOptions) {
+async function render(payload: ViewIframeOptions) {
   allowUpdates = Boolean(payload.dynamic);
-  if (didFetchObjectOptionsChange(payload)) objects = fetchObjects(payload);
-  return objects?.then((objects) => {
-    renderView(sendToParent, objects, payload.css);
-  });
+  if (!objects || didFetchObjectOptionsChange(payload)) objects = fetchObjects(payload);
+  renderView(sendToParent, await objects, payload.css);
 }
 
 async function fetchObjects({
