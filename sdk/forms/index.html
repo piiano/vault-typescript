@@ -1,70 +1,38 @@
+<!--
+
+# WARNING!
+
+The following HTML file is used for local development purposes only.
+It is not intended for production or as a reference for a production implementation.
+
+For production use, please refer to the official documentation or consult with a Piiano representative.
+-->
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Test Forms</title>
+    <title>Test View</title>
     <!-- Include Piiano Vault Client -->
     <script type="module">
-      import { createProtectedForm } from './src/index.ts';
-      const form = createProtectedForm('#form-container', {
+      import { createProtectedView } from './src/index.ts';
+
+      const options = {
         vaultURL: `http://localhost:${import.meta.env.VITE_VAULT_PORT}`,
         apiKey: 'pvaultauth',
         collection: 'credit_cards',
-        expiration: 15 * 60, // 15 minutes
-        fields: [
-          {
-            name: 'card_holder',
-            dataTypeName: 'CC_HOLDER_NAME',
-            label: 'Name',
-            required: true,
-            placeholder: 'John Doe',
-          },
-          {
-            name: 'card_number',
-            dataTypeName: 'CC_NUMBER',
-            label: 'Card',
-            required: true,
-            placeholder: '4111 1111 1111 1111',
-          },
-          {
-            name: 'card_expiry',
-            dataTypeName: 'CC_EXPIRATION_STRING',
-            label: 'Expiry',
-            required: true,
-            placeholder: '12/34',
-          },
-          {
-            name: 'card_cvv',
-            dataTypeName: 'CC_CVV',
-            label: 'CVV',
-            required: true,
-            placeholder: '123',
-          },
-        ],
-        submitButton: 'Pay',
+        ids: [import.meta.env.VITE_TEST_OBJECT_ID],
+        props: ['card_holder', 'card_number'],
         debug: true,
-        style: {
-          theme: 'floating-label',
-          css: `
-form { grid-template-columns: 1fr 1fr; }
-[data-name="card_holder"], [data-name="card_number"] { grid-column: 1 / span 2; }
-`,
-        },
-      });
+        dynamic: true,
+        hooks: { onError: console.error },
+      };
+      const view = createProtectedView('#view-container', options);
 
-      const result = document.getElementById('result');
-      document.getElementById('form1').addEventListener('submit', (e) => {
-        e.preventDefault();
-        console.log('submitting form');
-        form
-          .submit()
-          .catch((err) => err)
-          .then((value) => {
-            result.innerText = JSON.stringify(value, null, 2);
-            result.style.display = 'block';
-          });
-        return false;
-      });
+      // For debugging purposes expose the view and options as globals.
+      // This SHOULD NOT be done in production.
+      window.options = options
+      window.view = view
     </script>
     <style>
       body {
@@ -85,33 +53,16 @@ form { grid-template-columns: 1fr 1fr; }
         justify-content: center;
         align-items: center;
       }
-      form {
-        display: grid;
-        gap: 1rem;
-        width: 22rem;
-        margin-bottom: 1rem;
+      h2 {
+        margin-top: 0;
       }
-      button {
-        padding: 0.75rem;
-        font-size: 1rem;
-        border-radius: 0.25rem;
-        background-color: #0070e0;
-        color: #fff;
-        border: none;
-        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-      }
-      button:hover,
-      button:focus {
-        background-color: #0060c0;
-      }
-      button:active {
-        background-color: #004f9d;
-      }
-      pre {
+      .card {
+        display: flex;
+        flex-direction: column;
         padding: 2rem;
-        background: #f5f5f5;
+        border: 1px solid #f5f5f5;
         border-radius: 0.5rem;
+        box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.2);
       }
     </style>
   </head>
@@ -119,14 +70,12 @@ form { grid-template-columns: 1fr 1fr; }
     <main>
       <!-- protected form example -->
       <section>
-        <h2>Protected form (iframe)</h2>
-        <form id="form1">
-          <div id="form-container">
+        <div class="card">
+          <h2>Protected View</h2>
+          <div id="view-container">
             <!-- piiano form will be injected here -->
           </div>
-          <button type="submit">Pay</button>
-        </form>
-        <pre id="result" style="display: none"></pre>
+        </div>
       </section>
     </main>
   </body>

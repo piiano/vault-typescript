@@ -1,10 +1,10 @@
 import { IframeOptions, ResultType } from '../../../options';
-import { sendSizeEvents } from '../../common/size';
+import { sendSizeEvents } from '../../../common/size';
 import { VaultClient } from '@piiano/vault-client';
 import { Form } from './form';
-import type { Sender } from '../../common/events';
-import type { Logger } from '../../common/logger';
-import type { Style } from '../../common/models';
+import type { Sender } from '../../../common/events';
+import type { Logger } from '../../../common/logger';
+import type { Style } from '../../../common/models';
 
 export function renderForm(
   log: Logger,

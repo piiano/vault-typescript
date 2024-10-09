@@ -1,8 +1,8 @@
 import { dataTypes } from '../data-types';
 import { validations } from '../validations';
 import { Ref } from '../component';
-import { FieldValidator } from '../../common/models';
-import { Infer } from '../../common/schema';
+import { FieldValidator } from '../../../common/models';
+import { Infer } from '../../../common/schema';
 
 export type InputProps = Omit<Infer<typeof FieldValidator>, 'label'> & {
   touchedRef: Ref<boolean>;
