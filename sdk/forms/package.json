@@ -1,6 +1,6 @@
 {
   "name": "@piiano/forms",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Piiano Forms SDK",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
   "type": "module",
