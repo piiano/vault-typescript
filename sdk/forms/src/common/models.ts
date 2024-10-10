@@ -227,6 +227,11 @@ export const ViewInitOptionsValidator = object({
    */
   props: array(string()),
   /**
+   * An extra transformation param to be sent to the Vault and be available in the transformation functions.
+   * When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
+   */
+  transformationParam: string().optional(),
+  /**
    * Custom CSS to apply to the form.
    */
   css: string().optional(),
