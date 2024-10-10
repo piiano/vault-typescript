@@ -193,6 +193,8 @@ Use `createProtectedView` when you need to securely display sensitive data on th
   - `collection` (string): Name of the collection containing the data.
   - `ids` (array): IDs of objects to be displayed.
   - `props` (array): Properties to display from each object.
+    Each property can defined as is or with a transformation (e.g., `name`, `email`, `email.mask`, etc.).
+    The order of properties in the array determines the order in which they will be displayed in the view.
   - `css` (optional string): Custom CSS styles to be added to the view.
   - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
