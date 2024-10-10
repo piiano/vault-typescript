@@ -84,7 +84,7 @@ pnpm add @piiano/forms
 ### CDN
 
 ```html
-<script src="https://cdn.piiano.com/pvault-forms-lib-v1.1.0.js"></script>
+<script src="https://cdn.piiano.com/pvault-forms-lib-v1.1.1.js"></script>
 ```
 
 > **Note**
@@ -93,7 +93,7 @@ pnpm add @piiano/forms
 > - `pvault-forms-lib-latest.js`: The latest version of the library.
 > - `pvault-forms-lib-v1.js`: The latest version with the v1 major version.
 > - `pvault-forms-lib-v1.1.js`: The latest version in the v1.1 major & minor version.
-> - `pvault-forms-lib-v1.1.0.js`: Get an exact version of the library by specifying the version number.
+> - `pvault-forms-lib-v1.1.1.js`: Get an exact version of the library by specifying the version number.
 > 
 > It is recommended to use the specific version of the library in production and not the latest version to avoid breaking changes.
 > To get a list of the versions available, you can check the [@piiano/forms](https://www.npmjs.com/package/@piiano/forms?activeTab=versions) package versions page.
