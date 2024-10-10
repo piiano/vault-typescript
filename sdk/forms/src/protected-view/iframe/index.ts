@@ -85,6 +85,7 @@ function didFetchObjectOptionsChange(next: ViewIframeOptions) {
     prev.collection !== next.collection ||
     prev.reason !== next.reason ||
     prev.props !== next.props ||
+    prev.transformationParam !== next.transformationParam ||
     prev.ids.length !== next.ids.length ||
     prev.ids.some((id, i) => id !== next.ids[i])
   );
@@ -103,6 +104,7 @@ async function fetchObjects({
   reason = 'AppFunctionality',
   props,
   ids,
+  transformationParam,
 }: Omit<ViewIframeOptions, 'debug' | 'style'>) {
   if (ids.length > 10) throw new Error('Too many objects');
   if (ids.some((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id))) {
@@ -110,7 +112,13 @@ async function fetchObjects({
   }
 
   const client = new VaultClient({ apiKey, vaultURL });
-  const objects = await client.objects.listObjects({ collection, reason, props, ids });
+  const objects = await client.objects.listObjects({
+    collection,
+    reason,
+    props,
+    ids,
+    xTransParam: transformationParam,
+  });
 
   // make the object fields order consistent with the provided props order.
   return objects.results.map((object) =>

@@ -84,7 +84,7 @@ pnpm add @piiano/forms
 ### CDN
 
 ```html
-<script src="https://cdn.piiano.com/pvault-forms-lib-v1.1.0.js"></script>
+<script src="https://cdn.piiano.com/pvault-forms-lib-v1.1.1.js"></script>
 ```
 
 > **Note**
@@ -93,7 +93,7 @@ pnpm add @piiano/forms
 > - `pvault-forms-lib-latest.js`: The latest version of the library.
 > - `pvault-forms-lib-v1.js`: The latest version with the v1 major version.
 > - `pvault-forms-lib-v1.1.js`: The latest version in the v1.1 major & minor version.
-> - `pvault-forms-lib-v1.1.0.js`: Get an exact version of the library by specifying the version number.
+> - `pvault-forms-lib-v1.1.1.js`: Get an exact version of the library by specifying the version number.
 > 
 > It is recommended to use the specific version of the library in production and not the latest version to avoid breaking changes.
 > To get a list of the versions available, you can check the [@piiano/forms](https://www.npmjs.com/package/@piiano/forms?activeTab=versions) package versions page.
@@ -191,8 +191,11 @@ Use `createProtectedView` when you need to securely display sensitive data on th
   - `vaultURL` (string): The URL of the Piiano Vault instance.
   - `apiKey` (string): API key for accessing the Vault.
   - `collection` (string): Name of the collection containing the data.
-  - `ids` (array): IDs of objects to be displayed.
-  - `props` (array): Properties to display from each object.
+  - `ids` (string array): IDs of objects to be displayed.
+  - `props` (string array): Properties to display from each object.
+    Each property can defined as is or with a transformation (e.g., `name`, `email`, `email.mask`, etc.).
+    The order of properties in the array determines the order in which they will be displayed in the view.
+  - `transformationParam` (optional string): An extra transformation param to be sent to the Vault and be available in the transformation functions. When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
   - `css` (optional string): Custom CSS styles to be added to the view.
   - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
