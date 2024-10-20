@@ -9,8 +9,9 @@ import { version } from './package.json';
 // https://vitejs.dev/config/
 const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
   if (mode === 'dev') {
-    const devVault = await initDevelopmentVault();
-    process.env.VITE_VAULT_PORT = String(await devVault.start());
+    const { vault, testObjects } = await initDevelopmentVault();
+    process.env.VITE_VAULT_PORT = String(await vault.start());
+    process.env.VITE_TEST_OBJECT_ID = String(Object.keys(testObjects)[0]);
   }
 
   const [major, minor, patch] = version.split('.');
@@ -27,7 +28,15 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
         suffixes: ['latest', `v${major}`, `v${major}.${minor}`, `v${major}.${minor}.${patch}`],
       },
     },
-    iframe: {
+    ['view-iframe']: {
+      input: 'src/protected-view/iframe/index.html',
+      output: {
+        name: 'pvault-view-iframe.html',
+        // the lib load the iframe always by the exact version so we don't need to create other suffixes.
+        suffixes: [`v${version}`],
+      },
+    },
+    ['form-iframe']: {
       input: 'src/protected-forms/iframe/index.html',
       output: {
         name: 'pvault-forms-iframe.html',
@@ -42,11 +51,13 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
     process.env,
     mode === 'dev'
       ? {
-          VITE_IFRAME_URL: './src/protected-forms/iframe/index.html',
+          VITE_VIEW_IFRAME_URL: './src/protected-view/iframe/index.html',
+          VITE_FORM_IFRAME_URL: './src/protected-forms/iframe/index.html',
           VITE_IFRAME_ORIGIN: 'http://localhost:3000',
         }
       : {
-          VITE_IFRAME_URL: `https://cdn.piiano.com/pvault-forms-iframe-v${version}.html`,
+          VITE_VIEW_IFRAME_URL: `https://cdn.piiano.com/pvault-view-iframe-v${version}.html`,
+          VITE_FORM_IFRAME_URL: `https://cdn.piiano.com/pvault-forms-iframe-v${version}.html`,
           VITE_IFRAME_ORIGIN: 'https://cdn.piiano.com',
         },
   );
