@@ -1,6 +1,6 @@
 {
   "name": "@piiano/forms",
-  "version": "1.0.40",
+  "version": "1.1.1",
   "description": "Piiano Forms SDK",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
   "type": "module",
@@ -24,10 +24,11 @@
   "repository": "git://github.com/piiano/vault-typescript.git",
   "homepage": "https://github.com/piiano/vault-typescript#readme",
   "scripts": {
-    "build": "rm -rf dist && yarn build:module && yarn build:lib && yarn build:iframe",
+    "build": "rm -rf dist && yarn build:module && yarn build:lib && yarn build:form-iframe && yarn build:view-iframe",
     "build:module": "tsc -p tsconfig.build.json && BUILD_TARGET=module vite build --mode prod",
     "build:lib": "BUILD_TARGET=lib vite build --mode prod",
-    "build:iframe": "BUILD_TARGET=iframe vite build --mode prod",
+    "build:form-iframe": "BUILD_TARGET=form-iframe vite build --mode prod",
+    "build:view-iframe": "BUILD_TARGET=view-iframe vite build --mode prod",
     "dev": "vite --mode dev",
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "vitest --dir src --run",

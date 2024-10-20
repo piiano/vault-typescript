@@ -1,4 +1,4 @@
-import { array, boolean, type Infer, literal, number, object, oneOf, optional, or, record, string } from './schema';
+import { array, boolean, type Infer, literal, number, object, oneOf, record, string } from './schema';
 
 export const StrategyValidator = string().enum(
   /**
@@ -94,7 +94,7 @@ export type Style = Infer<typeof StyleValidator>;
 /**
  * The options to use to initialize the form.
  */
-export const InitOptionsValidator = object({
+export const FormInitOptionsValidator = object({
   /**
    * The URL of the vault to connect to.
    */
@@ -151,7 +151,7 @@ export const InitOptionsValidator = object({
    */
   style: StyleValidator.optional(),
 });
-export type InitOptions = Infer<typeof InitOptionsValidator>;
+export type FormInitOptions = Infer<typeof FormInitOptionsValidator>;
 
 export const SizeValidator = object({
   width: number(),
@@ -159,20 +159,20 @@ export const SizeValidator = object({
 });
 export type Size = Infer<typeof SizeValidator>;
 
-export const IframeEventValidator = oneOf(
+export const FormIframeEventValidator = oneOf(
   /**
    * The init event is sent from the parent to the iframe to initialize the form.
    */
   object({
     event: literal('init'),
-    payload: InitOptionsValidator,
+    payload: FormInitOptionsValidator,
   }),
   /**
    * The update event is sent from the parent to the iframe to update the form.
    */
   object({
     event: literal('update'),
-    payload: InitOptionsValidator,
+    payload: FormInitOptionsValidator,
   }),
   /**
    * The submit event is sent from the parent to trigger the form submission programmatically.
@@ -188,4 +188,78 @@ export const IframeEventValidator = oneOf(
     payload: SizeValidator,
   }),
 );
-export type IframeEvent = Infer<typeof IframeEventValidator>;
+export type FormIframeEvent = Infer<typeof FormIframeEventValidator>;
+
+/**
+ * The options to use to initialize the protected view.
+ */
+export const ViewInitOptionsValidator = object({
+  /**
+   * The URL of the vault to connect to.
+   */
+  vaultURL: string(),
+  /**
+   * The API key to use to connect to the vault.
+   */
+  apiKey: string(),
+  /**
+   * Print debug information to console. This will not print sensitive information.
+   */
+  debug: boolean().optional(),
+  /**
+   * Whether to allow the view to rerender after it has been initialized. Default is false.
+   */
+  dynamic: boolean().optional(),
+  /**
+   * The name of the Vault collection to use.
+   */
+  collection: string(),
+  /**
+   * The reason param to be set with API calls that will be included in the audit log.
+   */
+  reason: ReasonValidator.optional(),
+  /**
+   * The ids of objects to fetch from the Vault and show in the view.
+   */
+  ids: array(string()),
+  /**
+   * The props to fetch for each object and show in the view.
+   */
+  props: array(string()),
+  /**
+   * An extra transformation param to be sent to the Vault and be available in the transformation functions.
+   * When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
+   */
+  transformationParam: string().optional(),
+  /**
+   * Custom CSS to apply to the form.
+   */
+  css: string().optional(),
+});
+
+export type ViewInitOptions = Infer<typeof ViewInitOptionsValidator>;
+
+export const ViewIframeEventValidator = oneOf(
+  /**
+   * The init event is sent from the parent to the iframe to initialize the form.
+   */
+  object({
+    event: literal('init'),
+    payload: ViewInitOptionsValidator,
+  }),
+  /**
+   * The update event is sent from the parent to the iframe to update the form.
+   */
+  object({
+    event: literal('update'),
+    payload: ViewInitOptionsValidator,
+  }),
+  /**
+   * The container-size event is sent from the iframe to the parent to notify the iframe with its parent container size.
+   */
+  object({
+    event: literal('container-size'),
+    payload: SizeValidator,
+  }),
+);
+export type ViewIframeEvent = Infer<typeof ViewInitOptionsValidator>;
