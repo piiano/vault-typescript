@@ -204,7 +204,7 @@ Use `createProtectedView` when you need to securely display sensitive data on th
       - When type is `"invoke-action"` the view will invoke an action in the Vault and display the result in the view. The following additional strategy options are required:
         - `action` (string): Name of the action to invoke.
         - `globalIdentifierParameters` (Record<string, string>): Vault global identifiers to be evaluated by the vault and passed to the action.
-        - `extraParameters` (Record<string, unknown>): An extra parameters to be sent to the action and be available in the action. These parameters are not evaluated by the vault before passing them to the action.
+        - `extraParameters` (Record<string, unknown>): Extra parameters to be sent to the action and be available in the action. These parameters are not evaluated by the vault before passing them to the action.
         - `reason` (string): Reason for invoking the action (will be logged in the Vault audit logs). 
   - `css` (optional string): Custom CSS styles to be added to the view.
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
