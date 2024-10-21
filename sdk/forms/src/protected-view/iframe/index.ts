@@ -1,14 +1,18 @@
 import { renderView } from './components/iframe';
 import { type Logger, newLogger } from '../../common/logger';
 import { newSenderToSource, type Sender } from '../../common/events';
-import { ViewIframeEventValidator } from '../../common/models';
+import { InvokeActionStrategyOptions, ReadObjectStrategyOptions, ViewIframeEventValidator } from '../../common/models';
 import { ObjectFields, VaultClient } from '@piiano/vault-client';
 import { ViewIframeOptions } from '../../options';
+
+export type Result =
+  | { strategy: 'read-objects'; objects: ObjectFields[] }
+  | { strategy: 'invoke-action'; response: unknown };
 
 let allowUpdates = false;
 let fetchObjectsOptions: Omit<ViewIframeOptions, 'debug' | 'dynamic' | 'style'> | undefined = undefined;
 let initialized = false;
-let objects: Promise<ObjectFields[]> | undefined = undefined;
+let result: Promise<Result>;
 let ready: Promise<void> | undefined = undefined;
 
 let sendToParent: Sender = () => {};
@@ -76,12 +80,31 @@ window.onmessage = ({ source, data }) => {
   }
 };
 
-function didFetchObjectOptionsChange(next: ViewIframeOptions) {
+function didStrategyOptionsChange(next: ViewIframeOptions) {
   const prev = fetchObjectsOptions;
   return (
     prev === undefined ||
     prev.apiKey !== next.apiKey ||
     prev.vaultURL !== next.vaultURL ||
+    prev.strategy.type !== prev.strategy.type ||
+    (prev.strategy.type === 'read-objects' &&
+      next.strategy.type === 'read-objects' &&
+      didReadObjectOptionsChange(prev.strategy, next.strategy)) ||
+    (prev.strategy.type === 'invoke-action' &&
+      next.strategy.type === 'invoke-action' &&
+      didInvokeActionOptionsChange(prev.strategy, next.strategy))
+  );
+}
+
+async function render(payload: ViewIframeOptions) {
+  allowUpdates = Boolean(payload.dynamic);
+  if (!result || didStrategyOptionsChange(payload)) result = applyStrategy(payload);
+  renderView(sendToParent, await result, payload.css);
+}
+
+function didReadObjectOptionsChange(prev: ReadObjectStrategyOptions, next: ReadObjectStrategyOptions) {
+  return (
+    prev === undefined ||
     prev.collection !== next.collection ||
     prev.reason !== next.reason ||
     prev.props !== next.props ||
@@ -91,27 +114,70 @@ function didFetchObjectOptionsChange(next: ViewIframeOptions) {
   );
 }
 
-async function render(payload: ViewIframeOptions) {
-  allowUpdates = Boolean(payload.dynamic);
-  if (!objects || didFetchObjectOptionsChange(payload)) objects = fetchObjects(payload);
-  renderView(sendToParent, await objects, payload.css);
+function didInvokeActionOptionsChange(prev: InvokeActionStrategyOptions, next: InvokeActionStrategyOptions) {
+  return (
+    prev === undefined ||
+    prev.action !== next.action ||
+    prev.reason !== next.reason ||
+    Object.keys(prev.globalIdentifierParameters) !== Object.keys(next.globalIdentifierParameters) ||
+    Object.entries(prev.globalIdentifierParameters).some(
+      ([key, value]) => next.globalIdentifierParameters[key] !== value,
+    ) ||
+    Object.keys(prev.extraParameters ?? {}) !== Object.keys(next.extraParameters ?? {}) ||
+    Object.entries(prev.extraParameters ?? {}).some(([key, value]) => next.extraParameters?.[key] !== value)
+  );
 }
 
-async function fetchObjects({
-  apiKey,
+async function applyStrategy({
   vaultURL,
-  collection,
-  reason = 'AppFunctionality',
-  props,
-  ids,
-  transformationParam,
-}: Omit<ViewIframeOptions, 'debug' | 'style'>) {
+  apiKey,
+  strategy,
+}: Pick<ViewIframeOptions, 'vaultURL' | 'apiKey' | 'strategy'>): Promise<Result> {
+  const client = new VaultClient({ apiKey, vaultURL });
+  switch (strategy.type) {
+    case 'read-objects':
+      return {
+        strategy: 'read-objects',
+        objects: await fetchObjects(client, strategy),
+      };
+    case 'invoke-action':
+      return {
+        strategy: 'invoke-action',
+        response: await invokeAction(client, strategy),
+      };
+  }
+}
+
+function invokeAction(
+  client: VaultClient,
+  { action, reason = 'AppFunctionality', globalIdentifierParameters, extraParameters }: InvokeActionStrategyOptions,
+) {
+  const params = Object.create(null);
+  if (extraParameters) {
+    for (const [key, value] of Object.entries(extraParameters)) {
+      params[key] = value;
+    }
+  }
+  params.template_variables = Object.create(null);
+  for (const [key, value] of Object.entries(globalIdentifierParameters)) {
+    params.template_variables[key] = value;
+  }
+  return client.actions.invokeAction({
+    action,
+    reason,
+    requestBody: params,
+  });
+}
+
+async function fetchObjects(
+  client: VaultClient,
+  { collection, reason = 'AppFunctionality', props, ids, transformationParam }: ReadObjectStrategyOptions,
+) {
   if (ids.length > 10) throw new Error('Too many objects');
   if (ids.some((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(id))) {
     throw new Error('Invalid object ID');
   }
 
-  const client = new VaultClient({ apiKey, vaultURL });
   const objects = await client.objects.listObjects({
     collection,
     reason,

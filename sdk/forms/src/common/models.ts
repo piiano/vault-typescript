@@ -1,4 +1,4 @@
-import { array, boolean, type Infer, literal, number, object, oneOf, record, string } from './schema';
+import { array, boolean, type Infer, literal, number, object, oneOf, record, string, unknown } from './schema';
 
 export const StrategyValidator = string().enum(
   /**
@@ -191,25 +191,13 @@ export const FormIframeEventValidator = oneOf(
 export type FormIframeEvent = Infer<typeof FormIframeEventValidator>;
 
 /**
- * The options to use to initialize the protected view.
+ * Options for the read-objects strategy to fetch objects from the Vault and show them in the view.
  */
-export const ViewInitOptionsValidator = object({
+const ReadObjectStrategyOptionsValidator = object({
   /**
-   * The URL of the vault to connect to.
+   * The type of the strategy.
    */
-  vaultURL: string(),
-  /**
-   * The API key to use to connect to the vault.
-   */
-  apiKey: string(),
-  /**
-   * Print debug information to console. This will not print sensitive information.
-   */
-  debug: boolean().optional(),
-  /**
-   * Whether to allow the view to rerender after it has been initialized. Default is false.
-   */
-  dynamic: boolean().optional(),
+  type: literal('read-objects'),
   /**
    * The name of the Vault collection to use.
    */
@@ -231,6 +219,62 @@ export const ViewInitOptionsValidator = object({
    * When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
    */
   transformationParam: string().optional(),
+});
+
+export type ReadObjectStrategyOptions = Infer<typeof ReadObjectStrategyOptionsValidator>;
+
+/**
+ * Options for the invoke-action strategy to invoke actions in the Vault and show the result in the view.
+ */
+const InvokeActionStrategyOptionsValidator = object({
+  /**
+   * The type of the strategy.
+   */
+  type: literal('invoke-action'),
+  /**
+   * The name of the Vault action to invoke.
+   */
+  action: string(),
+  /**
+   * The reason param to be set with API calls that will be included in the audit log.
+   */
+  reason: ReasonValidator.optional(),
+  /**
+   * Vault global identifiers to be evaluated by the vault and passed to the action.
+   */
+  globalIdentifierParameters: record(string(), string()),
+  /**
+   * An extra parameters to be sent to the action and be available in the action.
+   * These parameters are not evaluated by the vault before passing them to the action.
+   */
+  extraParameters: oneOf(record(string(), unknown())).optional(),
+});
+export type InvokeActionStrategyOptions = Infer<typeof InvokeActionStrategyOptionsValidator>;
+
+/**
+ * The options to use to initialize the protected view.
+ */
+export const ViewInitOptionsValidator = object({
+  /**
+   * The URL of the vault to connect to.
+   */
+  vaultURL: string(),
+  /**
+   * The API key to use to connect to the vault.
+   */
+  apiKey: string(),
+  /**
+   * Print debug information to console. This will not print sensitive information.
+   */
+  debug: boolean().optional(),
+  /**
+   * Whether to allow the view to rerender after it has been initialized. Default is false.
+   */
+  dynamic: boolean().optional(),
+  /**
+   * The strategy to use to fetch information from the Vault and show it in the view.
+   */
+  strategy: oneOf(ReadObjectStrategyOptionsValidator, InvokeActionStrategyOptionsValidator),
   /**
    * Custom CSS to apply to the form.
    */
