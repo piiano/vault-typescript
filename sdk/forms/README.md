@@ -176,11 +176,11 @@ const form = createProtectedForm('#form-container', {
 
 #### Overview
 
-`createProtectedView` creates a secure view component to display sensitive data stored in Piiano Vault, ensuring that sensitive data is never directly exposed to the frontend.
+`createProtectedView` creates a secure view component to display sensitive data returned from Piiano Vault, ensuring that sensitive data is never directly exposed to the frontend.
 
 #### Goal
 
-Use `createProtectedView` when you need to securely display sensitive data on the frontend without exposing the original data to your frontend or backend systems.
+Use `createProtectedView` when you need to securely display sensitive data on the frontend without exposing the raw data to your frontend or backend systems.
 
 #### Usage
 
@@ -190,14 +190,23 @@ Use `createProtectedView` when you need to securely display sensitive data on th
 - `options`: Configuration options:
   - `vaultURL` (string): The URL of the Piiano Vault instance.
   - `apiKey` (string): API key for accessing the Vault.
-  - `collection` (string): Name of the collection containing the data.
-  - `ids` (string array): IDs of objects to be displayed.
-  - `props` (string array): Properties to display from each object.
-    Each property can defined as is or with a transformation (e.g., `name`, `email`, `email.mask`, etc.).
-    The order of properties in the array determines the order in which they will be displayed in the view.
-  - `transformationParam` (optional string): An extra transformation param to be sent to the Vault and be available in the transformation functions. When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
+  - `strategy` (object): Strategy options for getting data from the Vault:
+    - `type` (string): Type of the strategy. Can be either `"read-objects"` or `"invoke-action"`.
+      The rest of the configuration depends on the strategy type:
+      - When type is `"read-objects"` the view will read objects from the Vault and display them in the view. The following additional strategy options are required:
+        - `collection` (string): Name of the collection containing the data.
+        - `ids` (string array): IDs of objects to be displayed.
+        - `props` (string array): Properties to display from each object.
+          Each property can defined as is or with a transformation (e.g., `name`, `email`, `email.mask`, etc.).
+          The order of properties in the array determines the order in which they will be displayed in the view.
+        - `transformationParam` (optional string): An extra transformation param to be sent to the Vault and be available in the transformation functions. When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
+        - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
+      - When type is `"invoke-action"` the view will invoke an action in the Vault and display the result in the view. The following additional strategy options are required:
+        - `action` (string): Name of the action to invoke.
+        - `globalIdentifierParameters` (Record<string, string>): Vault global identifiers to be evaluated by the vault and passed to the action.
+        - `extraParameters` (Record<string, unknown>): An extra parameters to be sent to the action and be available in the action. These parameters are not evaluated by the vault before passing them to the action.
+        - `reason` (string): Reason for invoking the action (will be logged in the Vault audit logs). 
   - `css` (optional string): Custom CSS styles to be added to the view.
-  - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
   - `hooks` (optional object): Lifecycle hooks:
     - `onError(error)`: Called when an error occurs.
@@ -218,9 +227,12 @@ import {createProtectedView} from '@piiano/forms';
 const view = createProtectedView('#view-container', {
   vaultURL: 'https://your-vault-url.com',
   apiKey: 'your-api-key',
-  collection: 'customers',
-  ids: ['b8a42023-b63e-42a8-a3c4-c0cdfad2b755'],
-  props: ['name', 'email'],
+  strategy: {
+    type: 'read-objects',
+    collection: 'customers',
+    ids: ['b8a42023-b63e-42a8-a3c4-c0cdfad2b755'],
+    props: ['name', 'email'],
+  },
   css: `.view { font-weight: bold; }`,
 });
 ```
