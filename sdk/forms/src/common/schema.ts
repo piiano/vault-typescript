@@ -21,6 +21,7 @@ export const literal = <Value extends string | boolean | number>(literalValue: V
 export const string = () => asValidator((value: unknown): value is string => typeof value === 'string');
 export const number = () => asValidator((value: unknown): value is number => typeof value === 'number');
 export const boolean = () => asValidator((value: unknown): value is boolean => typeof value === 'boolean');
+export const unknown = () => asValidator((value: unknown): value is unknown => true);
 
 export const array = <Type>(validator: Validator<Type>): Validator<Type[]> =>
   asValidator(
