@@ -6,11 +6,7 @@ import { mockCDN } from '../helpers/mockCDN';
 // Function to setup protected view page with a real Vault instance
 export async function prepareProtectedViewTest(
   page: Page,
-  options: Partial<ProtectedViewOptions> & {
-    collection: string;
-    ids: string[];
-    props: string[];
-  },
+  options: Partial<ProtectedViewOptions> & Pick<ProtectedViewOptions, 'strategy'>,
 ) {
   const vaultURL = new URL(`http://localhost:${process.env.VAULT_PORT}`);
 
