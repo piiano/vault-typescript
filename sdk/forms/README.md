@@ -231,7 +231,7 @@ const view = createProtectedView('#view-container', {
     type: 'read-objects',
     collection: 'customers',
     ids: ['b8a42023-b63e-42a8-a3c4-c0cdfad2b755'],
-    props: ['name', 'email'],
+    props: ['name', 'email', 'email.mask'],
   },
   css: `.view { font-weight: bold; }`,
 });
