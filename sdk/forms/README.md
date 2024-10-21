@@ -197,7 +197,7 @@ Use `createProtectedView` when you need to securely display sensitive data on th
         - `collection` (string): Name of the collection containing the data.
         - `ids` (string array): IDs of objects to be displayed.
         - `props` (string array): Properties to display from each object.
-          Each property can defined as is or with a transformation (e.g., `name`, `email`, `email.mask`, etc.).
+          Each property can be provided as is or with a transformation (e.g., `name`, `email`, `email.mask`, etc.).
           The order of properties in the array determines the order in which they will be displayed in the view.
         - `transformationParam` (optional string): An extra transformation param to be sent to the Vault and be available in the transformation functions. When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
         - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
