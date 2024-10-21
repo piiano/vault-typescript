@@ -15,9 +15,12 @@ test.describe('Protected View', () => {
     const displayProps = ['card_holder', 'card_number', 'card_expiry'];
     // Set up the protected view with required options using the running vault instance
     const view = await prepareProtectedViewTest(page, {
-      collection: 'credit_cards',
-      ids: [id],
-      props: displayProps,
+      strategy: {
+        type: 'read-objects',
+        collection: 'credit_cards',
+        ids: [id],
+        props: displayProps,
+      },
     });
 
     // Check that the view is rendered with the expected data
@@ -36,9 +39,12 @@ test.describe('Protected View', () => {
 
     // Set up the protected view with multiple objects
     const view = await prepareProtectedViewTest(page, {
-      collection: 'credit_cards',
-      ids: ids,
-      props: displayProps,
+      strategy: {
+        type: 'read-objects',
+        collection: 'credit_cards',
+        ids: ids,
+        props: displayProps,
+      },
     });
 
     // Verify data for each object is rendered
@@ -57,9 +63,12 @@ test.describe('Protected View', () => {
 
     // Set up the protected view with an invalid object ID
     const view = await prepareProtectedViewTest(page, {
-      collection: 'credit_cards',
-      ids: ['invalid-object-id'],
-      props: ['card_holder', 'card_expiry'],
+      strategy: {
+        type: 'read-objects',
+        collection: 'credit_cards',
+        ids: ['invalid-object-id'],
+        props: ['card_holder', 'card_expiry'],
+      },
     });
 
     const err = (await log).slice('test onError hook: '.length);
@@ -77,9 +86,12 @@ test.describe('Protected View', () => {
       vaultURL: `http://localhost:${process.env.VAULT_PORT}`,
       apiKey: 'pvaultauth',
       dynamic: true,
-      collection: 'credit_cards',
-      ids: [id],
-      props: displayProps,
+      strategy: {
+        type: 'read-objects',
+        collection: 'credit_cards',
+        ids: [id],
+        props: displayProps,
+      },
       css: `.view { background-color: red; }`,
     };
     const view = await prepareProtectedViewTest(page, options);
