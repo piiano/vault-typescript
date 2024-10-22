@@ -5,7 +5,7 @@ This is a TypeScript package that provides type definitions for [Piiano Vault Bu
 > **Note:**
 > 
 > This package is compatible with Vault version 1.13.0.
-> For a Vault client compatible with other versions of Vault, check [other versions of this package](https://www.npmjs.com/package/@piiano/bundles?activeTab=versions).
+> For a Vault client compatible with other versions of Vault, check [other versions of this package](https://www.npmjs.com/package/@piiano/vault-bundles?activeTab=versions).
 
 ## Installation
 
@@ -23,7 +23,7 @@ yarn add -D @piiano/vault-bundles
 
 ## Usage
 
-Check this [usage example](../../examples/custom-data-types) showing how to define a custom data type using a bundle typed with `@piiano/vault-bundles` package.
+Check this [example](../../examples/custom-data-types) that shows how to define a custom data type using a bundle typed with this package.
 
 ## License
 
