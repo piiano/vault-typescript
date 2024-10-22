@@ -1,10 +1,18 @@
 import { ObjectFields } from '@piiano/vault-client';
 import { component } from '../../../common/component';
+import { Result } from '../index';
 
-export const View = component(({ objects }: { objects: Array<ObjectFields> }) => {
+export const View = component(({ result }: { result: Result }) => {
   const view = document.createElement('div');
   view.classList.add('view');
-  view.replaceChildren(...objects.map((object) => ObjectView({ object })));
+  switch (result.strategy) {
+    case 'read-objects':
+      view.replaceChildren(...result.objects.map((object) => ObjectView({ object })));
+      break;
+    case 'invoke-action':
+      view.replaceChildren(FieldValue({ value: result.response }));
+      break;
+  }
   return view;
 });
 
