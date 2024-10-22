@@ -23,7 +23,7 @@ It allows you to collect sensitive data such as credit card information, social 
 
 > **Note:**
 >
-> This package is compatible with Vault version 1.13.0.
+> This package is compatible with Vault version 1.13.1.
 > For a version compatible with other versions of Vault, check [other versions of this package](https://www.npmjs.com/package/@piiano/react-forms?activeTab=versions).
 
 ## When to use Piiano Forms

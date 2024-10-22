@@ -4,7 +4,7 @@ This is a TypeScript package that provides type definitions for [Piiano Vault Bu
 
 > **Note:**
 > 
-> This package is compatible with Vault version 1.13.0.
+> This package is compatible with Vault version 1.13.1.
 > For a Vault client compatible with other versions of Vault, check [other versions of this package](https://www.npmjs.com/package/@piiano/vault-bundles?activeTab=versions).
 
 ## Installation
