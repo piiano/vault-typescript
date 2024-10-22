@@ -1,10 +1,8 @@
 import { expect, test } from '@playwright/test';
-import { waitForConsole } from '../helpers';
+
 import { prepareProtectedFormTest } from './setup';
-import { Vault } from '@piiano/testcontainers-vault';
-import { Form } from '../../src/protected-forms';
-import { Result, ResultType, Strategy } from '../../src/options';
-import { initDevelopmentVault } from '../../vite/init-dev-vault';
+import { Result, Strategy, Form } from '../../src';
+import { waitForConsole } from '../helpers/waitForConsole';
 
 test.describe.configure({
   timeout: 600000,
@@ -81,8 +79,6 @@ test.describe('strategies', () => {
         const result = JSON.parse((await log).slice('test onSubmit hook: '.length));
         expect(result).toBeDefined();
         resultAssertion(result);
-
-        // await new Promise(() => {});
       });
 
       test('externally controlled submit', async ({ page }) => {

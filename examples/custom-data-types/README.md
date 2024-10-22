@@ -2,6 +2,14 @@
 
 This example demonstrates how to define custom data types using a bundle defined with the `@piiano/vault-bundles` package.
 
+## Overview
+
+- `src/index.ts` - This is the example bundle to be tested, written in TypeScript.
+- `test`
+  - `hooks.ts` - Defines global hooks for the test to start a local Dev edition of Vault and stop it at the end of the test.
+  - `custom-data-types.spec.ts`- A test that adds the bundle to the vault, creates a custom data type, creates a collection that uses it, and tests adding objects with a property that uses the custom data type (passing validations) and reading the normalized & transformed version of the property.
+  - `package.json`- Defines the dependencies for compiling the bundle and scripts for testing and building the bundle.
+
 ## Running the example
 
 To run the example, please follow these steps:

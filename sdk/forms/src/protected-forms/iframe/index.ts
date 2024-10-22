@@ -1,7 +1,7 @@
 import { renderForm, updateForm } from './components/iframe';
-import { type Logger, newLogger } from '../common/logger';
-import { newSenderToSource, type Sender } from '../common/events';
-import { IframeEventValidator, type Style } from '../common/models';
+import { type Logger, newLogger } from '../../common/logger';
+import { newSenderToSource, type Sender } from '../../common/events';
+import { FormIframeEventValidator, type Style } from '../../common/models';
 
 let form: HTMLFormElement | undefined;
 let style: Style | undefined;
@@ -20,7 +20,7 @@ window.onmessage = ({ source, data }) => {
   // We already validate the init options in the parent and return an indicative message there.
   // The validation here is done for security reasons to prevent malicious messages with prototype pollution or other attacks.
   // This is why the error message here doesn't have to be very descriptive as it's not a flow that should ever happen.
-  if (!IframeEventValidator.parse(data)) {
+  if (!FormIframeEventValidator.parse(data)) {
     return sendToParent('error', {
       type: 'invalid-event',
       message: 'Invalid event data.',

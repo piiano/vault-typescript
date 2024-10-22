@@ -8,12 +8,12 @@
   </a>
 </p>
 
-# Piiano vault Typescript SDK
+# Piiano Vault Typescript SDK
 
-This folder contains SDKs that connect to the Vault.
+This SDK contains:
 
-1. [Vault Client](./vault-client) - client to connect to the Vault
-1. [Vault Encryption with TypeORM](./typeorm-encryption) - SDK to automatically encrypt/decrypt the TypeORM fields
-1. [Vault PCI HTML Forms](./forms) - processes sensitive data without exposing it to your systems by automatically tokenizing it before submitting it to your backend. Typical use case is for processing credit card numbers and still remaining outside of a PCI scope
-1. [Vault PCI React Forms](./react-forms) - processes sensitive data in your React application without exposing it to your systems by automatically tokenizing it before submitting it to your backend. Typical use case is for processing credit card numbers and still remaining outside of a PCI scope
-1. [Vault Bundles](./vault-bundles) - Type definitions for creating and using [Vault Bundles](https://docs.piiano.com/guides/reference/bundles)
+1. [Vault Client](./vault-client) - a client that connects to Vault and enables the use of resources from the Vault REST API.
+1. [Vault Encryption with TypeORM](./typeorm-encryption) - a package for encrypting and decrypting TypeORM fields.
+1. [Vault PCI HTML Forms](./forms) - HTML forms that process sensitive data without exposing it to your systems by tokenizing the data before submitting it to your backend. A typical use case is for processing credit card numbers while remaining out of PCI scope.
+1. [Vault PCI React Forms](./react-forms) - React forms that process sensitive data without exposing it to your systems by tokenizing the data before submitting it to your backend. A typical use case is for processing credit card numbers while remaining out of PCI scope.
+1. [Vault Bundles](./vault-bundles) - Type definitions for creating and using [Vault Bundles](https://docs.piiano.com/guides/reference/bundles).

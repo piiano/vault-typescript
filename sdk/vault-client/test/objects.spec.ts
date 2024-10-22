@@ -5,7 +5,7 @@ import * as chaiAsPromised from "chai-as-promised";
 
 use(chaiAsPromised)
 
-describe('crypto',  function () {
+describe('objects',  function () {
 
   const testCollection: Collection = {
     name: 'test_objects_collection',
@@ -77,7 +77,8 @@ describe('crypto',  function () {
     // access the Vault error response
     expect(error).to.have.property('body').deep.equal({
       error_code: 'PV3005',
-      message: `One or more Objects is not found: ${id}.`,
+      error_url: 'https://docs.piiano.com/api/error-codes#PV3005',
+      message: `One or more Objects is not found: ${id}. For more details, view the logs.`,
       context: {
         ids: id,
       }

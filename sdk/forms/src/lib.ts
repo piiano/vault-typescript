@@ -1,4 +1,4 @@
-import { createProtectedForm, controlForm, Client } from './index';
+import { createProtectedForm, createProtectedView, controlForm, Client } from './index';
 
 declare global {
   interface Window {
@@ -8,6 +8,7 @@ declare global {
 
 const pvault = {
   createProtectedForm,
+  createProtectedView,
   controlForm,
   Client,
 };

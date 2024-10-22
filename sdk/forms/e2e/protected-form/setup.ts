@@ -1,7 +1,9 @@
 import { Vault } from '@piiano/testcontainers-vault';
 import { expect, Page } from '@playwright/test';
-import { mockCDN, mockWebPage } from '../helpers';
+
 import { ProtectedFormOptions } from '../../src/options';
+import { mockCDN } from '../helpers/mockCDN';
+import { mockWebPage } from '../helpers/mockWebPage';
 
 export async function prepareProtectedFormTest(page: Page, options: Partial<ProtectedFormOptions<any>> = {}) {
   const vaultURL = new URL(`http://localhost:${process.env.VAULT_PORT}`);
