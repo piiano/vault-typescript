@@ -7,7 +7,7 @@ on:
         description: Vault version
         type: string
       path:
-        description: 'Path to package.json'
+        description: "Path to package.json"
         required: true
         type: string
       bump:
@@ -22,13 +22,13 @@ on:
         type: string
     secrets:
       CICD_RELEASES_PAT:
-        description: 'Personal Access Token for pushing changes to repository'
+        description: "Personal Access Token for pushing changes to repository"
         required: true
       PVAULT_SERVICE_LICENSE:
-        description: 'Vault license for testing'
+        description: "Vault license for testing"
         required: true
       NPM_REGISTRY_TOKEN:
-        description: 'Token for NPM registry'
+        description: "Token for NPM registry"
         required: true
 
 # Necessary for AWS assume role.
@@ -54,18 +54,25 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'yarn'
+          cache: "yarn"
           cache-dependency-path: ${{ inputs.path }}/yarn.lock
 
       - name: Bump version
         id: bump
         if: inputs.bump != 'none'
         run: |
+          old_ver=$(jq -r '.version' ${{ inputs.path }}/package.json)
+
           yarn --cwd ${{ inputs.path }} version \
             --no-git-tag-version \
             --no-commit-hooks \
             --${{ inputs.bump }}
-          
+
+          new_ver=$(jq -r '.version' ${{ inputs.path }}/package.json)
+          if [ -e ${{ inputs.path }}/bump.sh ] ; then
+            ${{ inputs.path }}/bump.sh ${old_ver} ${new_ver}
+          fi
+
           echo "package_name=$(jq -r '.name' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
           echo "version=$(jq -r '.version' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
 
