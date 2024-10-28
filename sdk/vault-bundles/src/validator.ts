@@ -1,4 +1,4 @@
 /**
  * A validator accepts a value and returns true if the value is determined to be valid.
  */
-export type Validator = (value: unknown) => boolean;
+export type Validator = (value: unknown) => boolean | Promise<boolean>;

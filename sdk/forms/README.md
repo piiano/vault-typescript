@@ -104,11 +104,11 @@ pnpm add @piiano/forms
 
 #### Overview
 
-`createProtectedForm` allows you to create and manage a secure form for collecting sensitive data like credit card information or personally identifiable information (PII). This form handles the entire interaction with Piiano Vault, ensuring secure storage, encryption, or tokenization of data.
+`createProtectedForm` enables you to create and manage a secure form for collecting sensitive data, such as credit card information or personally identifiable information (PII). The form handles the entire interaction with Piiano Vault, ensuring that sensitive data is securely transmitted, stored, and protected through encryption or tokenization.
 
 #### Goal
 
-Use `createProtectedForm` when you need to securely collect and manage sensitive data, and wish to ensure that it is processed securely by Piiano Vault. This function is suitable when you do not want the backend to handle raw PII.
+Use `createProtectedForm` when you need to securely collect and process sensitive data, while ensuring that neither your frontend nor backend systems directly handle the raw data. This method is particularly useful for meeting regulatory compliance requirements, as it reduces the exposure of sensitive information across your system. By isolating sensitive data handling within Piiano Vault, `createProtectedForm` minimizes the effort needed to certify your environment for handling sensitive data, as most components won’t have direct access to the raw data by default.
 
 #### Usage
 
@@ -176,11 +176,11 @@ const form = createProtectedForm('#form-container', {
 
 #### Overview
 
-`createProtectedView` creates a secure view component to display sensitive data returned from Piiano Vault, ensuring that sensitive data is never directly exposed to the frontend.
+`createProtectedView` generates a secure view component for displaying sensitive data retrieved from Piiano Vault. This ensures that while the data is visible to the user, it remains protected from access by other client-side code, such as third-party scripts, browser extensions, or external dependencies.
 
 #### Goal
 
-Use `createProtectedView` when you need to securely display sensitive data on the frontend without exposing the raw data to your frontend or backend systems.
+Use `createProtectedView` when you need to securely display sensitive data on the frontend. The data is rendered within a protected environment, making it inaccessible to other frontend or backend components. This approach can be particularly useful for meeting regulatory compliance requirements, as it limits data exposure to only the protected view. By keeping sensitive data isolated, you reduce the amount of work needed to certify most of your environment for handling sensitive information, since most components won’t have direct access to the data by default.
 
 #### Usage
 
@@ -203,8 +203,7 @@ Use `createProtectedView` when you need to securely display sensitive data on th
         - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
       - When type is `"invoke-action"` the view will invoke an action in the Vault and display the result in the view. The following additional strategy options are required:
         - `action` (string): Name of the action to invoke.
-        - `globalIdentifierParameters` (Record<string, string>): Vault global identifiers to be evaluated by the vault and passed to the action.
-        - `extraParameters` (Record<string, unknown>): Extra parameters to be sent to the action and be available in the action. These parameters are not evaluated by the vault before passing them to the action.
+        - `input` (Record<string, unknown>): Input parameters to be sent to the action and be available in the action code.
         - `reason` (string): Reason for invoking the action (will be logged in the Vault audit logs). 
   - `css` (optional string): Custom CSS styles to be added to the view.
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).

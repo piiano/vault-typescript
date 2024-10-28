@@ -1,4 +1,5 @@
 import { array, boolean, type Infer, literal, number, object, oneOf, record, string, unknown } from './schema';
+import { a } from 'vitest/dist/suite-ghspeorC';
 
 export const StrategyValidator = string().enum(
   /**
@@ -240,16 +241,37 @@ const InvokeActionStrategyOptionsValidator = object({
    */
   reason: ReasonValidator.optional(),
   /**
-   * Vault global identifiers to be evaluated by the vault and passed to the action.
+   * Input to be sent to the action.
+   * This input will be available in the action JS code for processing.
    */
-  globalIdentifierParameters: record(string(), string()),
-  /**
-   * An extra parameters to be sent to the action and be available in the action.
-   * These parameters are not evaluated by the vault before passing them to the action.
-   */
-  extraParameters: oneOf(record(string(), unknown())).optional(),
+  input: record(string(), unknown()).optional(),
 });
+
 export type InvokeActionStrategyOptions = Infer<typeof InvokeActionStrategyOptionsValidator>;
+
+const DisplayOptionsValidator = array(
+  object({
+    /**
+     * The path to the key in the returned object to display. Use dot notation for nested keys (e.g. `address.city`).
+     */
+    path: string(),
+    /**
+     * The label to display for the key.
+     * If not provided, no label will be displayed.
+     */
+    label: string().optional(),
+    /**
+     * Whether the value supports click-to-copy functionality.
+     */
+    clickToCopy: boolean().optional(),
+    /**
+     * CSS class to apply to the value.
+     */
+    class: string().optional(),
+  }),
+);
+
+export type DisplayOptions = Infer<typeof DisplayOptionsValidator>;
 
 /**
  * The options to use to initialize the protected view.
@@ -275,6 +297,10 @@ export const ViewInitOptionsValidator = object({
    * The strategy to use to fetch information from the Vault and show it in the view.
    */
   strategy: oneOf(ReadObjectStrategyOptionsValidator, InvokeActionStrategyOptionsValidator),
+  /**
+   * Configuration for the display of the data in view.
+   */
+  display: DisplayOptionsValidator,
   /**
    * Custom CSS to apply to the form.
    */

@@ -99,7 +99,7 @@ function didStrategyOptionsChange(next: ViewIframeOptions) {
 async function render(payload: ViewIframeOptions) {
   allowUpdates = Boolean(payload.dynamic);
   if (!result || didStrategyOptionsChange(payload)) result = applyStrategy(payload);
-  renderView(sendToParent, await result, payload.css);
+  renderView(sendToParent, await result, payload.display, payload.css);
 }
 
 function didReadObjectOptionsChange(prev: ReadObjectStrategyOptions, next: ReadObjectStrategyOptions) {
@@ -119,12 +119,7 @@ function didInvokeActionOptionsChange(prev: InvokeActionStrategyOptions, next: I
     prev === undefined ||
     prev.action !== next.action ||
     prev.reason !== next.reason ||
-    Object.keys(prev.globalIdentifierParameters) !== Object.keys(next.globalIdentifierParameters) ||
-    Object.entries(prev.globalIdentifierParameters).some(
-      ([key, value]) => next.globalIdentifierParameters[key] !== value,
-    ) ||
-    Object.keys(prev.extraParameters ?? {}) !== Object.keys(next.extraParameters ?? {}) ||
-    Object.entries(prev.extraParameters ?? {}).some(([key, value]) => next.extraParameters?.[key] !== value)
+    JSON.stringify(prev.input) !== JSON.stringify(next.input)
   );
 }
 
@@ -150,22 +145,12 @@ async function applyStrategy({
 
 function invokeAction(
   client: VaultClient,
-  { action, reason = 'AppFunctionality', globalIdentifierParameters, extraParameters }: InvokeActionStrategyOptions,
+  { action, reason = 'AppFunctionality', input }: InvokeActionStrategyOptions,
 ) {
-  const params = Object.create(null);
-  if (extraParameters) {
-    for (const [key, value] of Object.entries(extraParameters)) {
-      params[key] = value;
-    }
-  }
-  params.template_variables = Object.create(null);
-  for (const [key, value] of Object.entries(globalIdentifierParameters)) {
-    params.template_variables[key] = value;
-  }
   return client.actions.invokeAction({
     action,
     reason,
-    requestBody: params,
+    requestBody: input,
   });
 }
 

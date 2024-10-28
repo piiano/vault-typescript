@@ -48,5 +48,5 @@ export type Transformation = (
    * The value of the property that is to be transformed.
    */
   value: unknown,
-) => unknown;
+) => unknown | Promise<unknown>;
 

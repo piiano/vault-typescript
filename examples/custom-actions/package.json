@@ -1,7 +1,7 @@
 {
-  "name": "@piiano/vault-custom-data-types-example",
+  "name": "@piiano/vault-custom-actions-example",
   "version": "0.0.1",
-  "description": "Example of using the Piiano Vault bundles and custom data types",
+  "description": "Example of using the Piiano Vault bundles and custom actions",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
   "private": true,
   "license": "MIT",
@@ -13,8 +13,8 @@
   },
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.1.2",
-    "@piiano/vault-client": "^1.0.30",
-    "@piiano/vault-bundles": "^0.1.0",
+    "@piiano/vault-client": "^1.1.3",
+    "@piiano/vault-bundles": "^0.1.13",
     "typescript": "^5.4.2",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
