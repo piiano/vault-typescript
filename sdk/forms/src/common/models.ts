@@ -1,5 +1,4 @@
 import { array, boolean, type Infer, literal, number, object, oneOf, record, string, unknown } from './schema';
-import { a } from 'vitest/dist/suite-ghspeorC';
 
 export const StrategyValidator = string().enum(
   /**
