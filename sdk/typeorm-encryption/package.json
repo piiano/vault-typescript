@@ -29,7 +29,7 @@
     "push": "pnpm publish --access public"
   },
   "dependencies": {
-    "@piiano/vault-client": "^1.0.24"
+    "@piiano/vault-client": "^1.1.3"
   },
   "peerDependencies": {
     "typeorm": "^0.3.17"
