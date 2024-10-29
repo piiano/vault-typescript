@@ -105,10 +105,6 @@ jobs:
           //registry.npmjs.org/:_authToken=${{ secrets.NPM_REGISTRY_TOKEN }}
           EOF
 
-      - name: Publish package
-        if: inputs.bump != 'none' && github.ref_name == 'main'
-        run: pnpm -C ${{ inputs.path }} run push
-
       - name: Commit changes
         if: inputs.bump != 'none' && github.ref_name == 'main'
         run: |
@@ -117,4 +113,12 @@ jobs:
           git add pnpm-lock.yaml ${{ inputs.path }}/package.json
           git status
           git commit -m "chore: bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}"
+
+      - name: Publish package
+        if: inputs.bump != 'none' && github.ref_name == 'main'
+        run: pnpm -C ${{ inputs.path }} run push
+
+      - name: Push changes
+        if: inputs.bump != 'none' && github.ref_name == 'main'
+        run: |
           git push
