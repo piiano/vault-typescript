@@ -47,10 +47,10 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2
       '@piiano/vault-bundles':
-        specifier: ^0.1.0
+        specifier: ^0.1.13
         version: 0.1.13
       '@piiano/vault-client':
-        specifier: ^1.0.30
+        specifier: ^1.1.3
         version: 1.1.3
       '@types/chai':
         specifier: ^4.3.11
@@ -77,10 +77,10 @@ importers:
   examples/typeorm-encryption:
     dependencies:
       '@piiano/typeorm-encryption':
-        specifier: ^1.0.23
+        specifier: ^1.0.40
         version: 1.0.40(typeorm@0.3.20(sqlite3@5.1.7)(ts-node@10.9.2(@types/node@20.17.2)(typescript@4.9.5)))
       '@piiano/vault-client':
-        specifier: ^1.0.24
+        specifier: ^1.1.3
         version: 1.1.3
       express:
         specifier: ^4.18.2
@@ -126,7 +126,7 @@ importers:
   examples/use-cases:
     dependencies:
       '@piiano/vault-client':
-        specifier: ^1.0.27
+        specifier: ^1.1.3
         version: 1.1.3
     devDependencies:
       ts-node:
@@ -139,7 +139,7 @@ importers:
   sdk/forms:
     dependencies:
       '@piiano/vault-client':
-        specifier: ^1.0.31
+        specifier: ^1.1.3
         version: 1.1.3
     devDependencies:
       '@piiano/testcontainers-vault':
@@ -179,7 +179,7 @@ importers:
   sdk/react-forms:
     dependencies:
       '@piiano/forms':
-        specifier: ^1.0.34
+        specifier: ^1.1.1
         version: 1.1.1
     devDependencies:
       '@piiano/testcontainers-vault':
@@ -262,7 +262,7 @@ importers:
   sdk/typeorm-encryption:
     dependencies:
       '@piiano/vault-client':
-        specifier: ^1.0.24
+        specifier: ^1.1.3
         version: 1.1.3
     devDependencies:
       '@piiano/testcontainers-vault':

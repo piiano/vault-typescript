@@ -78,7 +78,7 @@ jobs:
         run: pnpm -C ${{ inputs.path }} i --frozen-lockfile
 
       - name: Bump @piiano dependencies
-        run: pnpm -C ${{ inputs.path }} update --filter "@piiano/*"
+        run: pnpm -C ${{ inputs.path }} update "@piiano/*"
 
       - name: Run build
         run: pnpm -C ${{ inputs.path }} run build
