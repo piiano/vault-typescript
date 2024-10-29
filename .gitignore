@@ -1,6 +1,7 @@
 
 # NodeJS
 node_modules/
+.npmrc
 
 dist
 openapi.yaml
