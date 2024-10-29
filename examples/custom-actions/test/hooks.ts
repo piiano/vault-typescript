@@ -19,7 +19,6 @@ const vault = new Vault({
   env: {
     PVAULT_SENTRY_ENABLE: false,
     PVAULT_LOG_DATADOG_ENABLE: 'none',
-    PVAULT_SERVICE_ALLOWED_HTTP_DESTINATIONS: 'http://host.docker.internal:3000',
     PVAULT_SERVICE_ALLOWED_PCI_HTTP_DESTINATIONS: 'http://host.docker.internal:3000',
   }
 });

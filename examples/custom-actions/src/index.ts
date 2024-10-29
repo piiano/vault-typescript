@@ -3,9 +3,6 @@ import type {VaultFunction} from "@piiano/vault-bundles";
 export const send_welcome_email: VaultFunction = {
   type: "action",
   description: "Send welcome email to user",
-  dependencies: {
-    http_post_access: ['host.docker.internal:3000'],
-  },
   async handler(context, params) {
     // Validate the params input
     if (params === null || typeof params !== 'object' || !('user_id' in params) || typeof params.user_id !== 'string') {
