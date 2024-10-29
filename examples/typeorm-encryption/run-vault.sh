@@ -60,7 +60,7 @@ user PERSONS (
 )"
 
 # Build
-yarn --frozen-lockfile
+pnpm i --frozen-lockfile
 
 # Run the example
-yarn start
+pnpm run start

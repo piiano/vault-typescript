@@ -50,38 +50,43 @@ jobs:
           ref: ${{ github.ref_name }}
           token: ${{ secrets.CICD_RELEASES_PAT }}
 
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 9
+          run_install: false
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'yarn'
-          cache-dependency-path: ${{ inputs.path }}/yarn.lock
+          cache: 'pnpm'
 
       - name: Bump version
         id: bump
         if: inputs.bump != 'none'
         run: |
-          yarn --cwd ${{ inputs.path }} version \
+          pnpm -C ${{ inputs.path }} version \
             --no-git-tag-version \
             --no-commit-hooks \
-            --${{ inputs.bump }}
+            ${{ inputs.bump }}
           
           echo "package_name=$(jq -r '.name' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
           echo "version=$(jq -r '.version' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
 
       - name: Install dependencies
-        run: yarn --cwd ${{ inputs.path }} --frozen-lockfile
+        run: pnpm -C ${{ inputs.path }} i --frozen-lockfile
 
       - name: Bump @piiano dependencies
-        run: yarn --cwd ${{ inputs.path }} upgrade --scope @piiano
+        run: pnpm -C ${{ inputs.path }} update --filter "@piiano/*"
 
       - name: Run build
-        run: yarn --cwd ${{ inputs.path }} build
+        run: pnpm -C ${{ inputs.path }} run build
         env:
           VAULT_VERSION: ${{ inputs.vault_version }}
 
       - name: Run tests
-        run: yarn --cwd ${{ inputs.path }} test
+        run: pnpm -C ${{ inputs.path }} run test
         env:
           VAULT_VERSION: ${{ inputs.vault_version }}
           PVAULT_SERVICE_LICENSE: ${{ secrets.PVAULT_SERVICE_LICENSE }}
@@ -102,14 +107,14 @@ jobs:
 
       - name: Publish package
         if: inputs.bump != 'none' && github.ref_name == 'main'
-        run: yarn --cwd ${{ inputs.path }} push
+        run: pnpm -C ${{ inputs.path }} run push
 
       - name: Commit changes
         if: inputs.bump != 'none' && github.ref_name == 'main'
         run: |
           git config --global user.email "cicd@piiano.com"
           git config --global user.name "Github Actions"
-          git add ${{ inputs.path }}/yarn.lock ${{ inputs.path }}/package.json
+          git add pnpm-lock.yaml ${{ inputs.path }}/package.json
           git status
           git commit -m "chore: bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}"
           git push

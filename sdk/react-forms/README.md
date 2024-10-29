@@ -69,16 +69,24 @@ Using the tokens you can then charge the card, without ever exposing the card de
 
 ## Installation
 
-You can install this package using npm or yarn:
+You can install this package using `npm`, `yarn` or `pnpm`:
+
+### `npm`
 
 ```bash
 npm install @piiano/react-forms
 ```
 
-or
+### `yarn`
 
 ```bash
 yarn add @piiano/react-forms
+```
+
+### `pnpm`
+
+```bash
+pnpm add @piiano/react-forms
 ```
 
 ## Importing

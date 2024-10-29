@@ -15,7 +15,7 @@
   "scripts": {
     "test": "TS_NODE_PROJECT=tsconfig.test.json mocha -c -r ts-node/register -r test/hooks.ts 'test/**/*.spec.ts'",
     "tsc": "tsc",
-    "build": "yarn tsc -p tsconfig.build.json",
+    "build": "pnpm tsc -p tsconfig.build.json",
     "start": "ts-node --project tsconfig.build.json src/start.ts"
   },
   "dependencies": {

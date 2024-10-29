@@ -1,0 +1,13 @@
+{
+  "name": "vault-mgmt",
+  "version": "1.0.0",
+  "description": "vault-mgmt workspace",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "format": "prettier . --write",
+    "lint": "eslint && prettier . --check"
+  },
+  "author": "Ori Shalom <ori.shalo,@piiano.com>",
+  "license": "ISC"
+}

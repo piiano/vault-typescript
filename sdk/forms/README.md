@@ -313,4 +313,4 @@ To further enhance the security of your integration with Piiano Vault, it is rec
 ## Getting Started
 
 - [Set Up Vault](https://piiano.com/docs/setup) to start collecting, storing, and managing sensitive data securely.
-- Install `@piiano/forms` via npm or yarn and follow the examples above to integrate secure forms into your application.
+- Install `@piiano/forms` via `npm`, `yarn` or `pnpm`, and follow the examples above to integrate secure forms into your application.

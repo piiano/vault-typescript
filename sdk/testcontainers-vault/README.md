@@ -9,16 +9,22 @@ Testcontainers-vault helps you run a Piiano Vault container for testing purposes
 
 ## Installation
 
+### Install with npm
+
+```bash
+npm install --save-dev @piiano/testcontainers-vault
+```
+
 ### Install with yarn
 
 ```bash
 yarn add -D @piiano/testcontainers-vault
 ```
 
-### Install with npm
+### Install with pnpm
 
 ```bash
-npm install --save-dev @piiano/testcontainers-vault
+pnpm add -D @piiano/testcontainers-vault
 ```
 
 ## Usage

@@ -16,15 +16,15 @@ To run the example, please follow these steps:
    You can obtain a free trial license key [here](https://docs.piiano.com/guides/get-started/).
 3. Install the dependencies
    ```bash
-    yarn
+    pnpm i
     ```
 4. Build the bundle defined in [index.ts](./src/index.ts)
    ```bash
-    yarn build
+    pnpm run build
     ```
 5. Run the [custom-actions.spec.ts](./test/custom-data-types.spec.ts) that shows how to define a custom action using the bundle and how to use it.
    ```bash
-    yarn test
+    pnpm run test
     ```
 
 ## About Piiano Vault

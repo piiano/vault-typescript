@@ -21,6 +21,12 @@ To install the package using `yarn`:
 yarn add @piiano/vault-client
 ```
 
+To install the package using `pnpm`:
+
+```bash
+pnpm add @piiano/vault-client
+```
+
 ## Usage
 
 To use the `VaultClient` class, first import it into your project:
@@ -75,9 +81,9 @@ Expected output:
 
 To build and test the project:
 ```commandLine
-yarn
-yarn build
-yarn test
+pnpm i
+pnpm run build
+pnpm run test
 ```
 
 ## API

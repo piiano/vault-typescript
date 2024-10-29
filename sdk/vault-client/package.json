@@ -32,8 +32,8 @@
     "postgenerate": "git apply patches/*.patch",
     "test": "TS_NODE_PROJECT=tsconfig.test.json mocha -c -r ts-node/register -r test/hooks.ts 'test/**/*.spec.ts'",
     "tsc": "tsc -p tsconfig.build.json",
-    "build": "yarn openapi && yarn generate && yarn tsc",
-    "push": "yarn publish --access=public"
+    "build": "pnpm run openapi && pnpm run generate && pnpm run tsc",
+    "push": "pnpm publish --access public"
   },
   "devDependencies": {
     "@piiano/openapi-typescript-codegen": "^0.29.1",

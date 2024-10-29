@@ -47,7 +47,7 @@ shopt -s expand_aliases
 alias pvault="docker run --rm -i --add-host='host.docker.internal:host-gateway' -v $(pwd):/pwd -w /pwd piiano/pvault-cli:${VAULT_TAG}"
 
 # Build
-yarn build
+npm run build
 
 # check for Vault version to ensure it is up and running
 until pvault version > /dev/null 2>&1
