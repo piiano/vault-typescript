@@ -21,6 +21,7 @@ test.describe('Protected View', () => {
         ids: [id],
         props: displayProps,
       },
+      display: displayProps.map((prop) => ({ path: `[0].${prop}` })),
     });
 
     // Check that the view is rendered with the expected data
@@ -45,6 +46,7 @@ test.describe('Protected View', () => {
         ids: ids,
         props: displayProps,
       },
+      display: ids.map((_, index) => displayProps.map((prop) => ({ path: `[${index}].${prop}` }))).flat(),
     });
 
     // Verify data for each object is rendered
@@ -69,6 +71,7 @@ test.describe('Protected View', () => {
         ids: ['invalid-object-id'],
         props: ['card_holder', 'card_expiry'],
       },
+      display: ['card_holder', 'card_expiry'].map((prop) => ({ path: `[0].${prop}` })),
     });
 
     const err = (await log).slice('test onError hook: '.length);
@@ -92,6 +95,7 @@ test.describe('Protected View', () => {
         ids: [id],
         props: displayProps,
       },
+      display: displayProps.map((prop) => ({ path: `[0].${prop}` })),
       css: `.view { background-color: red; }`,
     };
     const view = await prepareProtectedViewTest(page, options);
@@ -123,15 +127,11 @@ async function assertObjectPropsRendered(
   index = 0,
 ) {
   for (const propName of props) {
-    const field = iframe.locator(`[data-name="${propName}"]`).nth(index);
+    const field = iframe.locator(`[data-path="[${index}].${propName}"]`);
     if (displayProps.includes(propName)) {
       await expect(field).toBeVisible();
-      const label = field.locator('label');
-      await expect(label).toBeVisible();
-      await expect(label).toContainText(propName);
-      const value = field.locator('.value');
-      await expect(value).toBeVisible();
-      await expect(value).toContainText(object[propName as keyof typeof object]);
+      await expect(field).toBeVisible();
+      await expect(field).toContainText(object[propName as keyof typeof object]);
     } else {
       await expect(field).not.toBeVisible();
     }

@@ -32,7 +32,7 @@
     "dev": "vite --mode dev",
     "test": "pnpm run test:unit && pnpm run test:e2e",
     "test:unit": "vitest --dir src --run",
-    "test:e2e": "pnpm run playwright install && playwright test",
+    "test:e2e": "playwright install --with-deps chromium && playwright test",
     "push:module": "pnpm publish --access public",
     "push:cdn": "aws s3 sync dist/ s3://vault-saas-prod-cdn/ && aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
     "push": "pnpm run push:module && pnpm run push:cdn",
