@@ -18,7 +18,6 @@ type DisplayValueProps = { path?: string; value: unknown; label?: string; clickT
 
 const DisplayValue = component(({ value: rootValue, label, path, className, clickToCopy }: DisplayValueProps): Node => {
   const container = document.createElement('div');
-  // TODO: This is a security risk. We should validate the className before adding it.
   if (className) container.className = className;
   if (path) container.setAttribute('data-path', path);
 
