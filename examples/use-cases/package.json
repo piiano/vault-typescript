@@ -15,7 +15,7 @@
   "homepage": "https://github.com/piiano/vault-typescript#readme",
   "scripts": {
     "tsc": "tsc",
-    "build": "yarn tsc",
+    "build": "pnpm run tsc",
     "cleanup": "ts-node --esm src/cleanup.ts",
     "test::ssn": "ts-node --esm src/ssn.ts",
     "test::encrypt": "ts-node --esm src/encrypt.ts",

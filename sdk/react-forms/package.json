@@ -30,7 +30,7 @@
     "dev": "vite --mode dev",
     "test": "echo \"no tests for this package\"",
     "build": "tsc --p tsconfig.build.json && vite build",
-    "push": "yarn publish --access=public",
+    "push": "pnpm publish --access public",
     "format": "prettier . --write",
     "lint": "eslint --ext .ts src --max-warnings 0"
   },

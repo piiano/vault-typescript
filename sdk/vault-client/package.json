@@ -32,15 +32,15 @@
     "postgenerate": "git apply patches/*.patch",
     "test": "TS_NODE_PROJECT=tsconfig.test.json mocha -c -r ts-node/register -r test/hooks.ts 'test/**/*.spec.ts'",
     "tsc": "tsc -p tsconfig.build.json",
-    "build": "yarn openapi && yarn generate && yarn tsc",
-    "push": "yarn publish --access=public"
+    "build": "pnpm run openapi && pnpm run generate && pnpm run tsc",
+    "push": "pnpm publish --access public"
   },
   "devDependencies": {
-    "@piiano/openapi-typescript-codegen": "^0.29.0",
+    "@piiano/openapi-typescript-codegen": "^0.29.1",
     "@piiano/testcontainers-vault": "^1.1.2",
     "@types/chai": "^4.3.11",
     "@types/chai-as-promised": "^7.1.8",
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.9",
     "@types/node": "^20.11.8",
     "chai": "^4.4.1",
     "chai-as-promised": "^7.1.1",

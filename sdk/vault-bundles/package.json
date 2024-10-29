@@ -24,7 +24,7 @@
   "scripts": {
     "test": "echo \"no tests for types only package\"",
     "build": "tsc -p tsconfig.json",
-    "push": "yarn publish --access=public"
+    "push": "pnpm publish --access public"
   },
   "devDependencies": {
     "typescript": "^5.4.2"

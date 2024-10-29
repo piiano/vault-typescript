@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { prepareProtectedFormTest } from './setup';
-import { Form } from '../../src/protected-forms';
+import { Form } from '../../src';
 import { waitForConsole } from '../helpers/waitForConsole';
 
 const validations: {

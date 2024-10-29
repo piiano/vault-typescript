@@ -1,14 +1,6 @@
-# @piiano/custom-data-types
+# @piiano/custom-actions
 
-This example demonstrates how to define custom data types using a bundle defined with the `@piiano/vault-bundles` package.
-
-## Overview
-
-- `src/index.ts` - This is the example bundle to be tested, written in TypeScript.
-- `test`
-  - `hooks.ts` - Defines global hooks for the test to start a local Dev edition of Vault and stop it at the end of the test.
-  - `custom-data-types.spec.ts`- A test that adds the bundle to the vault, creates a custom data type, creates a collection that uses it, and tests adding objects with a property that uses the custom data type (passing validations) and reading the normalized & transformed version of the property.
-  - `package.json`- Defines the dependencies for compiling the bundle and scripts for testing and building the bundle.
+This example demonstrates how to define custom actions using a bundle defined with the `@piiano/vault-bundles` package.
 
 ## Running the example
 
@@ -17,7 +9,7 @@ To run the example, please follow these steps:
 1. Clone the repository and navigate to this directory.
    ```bash
    git clone https://github.com/piiano/vault-typescript.git
-   cd vault-typescript/examples/custom-data-types
+   cd vault-typescript/examples/custom-actions
    ```
 2. Set the `PVAULT_SERVICE_LICENSE` environment variable to a valid Piiano Vault license key.
 
@@ -30,7 +22,7 @@ To run the example, please follow these steps:
    ```bash
     pnpm run build
     ```
-5. Run the [custom-data-types.spec.ts](./test/custom-data-types.spec.ts) that shows how to define a custom data type using the bundle and how to use it.
+5. Run the [custom-actions.spec.ts](./test/custom-data-types.spec.ts) that shows how to define a custom action using the bundle and how to use it.
    ```bash
     pnpm run test
     ```

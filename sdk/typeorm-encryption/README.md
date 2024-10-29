@@ -36,6 +36,12 @@ To install the package using `yarn`:
 yarn add @piiano/typeorm-encryption
 ```
 
+To install the package using `pnpm`:
+
+```bash
+pnpm add @piiano/typeorm-encryption
+```
+
 ## Usage
 
 To register the automatic encryption and decryption of entity properties, first import the `registerVaultEncryption` function into your project:
@@ -163,9 +169,9 @@ const customers = await withTransformations(Customer).find({
 To build and test the project:
 
 ```commandLine
-yarn
-yarn build
-yarn test
+pnpm i
+pnpm run build
+pnpm run test
 ```
 
 ## License

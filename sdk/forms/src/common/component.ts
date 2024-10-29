@@ -1,4 +1,4 @@
-export function component<P extends object, E extends Element>(
+export function component<P extends object, E extends Node>(
   renderer: (props: P) => E,
   didChange = defaultDidChangeFunction<P>,
 ) {

@@ -1,0 +1,6 @@
+# While an empty file is enough to enable the workspace feature and pnpm knows to automatically
+# identify all packages in the workspace, dependabot with pnpm must have the packages defined explicitly
+# in the pnpm-workspace.yaml file.
+packages:
+  - sdk/*/
+  - examples/*/

@@ -63,19 +63,19 @@ If you don’t have one, you can [sign up for a free sandbox vault](https://app.
 
 Once you have your Vault set up, you can include the `@piiano/forms` package in your project with a package manager or directly from our CDN.
 
-### npm
+### `npm`
 
 ```bash
 npm install @piiano/forms
 ```
 
-### yarn
+### `yarn`
 
 ```bash
 yarn add @piiano/forms
 ```
 
-### pnpm
+### `pnpm`
 
 ```bash
 pnpm add @piiano/forms
@@ -84,16 +84,16 @@ pnpm add @piiano/forms
 ### CDN
 
 ```html
-<script src="https://cdn.piiano.com/pvault-forms-lib-v1.1.1.js"></script>
+<script src="https://cdn.piiano.com/pvault-forms-lib-v2.0.0.js"></script>
 ```
 
 > **Note**
 > 
 > The CDN version of the library is available in few versions:
 > - `pvault-forms-lib-latest.js`: The latest version of the library.
-> - `pvault-forms-lib-v1.js`: The latest version with the v1 major version.
-> - `pvault-forms-lib-v1.1.js`: The latest version in the v1.1 major & minor version.
-> - `pvault-forms-lib-v1.1.1.js`: Get an exact version of the library by specifying the version number.
+> - `pvault-forms-lib-v2.js`: The latest version with the v1 major version.
+> - `pvault-forms-lib-v2.0.js`: The latest version in the v2.0.0 major & minor version.
+> - `pvault-forms-lib-v2.0.0.js`: Get an exact version of the library by specifying the version number.
 > 
 > It is recommended to use the specific version of the library in production and not the latest version to avoid breaking changes.
 > To get a list of the versions available, you can check the [@piiano/forms](https://www.npmjs.com/package/@piiano/forms?activeTab=versions) package versions page.
@@ -104,11 +104,11 @@ pnpm add @piiano/forms
 
 #### Overview
 
-`createProtectedForm` allows you to create and manage a secure form for collecting sensitive data like credit card information or personally identifiable information (PII). This form handles the entire interaction with Piiano Vault, ensuring secure storage, encryption, or tokenization of data.
+`createProtectedForm` enables you to create and manage a secure form for collecting sensitive data, such as credit card information or personally identifiable information (PII). The form handles the entire interaction with Piiano Vault, ensuring that sensitive data is securely transmitted, stored, and protected through encryption or tokenization.
 
 #### Goal
 
-Use `createProtectedForm` when you need to securely collect and manage sensitive data, and wish to ensure that it is processed securely by Piiano Vault. This function is suitable when you do not want the backend to handle raw PII.
+Use `createProtectedForm` when you need to securely collect and process sensitive data, while ensuring that neither your frontend nor backend systems directly handle the raw data. This method is particularly useful for meeting regulatory compliance requirements, as it reduces the exposure of sensitive information across your system. By isolating sensitive data handling within Piiano Vault, `createProtectedForm` minimizes the effort needed to certify your environment for handling sensitive data, as most components won’t have direct access to the raw data by default.
 
 #### Usage
 
@@ -176,11 +176,11 @@ const form = createProtectedForm('#form-container', {
 
 #### Overview
 
-`createProtectedView` creates a secure view component to display sensitive data stored in Piiano Vault, ensuring that sensitive data is never directly exposed to the frontend.
+`createProtectedView` generates a secure view component for displaying sensitive data retrieved from Piiano Vault. This ensures that while the data is visible to the user, it remains protected from access by other client-side code, such as third-party scripts, browser extensions, or external dependencies.
 
 #### Goal
 
-Use `createProtectedView` when you need to securely display sensitive data on the frontend without exposing the original data to your frontend or backend systems.
+Use `createProtectedView` when you need to securely display sensitive data on the frontend. The data is rendered within a protected environment, making it inaccessible to other frontend or backend components. This approach can be particularly useful for meeting regulatory compliance requirements, as it limits data exposure to only the protected view. By keeping sensitive data isolated, you reduce the amount of work needed to certify most of your environment for handling sensitive information, since most components won’t have direct access to the data by default.
 
 #### Usage
 
@@ -190,14 +190,26 @@ Use `createProtectedView` when you need to securely display sensitive data on th
 - `options`: Configuration options:
   - `vaultURL` (string): The URL of the Piiano Vault instance.
   - `apiKey` (string): API key for accessing the Vault.
-  - `collection` (string): Name of the collection containing the data.
-  - `ids` (string array): IDs of objects to be displayed.
-  - `props` (string array): Properties to display from each object.
-    Each property can defined as is or with a transformation (e.g., `name`, `email`, `email.mask`, etc.).
-    The order of properties in the array determines the order in which they will be displayed in the view.
-  - `transformationParam` (optional string): An extra transformation param to be sent to the Vault and be available in the transformation functions. When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
+  - `strategy` (object): Strategy options for getting data from the Vault:
+    - `type` (string): Type of the strategy. Can be either `"read-objects"` or `"invoke-action"`.
+      The rest of the configuration depends on the strategy type:
+      - When type is `"read-objects"` the view will read objects from the Vault and display them in the view. The following additional strategy options are required:
+        - `collection` (string): Name of the collection containing the data.
+        - `ids` (string array): IDs of objects to be displayed.
+        - `props` (string array): Properties to display from each object.
+          Each property can be provided as is or with a transformation (e.g., `name`, `email`, `email.mask`, etc.).
+          The order of properties in the array determines the order in which they will be displayed in the view.
+        - `transformationParam` (optional string): An extra transformation param to be sent to the Vault and be available in the transformation functions. When multiple parameters are needed, they can be passed as a JSON string and parsed in the transformation functions.
+        - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
+      - When type is `"invoke-action"` the view will invoke an action in the Vault and display the result in the view. The following additional strategy options are required:
+        - `action` (string): Name of the action to invoke.
+        - `input` (Record<string, unknown>): Input parameters to be sent to the action and be available in the action code.
+        - `reason` (string): Reason for invoking the action (will be logged in the Vault audit logs). 
+  - `display` (object array): Array of paths from the response returned from the Vault that should be displayed in the view. Each object in the array should have the following properties:
+    - `path` (string): Path to the property in the vault response using JSON path syntax where `.` is used to separate nested properties, `[0]` is used to access array elements and `["key"]` is used to access object properties with special characters.
+    - `label` (optional string): Label to display for the property. If not provided, no label will be displayed.
+    - `class` (optional string): CSS class to apply to the property element.
   - `css` (optional string): Custom CSS styles to be added to the view.
-  - `reason` (string): Reason for accessing the data (will be logged in the Vault audit logs).
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
   - `hooks` (optional object): Lifecycle hooks:
     - `onError(error)`: Called when an error occurs.
@@ -218,9 +230,17 @@ import {createProtectedView} from '@piiano/forms';
 const view = createProtectedView('#view-container', {
   vaultURL: 'https://your-vault-url.com',
   apiKey: 'your-api-key',
-  collection: 'customers',
-  ids: ['b8a42023-b63e-42a8-a3c4-c0cdfad2b755'],
-  props: ['name', 'email'],
+  strategy: {
+    type: 'read-objects',
+    collection: 'customers',
+    ids: ['b8a42023-b63e-42a8-a3c4-c0cdfad2b755'],
+    props: ['name', 'email', 'email.mask'],
+  },
+  display: [
+    { path: '[0].name', label: 'Name' },
+    { path: '[0].email', label: 'Email' },
+    { path: '[0].["email.mask"]', label: 'Masked Email' },
+  ],
   css: `.view { font-weight: bold; }`,
 });
 ```
@@ -302,4 +322,4 @@ To further enhance the security of your integration with Piiano Vault, it is rec
 ## Getting Started
 
 - [Set Up Vault](https://piiano.com/docs/setup) to start collecting, storing, and managing sensitive data securely.
-- Install `@piiano/forms` via npm or yarn and follow the examples above to integrate secure forms into your application.
+- Install `@piiano/forms` via `npm`, `yarn` or `pnpm`, and follow the examples above to integrate secure forms into your application.
