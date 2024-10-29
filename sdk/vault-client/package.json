@@ -36,7 +36,7 @@
     "push": "yarn publish --access=public"
   },
   "devDependencies": {
-    "@piiano/openapi-typescript-codegen": "^0.29.0",
+    "@piiano/openapi-typescript-codegen": "^0.29.1",
     "@piiano/testcontainers-vault": "^1.1.2",
     "@types/chai": "^4.3.11",
     "@types/chai-as-promised": "^7.1.8",
