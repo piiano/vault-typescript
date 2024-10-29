@@ -205,6 +205,10 @@ Use `createProtectedView` when you need to securely display sensitive data on th
         - `action` (string): Name of the action to invoke.
         - `input` (Record<string, unknown>): Input parameters to be sent to the action and be available in the action code.
         - `reason` (string): Reason for invoking the action (will be logged in the Vault audit logs). 
+  - `display` (object array): Array of paths from the response returned from the Vault that should be displayed in the view. Each object in the array should have the following properties:
+    - `path` (string): Path to the property in the vault response using JSON path syntax where `.` is used to separate nested properties, `[0]` is used to access array elements and `["key"]` is used to access object properties with special characters.
+    - `label` (optional string): Label to display for the property. If not provided, no label will be displayed.
+    - `class` (optional string): CSS class to apply to the property element.
   - `css` (optional string): Custom CSS styles to be added to the view.
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
   - `hooks` (optional object): Lifecycle hooks:
@@ -232,6 +236,11 @@ const view = createProtectedView('#view-container', {
     ids: ['b8a42023-b63e-42a8-a3c4-c0cdfad2b755'],
     props: ['name', 'email', 'email.mask'],
   },
+  display: [
+    { path: '[0].name', label: 'Name' },
+    { path: '[0].email', label: 'Email' },
+    { path: '[0].["email.mask"]', label: 'Masked Email' },
+  ],
   css: `.view { font-weight: bold; }`,
 });
 ```
