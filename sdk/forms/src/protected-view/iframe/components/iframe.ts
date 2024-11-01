@@ -7,7 +7,7 @@ import { DisplayOptions } from '../../../common/models';
 
 export function renderView(sendToParent: Sender, result: Result, display: DisplayOptions, css?: string) {
   const style = Style({ css });
-  const view = View({ result, display });
+  const view = View({ result, display, sendToParent });
   document.body.replaceChildren(style, view);
   sendSizeEvents(sendToParent, 'content-size', view);
 }

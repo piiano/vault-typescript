@@ -264,6 +264,10 @@ const DisplayOptionsValidator = array(
      */
     clickToCopy: boolean().optional(),
     /**
+     * Whether the value supports click-to-reveal functionality.
+     */
+    clickToReveal: boolean().optional(),
+    /**
      * CSS class to apply to the value.
      */
     class: string().optional(),

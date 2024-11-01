@@ -1,6 +1,6 @@
 import type { FormInitOptions, ViewInitOptions } from './common/models';
 
-export type ProtectedViewOptions = ViewInitOptions & { hooks?: ErrorHook };
+export type ProtectedViewOptions = ViewInitOptions & { hooks?: ProtectedViewHooks };
 
 export type ProtectedFormOptions<T extends ResultType> = Omit<FormInitOptions, 'strategy'> & {
   // we omit the strategy from init options and declare it here, so we can infer the result type from it.
@@ -43,4 +43,8 @@ export type Hooks<T extends ResultType> = ErrorHook & {
 
 export type ErrorHook = {
   onError?: (error: Error) => void;
+};
+
+export type ProtectedViewHooks = ErrorHook & {
+  onClick?: (payload: unknown) => void;
 };
