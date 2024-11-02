@@ -1,4 +1,4 @@
-import { ProtectedViewHooks, type ProtectedViewOptions, type ViewIframeOptions } from '../options';
+import { type ProtectedViewHooks, type ProtectedViewOptions, type ViewIframeOptions } from '../options';
 import { sendSizeEvents } from '../common/size';
 import { getElement } from '../element-selector';
 import { newSenderToTarget, type Sender } from '../common/events';
