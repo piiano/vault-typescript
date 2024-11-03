@@ -73,10 +73,17 @@ jobs:
             --no-commit-hooks \
             ${{ inputs.bump }}
           
-          new_ver=$(jq -r '.version' ${{ inputs.path }}/package.json)
-          
           echo "package_name=$(jq -r '.name' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
           echo "version=$(jq -r '.version' ${{ inputs.path }}/package.json)" >> $GITHUB_OUTPUT
+
+      - name: Update readme
+        run: |
+          README_FILE=${{ inputs.path }}/README.md
+          OLD_VER=${{ steps.bump.outputs.old_version }}
+          NEW_VER=${{ steps.bump.outputs.version }}
+          
+          echo "Replacing ${OLD_VER} with ${NEW_VER} in ${README_FILE}"
+          sed -i "s/${OLD_VER}.js/${NEW_VER}.js/g" ${README_FILE}
 
       - name: Install dependencies
         run: pnpm -C ${{ inputs.path }} i --frozen-lockfile
@@ -114,7 +121,7 @@ jobs:
         run: |
           git config --global user.email "cicd@piiano.com"
           git config --global user.name "Github Actions"
-          git add pnpm-lock.yaml ${{ inputs.path }}/package.json
+          git add pnpm-lock.yaml ${{ inputs.path }}/package.json ${{ inputs.path }}/README.md
           git status
           git commit -m "chore: bump ${{ steps.bump.outputs.package_name }} to ${{ steps.bump.outputs.version }}"
 
