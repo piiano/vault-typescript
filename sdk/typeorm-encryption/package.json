@@ -38,7 +38,7 @@
     "@piiano/testcontainers-vault": "^1.1.2",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.8",
+    "@types/node": "^22.8.7",
     "chai": "^4.4.1",
     "mocha": "^10.2.0",
     "reflect-metadata": "^0.2.1",
