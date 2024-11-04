@@ -47,13 +47,13 @@ export function createProtectedView(
     onError(e) {
       hooks?.onError?.(e);
     },
-    onClick(payload: unknown) {
+    onClick(payload: { path: string }) {
       hooks?.onClick?.(payload);
     },
-    onMouseEnter(payload: unknown) {
+    onMouseEnter(payload: { path: string; x: number; y: number }) {
       hooks?.onMouseEnter?.(payload);
     },
-    onMouseLeave(payload: unknown) {
+    onMouseLeave(payload: { path: string }) {
       hooks?.onMouseLeave?.(payload);
     },
   });

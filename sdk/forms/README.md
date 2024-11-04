@@ -214,9 +214,14 @@ Use `createProtectedView` when you need to securely display sensitive data on th
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
   - `hooks` (optional object): Lifecycle hooks:
     - `onError(error)`: Called when an error occurs.
-    - `onClick(payload)`: Called when a value click occurs.
-    - `onMouseEnter(payload)`: Called when a value is hovered over.
-    - `onMouseLeave(payload)`: Called when a value is no longer hovered over.
+    - `onClick(payload)`: Called when a value click occurs. Payload is an object with the following properties:
+      - `path`: The path to the clicked value.
+    - `onMouseEnter(payload)`: Called when a value is hovered over. Payload is an object with the following properties:
+      - `path`: The path to the hovered value.
+      - `x`: x coordinate of the mouse pointer.
+      - `y`: y coordinate of the mouse pointer.
+    - `onMouseLeave(payload)`: Called when a value is no longer hovered over. Payload is an object with the following properties:
+      - `path`: The path to the hovered value.
   - `debug` (optional boolean): Whether to enable debug mode which adds additional logging (default: `false`).
 
 ##### Returned Object
