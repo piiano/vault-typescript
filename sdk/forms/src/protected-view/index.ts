@@ -50,11 +50,11 @@ export function createProtectedView(
     onClick(payload: unknown) {
       hooks?.onClick?.(payload);
     },
-    onMouseEnter(event: Event) {
-      hooks?.onMouseEnter?.(event);
+    onMouseEnter(payload: unknown) {
+      hooks?.onMouseEnter?.(payload);
     },
-    onMouseLeave(event: Event) {
-      hooks?.onMouseLeave?.(event);
+    onMouseLeave(payload: unknown) {
+      hooks?.onMouseLeave?.(payload);
     },
   });
 
