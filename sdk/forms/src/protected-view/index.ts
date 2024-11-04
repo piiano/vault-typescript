@@ -50,6 +50,12 @@ export function createProtectedView(
     onClick(payload: unknown) {
       hooks?.onClick?.(payload);
     },
+    onMouseEnter(event: Event) {
+      hooks?.onMouseEnter?.(event);
+    },
+    onMouseLeave(event: Event) {
+      hooks?.onMouseLeave?.(event);
+    },
   });
 
   // if the user doesn't call destroy or update, and the init return with an error, we don't want to keep it as an unhandled promise
@@ -105,6 +111,12 @@ function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ProtectedV
         }
         case 'click':
           hooks?.onClick?.(payload);
+          break;
+        case 'mouseenter':
+          hooks?.onMouseEnter?.(payload);
+          break;
+        case 'mouseleave':
+          hooks?.onMouseLeave?.(payload);
           break;
       }
     };

@@ -9,8 +9,8 @@ export const View = component(
     const view = document.createElement('div');
     view.classList.add('view');
     const value = result.strategy === 'invoke-action' ? result.response : result.objects;
-    const values = display.map(({ path, label, clickToCopy, clickToReveal, class: className }) =>
-      DisplayValue({ value, path, label, clickToCopy, clickToReveal, className, sendToParent }),
+    const values = display.map(({ path, label, clickToCopy, class: className }) =>
+      DisplayValue({ value, path, label, clickToCopy, className, sendToParent }),
     );
     view.replaceChildren(...values);
     return view;
@@ -23,12 +23,11 @@ type DisplayValueProps = {
   value: unknown;
   label?: string;
   clickToCopy?: boolean;
-  clickToReveal?: boolean;
   className?: string;
 };
 
 const DisplayValue = component(
-  ({ value: rootValue, label, path, className, clickToCopy, clickToReveal, sendToParent }: DisplayValueProps): Node => {
+  ({ value: rootValue, label, path, className, clickToCopy, sendToParent }: DisplayValueProps): Node => {
     const container = document.createElement('div');
     if (className) container.className = className;
     if (path) container.setAttribute('data-path', path);
@@ -41,45 +40,44 @@ const DisplayValue = component(
       case 'string':
       case 'number':
       case 'boolean': {
-        if (clickToCopy || clickToReveal) {
-          const div = document.createElement('div');
-          div.classList.add('tooltip');
-          div.innerText = String(value);
-          const tooltip = document.createElement('span');
-          tooltip.classList.add('tooltip-text');
-          tooltip.innerText = clickToReveal ? 'Click to reveal' : 'Click to copy';
-          div.appendChild(tooltip);
-          div.addEventListener('click', () => {
-            if (clickToCopy) {
-              navigator.clipboard.writeText(String(value));
-            }
-            sendToParent('click', {
-              path,
-              reason: clickToReveal ? 'reveal' : 'copy',
-            });
+        const span = document.createElement('span');
+        span.innerText = String(value);
+        container.appendChild(span);
+        children.push(span);
+        span.addEventListener('mouseenter', (event) => {
+          sendToParent('mouseenter', {
+            path,
+            x: event.clientX,
+            y: event.clientY,
           });
-          container.appendChild(div);
-          children.push(div);
-        } else {
-          const span = document.createElement('span');
-          span.innerText = String(value);
-          container.appendChild(span);
-          children.push(span);
-        }
+        });
+        span.addEventListener('mouseleave', () => {
+          sendToParent('mouseleave', {
+            path,
+          });
+        });
+        span.addEventListener('click', () => {
+          if (clickToCopy) {
+            navigator.clipboard.writeText(String(value));
+          }
+          sendToParent('click', {
+            path,
+          });
+        });
         break;
       }
       case 'object':
         if (value === null) break;
 
         if (Array.isArray(value)) {
-          children.push(...value.map((item, index) => DisplayValue({ value: item, clickToCopy, clickToReveal, sendToParent})));
+          children.push(...value.map((item, index) => DisplayValue({ value: item, clickToCopy, sendToParent })));
           break;
         }
 
         const object = document.createElement('div');
         object.replaceChildren(
           ...Object.entries(value).map(([key, item]) =>
-            DisplayValue({ value: item, label: key, clickToCopy, clickToReveal, sendToParent }),
+            DisplayValue({ value: item, label: key, clickToCopy, sendToParent }),
           ),
         );
         children.push(object);
