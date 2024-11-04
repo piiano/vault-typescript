@@ -209,10 +209,14 @@ Use `createProtectedView` when you need to securely display sensitive data on th
     - `path` (string): Path to the property in the vault response using JSON path syntax where `.` is used to separate nested properties, `[0]` is used to access array elements and `["key"]` is used to access object properties with special characters.
     - `label` (optional string): Label to display for the property. If not provided, no label will be displayed.
     - `class` (optional string): CSS class to apply to the property element.
+    - `clickToCopy` (optional boolean): Whether to enable click-to-copy functionality for the property value.
   - `css` (optional string): Custom CSS styles to be added to the view.
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
   - `hooks` (optional object): Lifecycle hooks:
     - `onError(error)`: Called when an error occurs.
+    - `onClick(payload)`: Called when a value click occurs.
+    - `onMouseEnter(payload)`: Called when a value is hovered over.
+    - `onMouseLeave(payload)`: Called when a value is no longer hovered over.
   - `debug` (optional boolean): Whether to enable debug mode which adds additional logging (default: `false`).
 
 ##### Returned Object
