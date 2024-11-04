@@ -28,7 +28,7 @@ type DisplayValueProps = {
 
 const DisplayValue = () =>
   component(({ value: rootValue, label, path, className, clickToCopy, sendToParent }: DisplayValueProps) => {
-    const container = document.createElement('div') as any; // TODO fix type
+    const container = document.createElement('div') as HTMLDivElement & { unmount?: () => void };
     if (className) container.className = className;
     if (path) container.setAttribute('data-path', path);
 
@@ -50,7 +50,8 @@ const DisplayValue = () =>
     };
     const clickHandler = () => {
       if (clickToCopy) {
-        navigator.clipboard.writeText(String(value));
+        window.getSelection()?.selectAllChildren(container);
+        document.execCommand('copy');
       }
       sendToParent('click', {
         path,
