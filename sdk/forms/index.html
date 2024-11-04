@@ -160,15 +160,16 @@ For production use, please refer to the official documentation or consult with a
         inset: 0;
       }
       .tooltip-text {
-        width: 120px;
-        background-color: black;
-        color: #fff;
-        text-align: center;
-        padding: 5px 0;
-        border-radius: 6px;
+        pointer-events: none;
         position: absolute;
         z-index: 1;
-        font-size: 0.65rem;
+        padding: .375rem .5rem;
+        background-color: white;
+        color: #5d5d5d;
+        box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.1);
+        border-radius: .375rem;
+        font-size: 0.675rem;
+        font-weight: 400;
       }
     </style>
   </head>

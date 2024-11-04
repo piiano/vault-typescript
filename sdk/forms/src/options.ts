@@ -46,7 +46,7 @@ export type ErrorHook = {
 };
 
 export type ProtectedViewHooks = ErrorHook & {
-  onClick?: (payload: { path: string }) => void;
-  onMouseEnter?: (payload: { path: string; x: number; y: number }) => void;
-  onMouseLeave?: (payload: { path: string }) => void;
+  onClick?: (event: { path: string }) => void;
+  onMouseEnter?: (event: { path: string; x: number; y: number }) => void;
+  onMouseLeave?: (event: { path: string }) => void;
 };
