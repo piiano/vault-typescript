@@ -28,7 +28,7 @@ type DisplayValueProps = {
 
 const DisplayValue = () =>
   component(({ value: rootValue, label, path, className, clickToCopy, sendToParent }: DisplayValueProps) => {
-    const container = document.createElement('div') as HTMLDivElement & { unmount?: () => void };
+    const container = document.createElement('div');
     if (className) container.className = className;
     if (path) container.setAttribute('data-path', path);
 
@@ -58,17 +58,24 @@ const DisplayValue = () =>
       });
     };
 
+    const cleanupFunctions: (() => void)[] = [];
     switch (typeof value) {
       case 'string':
       case 'number':
       case 'boolean': {
         const span = document.createElement('span');
         span.innerText = String(value);
-        container.appendChild(span);
         children.push(span);
         container.addEventListener('mouseenter', mouseEnterHandler);
         container.addEventListener('mouseleave', mouseLeaveHandler);
         container.addEventListener('click', clickHandler);
+        cleanupFunctions.push(
+          ...[
+            () => container.removeEventListener('mouseenter', mouseEnterHandler),
+            () => container.removeEventListener('mouseleave', mouseLeaveHandler),
+            () => container.removeEventListener('click', clickHandler),
+          ],
+        );
         break;
       }
       case 'object':
@@ -99,12 +106,11 @@ const DisplayValue = () =>
     }
 
     container.replaceChildren(...children);
-    container.unmount = () => {
-      container.removeEventListener('mouseenter', mouseEnterHandler);
-      container.removeEventListener('mouseleave', mouseLeaveHandler);
-      container.removeEventListener('click', clickHandler);
-    };
-    return container;
+    return Object.assign(container, {
+      unmount: () => {
+        cleanupFunctions.forEach((fn) => fn());
+      },
+    });
   });
 
 const Label = component(({ label }: { label: string }) => {
