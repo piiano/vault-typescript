@@ -209,11 +209,23 @@ Use `createProtectedView` when you need to securely display sensitive data on th
     - `path` (string): Path to the property in the vault response using JSON path syntax where `.` is used to separate nested properties, `[0]` is used to access array elements and `["key"]` is used to access object properties with special characters.
     - `label` (optional string): Label to display for the property. If not provided, no label will be displayed.
     - `class` (optional string): CSS class to apply to the property element.
+    - `clickToCopy` (optional boolean): Whether to enable click-to-copy functionality for the property value.
   - `css` (optional string): Custom CSS styles to be added to the view.
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
   - `hooks` (optional object): Lifecycle hooks:
     - `onError(error)`: Called when an error occurs.
+    - `onClick(event)`: Called when a value click occurs. See [MouseEvent](#mouse-event-object) for more details about the event object.
+    - `onMouseEnter(event)`: Called when a value is hovered over. See [MouseEvent](#mouse-event-object) for more details about the event object.
+    - `onMouseLeave(event)`: Called when a value is no longer hovered over. See [MouseEvent](#mouse-event-object) for more details about the event object.
   - `debug` (optional boolean): Whether to enable debug mode which adds additional logging (default: `false`).
+
+###### MouseEvent
+
+When `onClick`, `onMouseEnter`, or `onMouseLeave` hooks are called, the event object will have the following properties:
+  - `path`: The path to the value that received the event.
+  - `mouseX`: x coordinate of the mouse pointer during the event.
+  - `mouseY`: y coordinate of the mouse pointer during the event.
+  - `rect`: A [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect) element representing the bounding rectangle of the value element that received the event.
 
 ##### Returned Object
 

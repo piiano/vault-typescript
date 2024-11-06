@@ -1,4 +1,4 @@
-import { type ErrorHook, type ProtectedViewOptions, type ViewIframeOptions } from '../options';
+import { type ProtectedViewHooks, type ProtectedViewOptions, type ViewIframeOptions } from '../options';
 import { sendSizeEvents } from '../common/size';
 import { getElement } from '../element-selector';
 import { newSenderToTarget, type Sender } from '../common/events';
@@ -47,6 +47,15 @@ export function createProtectedView(
     onError(e) {
       hooks?.onError?.(e);
     },
+    onClick(event) {
+      hooks?.onClick?.(event);
+    },
+    onMouseEnter(event) {
+      hooks?.onMouseEnter?.(event);
+    },
+    onMouseLeave(event) {
+      hooks?.onMouseLeave?.(event);
+    },
   });
 
   // if the user doesn't call destroy or update, and the init return with an error, we don't want to keep it as an unhandled promise
@@ -70,7 +79,7 @@ export function createProtectedView(
   };
 }
 
-function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ErrorHook): Promise<void> {
+function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ProtectedViewHooks): Promise<void> {
   return new Promise((resolve, reject) => {
     let ready = false;
     window.onmessage = ({ origin, data: { event, payload } }) => {
@@ -100,6 +109,15 @@ function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ErrorHook)
           }
           break;
         }
+        case 'click':
+          hooks?.onClick?.(payload);
+          break;
+        case 'mouseenter':
+          hooks?.onMouseEnter?.(payload);
+          break;
+        case 'mouseleave':
+          hooks?.onMouseLeave?.(payload);
+          break;
       }
     };
   });
