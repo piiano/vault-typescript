@@ -22,6 +22,70 @@ export async function initDevelopmentVault(): Promise<{ vault: Vault; testObject
 
   const vaultClient = new VaultClient({ vaultURL: `http://localhost:${vaultPort}`, apiKey: 'pvaultauth' });
 
+  await vaultClient.bundles.addBundle({
+    requestBody: {
+      name: 'cc',
+      description: 'Helper credit card transformation functions',
+      code: Buffer.from(
+        `
+module.exports.format_card_number = {
+  type: 'transformer',
+  description: 'Formats the card number with spaces comparing to the default compact format',
+  handler(context, object, value) {
+    return String(value).replace(/([0-9]{4})/g, '$1 ').trim();
+  }
+};
+
+module.exports.mask_card_number = {
+  type: 'transformer',
+  description: 'Credit card number masker for display',
+  handler(context, object, value) {
+    return '•••• •••• •••• ' + String(value).slice(-4);
+  }
+}
+
+module.exports.format_card_exp = {
+  type: 'transformer',
+  description: 'Returns the card expiry in the form of MM/YY compared to the default MM/YYYY',
+  handler(context, object, value) {
+    return String(value).slice(0, 2) + '/' + String(value).slice(-2);
+  }
+};
+
+module.exports.mask_card_exp = {
+  type: 'transformer',
+  description: 'Returns the card expiry in the form of ••/••',
+  handler(context, object, value) {
+    return '••/••';
+  }
+};
+
+module.exports.mask_cvv = {
+  type: 'transformer',
+  description: 'Returns the CVV in the form of •••',
+  handler(context, object, value) {
+    return '•••';
+  }
+}
+        `,
+      ).toString('base64'),
+    },
+  });
+  // .catch(() => void 0); // The vault might be reused and the bundle might already exist.
+
+  await vaultClient.customDataTypes.updateDataType({
+    type: 'CC_NUMBER',
+    requestBody: { custom_transformers: ['cc.mask_card_number', 'cc.format_card_number'] },
+  });
+  await vaultClient.customDataTypes.updateDataType({
+    type: 'CC_EXPIRATION_STRING',
+    requestBody: { custom_transformers: ['cc.mask_card_exp', 'cc.format_card_exp'] },
+  });
+  await vaultClient.customDataTypes.updateDataType({
+    type: 'CC_CVV',
+    requestBody: { custom_transformers: ['cc.mask_cvv'] },
+  });
+
   await vaultClient.collections
     .addCollection({
       format: 'json',

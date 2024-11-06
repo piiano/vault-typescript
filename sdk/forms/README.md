@@ -214,15 +214,18 @@ Use `createProtectedView` when you need to securely display sensitive data on th
   - `dynamic` (optional boolean): Whether the view allows dynamic updates (default: `false`).
   - `hooks` (optional object): Lifecycle hooks:
     - `onError(error)`: Called when an error occurs.
-    - `onClick(event)`: Called when a value click occurs. Event is an object with the following properties:
-      - `path`: The path to the clicked value.
-    - `onMouseEnter(event)`: Called when a value is hovered over. Event is an object with the following properties:
-      - `path`: The path to the hovered value.
-      - `x`: x coordinate of the mouse pointer.
-      - `y`: y coordinate of the mouse pointer.
-    - `onMouseLeave(event)`: Called when a value is no longer hovered over. Event is an object with the following properties:
-      - `path`: The path to the hovered value.
+    - `onClick(event)`: Called when a value click occurs. See [MouseEvent](#mouse-event-object) for more details about the event object.
+    - `onMouseEnter(event)`: Called when a value is hovered over. See [MouseEvent](#mouse-event-object) for more details about the event object.
+    - `onMouseLeave(event)`: Called when a value is no longer hovered over. See [MouseEvent](#mouse-event-object) for more details about the event object.
   - `debug` (optional boolean): Whether to enable debug mode which adds additional logging (default: `false`).
+
+###### MouseEvent
+
+When `onClick`, `onMouseEnter`, or `onMouseLeave` hooks are called, the event object will have the following properties:
+  - `path`: The path to the value that received the event.
+  - `mouseX`: x coordinate of the mouse pointer during the event.
+  - `mouseY`: y coordinate of the mouse pointer during the event.
+  - `rect`: A [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect) element representing the bounding rectangle of the value element that received the event.
 
 ##### Returned Object
 
