@@ -22,12 +22,13 @@ export async function initDevelopmentVault(): Promise<{ vault: Vault; testObject
 
   const vaultClient = new VaultClient({ vaultURL: `http://localhost:${vaultPort}`, apiKey: 'pvaultauth' });
 
-  await vaultClient.bundles.addBundle({
-    requestBody: {
-      name: 'cc',
-      description: 'Helper credit card transformation functions',
-      code: Buffer.from(
-        `
+  await vaultClient.bundles
+    .addBundle({
+      requestBody: {
+        name: 'cc',
+        description: 'Helper credit card transformation functions',
+        code: Buffer.from(
+          `
 module.exports.format_card_number = {
   type: 'transformer',
   description: 'Formats the card number with spaces comparing to the default compact format',
@@ -68,10 +69,10 @@ module.exports.mask_cvv = {
   }
 }
         `,
-      ).toString('base64'),
-    },
-  });
-  // .catch(() => void 0); // The vault might be reused and the bundle might already exist.
+        ).toString('base64'),
+      },
+    })
+    .catch(() => void 0); // The vault might be reused and the bundle might already exist.
 
   await vaultClient.customDataTypes.updateDataType({
     type: 'CC_NUMBER',
