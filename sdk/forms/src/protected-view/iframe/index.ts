@@ -99,6 +99,7 @@ function didStrategyOptionsChange(next: ViewIframeOptions) {
 async function render(payload: ViewIframeOptions) {
   allowUpdates = Boolean(payload.dynamic);
   if (!result || didStrategyOptionsChange(payload)) result = applyStrategy(payload);
+  fetchObjectsOptions = payload;
   renderView(sendToParent, await result, payload.display, payload.css);
 }
 
@@ -107,8 +108,9 @@ function didReadObjectOptionsChange(prev: ReadObjectStrategyOptions, next: ReadO
     prev === undefined ||
     prev.collection !== next.collection ||
     prev.reason !== next.reason ||
-    prev.props !== next.props ||
     prev.transformationParam !== next.transformationParam ||
+    prev.props.length !== next.props.length ||
+    prev.props.some((prop, i) => prop !== next.props[i]) ||
     prev.ids.length !== next.ids.length ||
     prev.ids.some((id, i) => id !== next.ids[i])
   );
