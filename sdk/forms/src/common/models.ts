@@ -267,6 +267,21 @@ const DisplayOptionsValidator = array(
      * CSS class to apply to the value.
      */
     class: string().optional(),
+    /**
+     * A format pattern to apply to the value.
+     * The format pattern supports the following tokens:
+     * - `#` for showing a character if present.
+     * - `*` or `•` for masking a character if present.
+     * - `~` for skipping a character if present.
+     * - Any other character in the pattern will be displayed as is in between the original value characters.
+     *
+     * For example, given a value of: `abc123456`
+     * and a pattern of: `(###) ** ~~##`
+     * the value will be displayed as: `(abc) ** 56`.
+     *
+     * If a format is provided for a non-primitive value (object or array), the format will be applied to each of the nested primitive values of the object or array.
+     */
+    format: string().optional(),
   }),
 );
 

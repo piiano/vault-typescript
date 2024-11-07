@@ -23,12 +23,6 @@ For production use, please refer to the official documentation or consult with a
       const tooltip = document.getElementById('tooltip');
 
       function getOptions() {
-        const props = [
-          `card_number.${reveal ? 'format' : 'mask'}_card_number`,
-          `card_expiry.${reveal ? 'format' : 'mask'}_card_exp`,
-          `card_cvv${reveal ? '' : '.mask_cvv'}`,
-        ];
-        const [numPropName, expPropName, cvvPropName] = props;
 
         return {
           vaultURL: `http://localhost:${import.meta.env.VITE_VAULT_PORT}`,
@@ -37,12 +31,12 @@ For production use, please refer to the official documentation or consult with a
             type: 'read-objects',
             collection: 'credit_cards',
             ids: [import.meta.env.VITE_TEST_OBJECT_ID],
-            props,
+            props: ['card_number', 'card_expiry', 'card_cvv'],
           },
           display: [
-            { path: `[0]["${numPropName}"]`, class: 'card-number value', clickToCopy: true },
-            { label: 'EXP', path: `[0]["${expPropName}"]`, class: 'card-expiry value', clickToCopy: true },
-            { label: 'CVV', path: `[0]["${cvvPropName}"]`, class: 'card-cvv value', clickToCopy: true },
+            { path: `[0].card_number`, class: 'card-number value', clickToCopy: true, format: reveal ? '#### #### #### ####' : '•••• •••• •••• ####' },
+            { path: `[0].card_expiry`, class: 'card-expiry value', clickToCopy: true, label: 'EXP', format: reveal ? '###~~##' : '••#~~••' },
+            { path: `[0].card_cvv`, class: 'card-cvv value', clickToCopy: true, label: 'CVV', format: reveal ? '###' : '•••' },
           ],
           dynamic: true,
           hooks: {
@@ -50,7 +44,6 @@ For production use, please refer to the official documentation or consult with a
             onMouseEnter: ({ rect }) => {
               if (!reveal) return;
               clearTimeout(timer);
-
               const x = rect.x + rect.width / 2;
               const y = rect.y;
               tooltip.style.top = `${y}px`;
@@ -60,10 +53,12 @@ For production use, please refer to the official documentation or consult with a
             },
             onMouseLeave: () => {
               if (!reveal) return;
+              clearTimeout(timer);
               tooltip.style.opacity = 0;
             },
             onClick: () => {
               if (!reveal) return;
+              clearTimeout(timer);
               tooltip.textContent = 'Copied!';
               timer = setTimeout(() => tooltip.style.opacity = 0, 1000);
             }
