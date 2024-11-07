@@ -9,8 +9,8 @@ export const View = component(
     const view = document.createElement('div');
     view.classList.add('view');
     const value = result.strategy === 'invoke-action' ? result.response : result.objects;
-    const values = display.map(({ path, label, clickToCopy, class: className }) =>
-      DisplayValue(`${keyPrefix}/${path}`, { value, path, label, clickToCopy, className, sendToParent }),
+    const values = display.map(({ path, format, label, clickToCopy, class: className }) =>
+      DisplayValue(`${keyPrefix}/${path}`, { value, path, format, label, clickToCopy, className, sendToParent }),
     );
     view.replaceChildren(...values);
     return view;
@@ -20,6 +20,7 @@ export const View = component(
 type DisplayValueProps = {
   sendToParent?: Sender;
   path?: string;
+  format?: string;
   value: unknown;
   label?: string;
   clickToCopy?: boolean;
@@ -27,7 +28,7 @@ type DisplayValueProps = {
 };
 
 const DisplayValue = component(
-  (keyPrefix, { value: rootValue, label, path, className, clickToCopy, sendToParent }: DisplayValueProps) => {
+  (keyPrefix, { value: rootValue, label, path, format, className, clickToCopy, sendToParent }: DisplayValueProps) => {
     const container = document.createElement('div');
     if (className) container.className = className;
     if (path) container.setAttribute('data-path', path);
@@ -43,7 +44,7 @@ const DisplayValue = component(
       case 'number':
       case 'boolean': {
         const span = document.createElement('span');
-        span.innerText = String(value);
+        span.innerText = formatValue(value, format);
 
         if (path && sendToParent) {
           const mouseEnterHandler = (event: MouseEvent) => {
@@ -78,7 +79,9 @@ const DisplayValue = component(
 
         if (Array.isArray(value)) {
           children.push(
-            ...value.map((item, index) => DisplayValue(`${keyPrefix}/value-${index}`, { value: item, clickToCopy })),
+            ...value.map((item, index) =>
+              DisplayValue(`${keyPrefix}/value-${index}`, { value: item, format, clickToCopy }),
+            ),
           );
           break;
         }
@@ -86,7 +89,7 @@ const DisplayValue = component(
         const object = document.createElement('div');
         object.replaceChildren(
           ...Object.entries(value).map(([key, item]) =>
-            DisplayValue(`${keyPrefix}/value-${key}`, { value: item, label: key, clickToCopy }),
+            DisplayValue(`${keyPrefix}/value-${key}`, { value: item, format, label: key, clickToCopy }),
           ),
         );
         children.push(object);
@@ -108,6 +111,11 @@ const Label = component((_, { label }: { label: string }) => {
 });
 
 function copy(value: string) {
+  if ('clipboard' in navigator && 'writeText' in navigator.clipboard) {
+    navigator.clipboard.writeText(value).catch(() => void 0);
+    return;
+  }
+
   const input = document.createElement('textarea');
   input.value = value;
   input.style.opacity = '0';
@@ -124,4 +132,34 @@ function copy(value: string) {
   input.select();
   document.execCommand('copy');
   document.body.removeChild(input);
+}
+
+function formatValue(value: string | number | boolean, format?: string): string {
+  const stringValue = String(value);
+  if (!format) return stringValue;
+
+  let formattedValue = '';
+
+  let valueIndex = 0;
+  for (let i = 0; i < format.length; i++) {
+    const char = format[i];
+    switch (char) {
+      case '#':
+        formattedValue += stringValue[valueIndex] ?? '';
+        valueIndex++;
+        break;
+      case '*':
+      case '•':
+        formattedValue += valueIndex < stringValue.length ? char : '';
+        valueIndex++;
+        break;
+      case '~':
+        valueIndex++;
+        break;
+      default:
+        formattedValue += char;
+    }
+  }
+
+  return formattedValue;
 }
