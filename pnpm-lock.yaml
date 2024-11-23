@@ -14,11 +14,11 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2
       '@piiano/vault-bundles':
-        specifier: ^0.1.13
-        version: 0.1.13
+        specifier: ^1.0.2
+        version: 1.0.2
       '@piiano/vault-client':
-        specifier: ^1.1.3
-        version: 1.1.3
+        specifier: ^1.1.5
+        version: 1.1.5
       '@types/chai':
         specifier: ^4.3.11
         version: 4.3.20
@@ -588,6 +588,9 @@ packages:
 
   '@piiano/vault-bundles@0.1.13':
     resolution: {integrity: sha512-nAy9WuVwcUiiJe78SexeX5bNpwdi0L5n7+5NvPVCVqtB4fkwy/Hf03FAMuUlwqyocOgyANY2DJCz2orpwmb+QQ==}
+
+  '@piiano/vault-bundles@1.0.2':
+    resolution: {integrity: sha512-wBttxy0F2Vq0VD3KH4ncNwX07Ghy2kE6Xj+2F5INvDH/4bdp4IhCyAHRDfpV6GC0HuDmQUOY3dqJNA7VVBw3SQ==}
 
   '@piiano/vault-client@1.1.3':
     resolution: {integrity: sha512-FLcWIF7lH+sNQYDfRjmLAD5CX204fjU0FF8T166izC6f7Y7JLArMHenQQ0X7fzpqdTzkg+im03ngQLuHL8x4nQ==}
@@ -3031,10 +3034,12 @@ snapshots:
 
   '@piiano/typeorm-encryption@1.0.40(typeorm@0.3.20(sqlite3@5.1.7)(ts-node@10.9.2(@types/node@20.17.2)(typescript@4.9.5)))':
     dependencies:
-      '@piiano/vault-client': 1.1.3
+      '@piiano/vault-client': 1.1.5
       typeorm: 0.3.20(sqlite3@5.1.7)(ts-node@10.9.2(@types/node@20.17.2)(typescript@4.9.5))
 
   '@piiano/vault-bundles@0.1.13': {}
+
+  '@piiano/vault-bundles@1.0.2': {}
 
   '@piiano/vault-client@1.1.3': {}
 
