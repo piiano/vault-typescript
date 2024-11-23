@@ -47,8 +47,8 @@ export type DecryptOutputObject = {
 };
 
 /**
- * A vault object that exposes methods to be used with Vault API from the action.
- * The vault object expose a subset of the Vault JS SDK.
+ * Vault exposes methods to be used with Vault API from the action.
+ * The vault object exposes a subset of the Vault JS SDK.
  */
 export type Vault = {
   /**
@@ -71,9 +71,12 @@ export type Vault = {
   ) => Promise<{ [K in keyof P]: unknown }>;
 
   /**
-   * The crypto object exposes methods to interact with vault encryption APIs.
+   * The crypto object exposes methods to interact with [vault encryption APIs](https://docs.piiano.com/api/crypto).
    */
   crypto: {
+    /**
+     * Decrypt object ciphertext that was encrypted with vault using the [vault decrypt API](https://docs.piiano.com/api/operations/decrypt).
+     */
     decrypt: (params: DecryptInput) => Promise<DecryptOutputObject[]>;
   };
 };

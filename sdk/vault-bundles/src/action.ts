@@ -17,12 +17,12 @@ export interface ActionContext {
    */
   reason: string;
   /**
-   * The HTTP request body of the invoke action API request serialized from JSON as a JavaScript object.
+   * The HTTP request body of the invoke action API request deserialized from JSON as a JavaScript object.
    */
   body: unknown;
   /**
-   * A vault object that exposes methods to be used with Vault API from the action.
-   * The vault object expose a subset of the Vault JS SDK.
+   * An object that exposes methods to be used with Vault API from the action.
+   * The vault object exposes a subset of the Vault JS SDK.
    */
   vault: Vault;
 }
