@@ -1,3 +1,4 @@
+import { Vault } from "./vault";
 
 /**
  * An object that describes the context in which the action is invoked.
@@ -15,13 +16,22 @@ export interface ActionContext {
    * The reason specified in the request.
    */
   reason: string;
+  /**
+   * The HTTP request body of the invoke action API request deserialized from JSON as a JavaScript object.
+   */
+  body: unknown;
+  /**
+   * An object that exposes methods to be used with Vault API from the action.
+   * The vault object exposes a subset of the Vault JS SDK.
+   */
+  vault: Vault;
 }
 
 /**
  * An action function is invoked when using the actions API.
- * The params argument is the JSON value sent as body to the actions API and the return value of the function will be serialized as JSON and returned as the response of the action API.
+ * The return value of the function will be serialized as JSON and returned as the response of the action API.
  *
  * The action function can be synchronous or asynchronous.
  * If it returns a Promise, the action API will wait for the promise to resolve before sending the response.
  */
-export type Action = (context: ActionContext, params: unknown) => unknown | Promise<unknown>;
+export type Action = (context: ActionContext) => unknown | Promise<unknown>;
