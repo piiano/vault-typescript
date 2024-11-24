@@ -1,6 +1,6 @@
 {
   "name": "@piiano/typeorm-encryption",
-  "version": "1.0.42",
+  "version": "1.0.43",
   "description": "TypeORM plugin for data encryption using Piiano Vault",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,7 +29,7 @@
     "push": "pnpm publish --access public"
   },
   "dependencies": {
-    "@piiano/vault-client": "^1.1.5"
+    "@piiano/vault-client": "^1.1.6"
   },
   "peerDependencies": {
     "typeorm": "^0.3.17"
