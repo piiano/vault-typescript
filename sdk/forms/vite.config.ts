@@ -8,7 +8,13 @@ import { version } from './package.json';
 
 // https://vitejs.dev/config/
 const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
+  const example = {
+    form: '/examples/form.html',
+    view: '/examples/view.html',
+  }[process.env.EXAMPLE ?? 'view.html'];
+
   if (mode === 'dev') {
+    if (!example) throw new Error('Invalid EXAMPLE env variable');
     const { vault, testObjects } = await initDevelopmentVault();
     process.env.VITE_VAULT_PORT = String(await vault.start());
     process.env.VITE_TEST_OBJECT_ID = String(Object.keys(testObjects)[0]);
@@ -51,8 +57,8 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
     process.env,
     mode === 'dev'
       ? {
-          VITE_VIEW_IFRAME_URL: './src/protected-view/iframe/index.html',
-          VITE_FORM_IFRAME_URL: './src/protected-forms/iframe/index.html',
+          VITE_VIEW_IFRAME_URL: '/src/protected-view/iframe/index.html',
+          VITE_FORM_IFRAME_URL: '/src/protected-forms/iframe/index.html',
           VITE_IFRAME_ORIGIN: 'http://localhost:3000',
         }
       : {
@@ -95,6 +101,7 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
         : [optimizeVaultClientBundleSize(), singleInlinedHtml(), appendSuffixes(target.output!)],
     server: {
       port: 3000,
+      open: example,
     },
   };
 };

@@ -28,7 +28,7 @@ export type Strategy<T extends ResultType> = Exclude<`${'tokenize' | 'store' | '
 
 export type SubmitOptions<T extends ResultType> = Pick<
   FormInitOptions,
-  'globalVaultIdentifiers' | 'collection' | 'tenantId' | 'reason' | 'expiration'
+  'globalVaultIdentifiers' | 'collection' | 'tenantId' | 'reason' | 'expiration' | 'storeObject'
 > & {
   strategy?: Strategy<T>;
 };

@@ -138,6 +138,11 @@ export const FormInitOptionsValidator = object({
    */
   expiration: number().optional(),
   /**
+   * With the `tokenize-object` strategy this option will store an object in addition to the token in the Vault.
+   * Setting this option to true in any other strategy will have no effect.
+   */
+  storeObject: boolean().optional(),
+  /**
    * The fields to render in the form.
    */
   fields: array(FieldValidator),

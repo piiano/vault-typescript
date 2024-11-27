@@ -1,0 +1,84 @@
+<!--
+
+# WARNING!
+
+The following HTML file is used for local development purposes only.
+It is not intended for production or as a reference for a production implementation.
+
+For production use, please refer to the official documentation or consult with a Piiano representative.
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Test Form</title>
+    <!-- Include Piiano Vault Client -->
+    <script type="module">
+      import { createProtectedForm } from '../src/index.ts';
+
+      function getOptions() {
+        return {
+          vaultURL: `http://localhost:${import.meta.env.VITE_VAULT_PORT}`,
+          apiKey: "pvaultauth",
+          collection: "credit_cards",
+          globalVaultIdentifiers: false,
+          fields: [
+            { "name": "card_number", "label": "Card number", "dataTypeName": "CC_NUMBER", "required": true, value: '4111111111111111' },
+            { "name": "card_expiry", "label": "Expiration", "dataTypeName": "CC_EXPIRATION_STRING", "required": true, value: '12/28' },
+            { "name": "card_holder", "label": "Holder name", "dataTypeName": "CC_HOLDER_NAME", "required": true, value: 'Jane Doe' },
+            { "name": "card_cvv", "label": "CVV", "dataTypeName": "CC_CVV", "required": true, value: '123' },
+          ],
+          storeObject: true,
+          submitButton: "Pay",
+          strategy: "tokenize-object",
+          allowUpdates: true,
+          hooks: {
+            onSubmit: console.log,
+            onError: console.error,
+          },
+          style: {
+            "theme": "floating-label",
+            "css": "",
+            "variables": {
+              "primary": "#2d2d2d",
+              "background": "#ffffff",
+            },
+          },
+        };
+      }
+
+      const view = createProtectedForm('#view-container', getOptions());
+    </script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        height: 100vh;
+        padding: 0 5rem;
+      }
+      main {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #card {
+        position: relative;
+        cursor: pointer;
+      }
+      #view-container {
+        width: fit-content;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- protected view example -->
+      <div id="card">
+        <div id="view-container"></div>
+      </div>
+    </main>
+  </body>
+</html>
