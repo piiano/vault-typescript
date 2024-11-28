@@ -43,7 +43,7 @@ export function updateForm(
   return newForm;
 }
 
-function applyStyle({ theme, css, variables }: Style = {}) {
+function applyStyle({ theme, css, variables }: Partial<Style> = {}) {
   if (css) {
     const style = document.createElement('style');
     style.id = 'iframe-style';
@@ -60,7 +60,7 @@ function applyStyle({ theme, css, variables }: Style = {}) {
   }
 }
 
-function removeStyle({ theme, css, variables }: Style = {}) {
+function removeStyle({ theme, css, variables }: Partial<Style> = {}) {
   if (css) {
     document.getElementById('iframe-style')?.remove();
   }
@@ -68,7 +68,7 @@ function removeStyle({ theme, css, variables }: Style = {}) {
     document.body.classList.remove(theme);
   }
   if (variables) {
-    Object.entries(variables).forEach(([key, value]) => {
+    Object.entries(variables).forEach(([key]) => {
       document.documentElement.style.removeProperty(`--${key}`);
     });
   }

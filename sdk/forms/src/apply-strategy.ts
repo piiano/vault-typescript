@@ -54,6 +54,7 @@ async function tokenizeObject(
     tenantId,
     globalVaultIdentifiers = true,
     reason = 'AppFunctionality',
+    storeObject = false,
     expiration,
   }: SubmitRequest<'object'>,
 ) {
@@ -65,6 +66,7 @@ async function tokenizeObject(
         object: { fields: object },
         type: 'pci',
         props: Object.keys(object),
+        store_object: storeObject,
       },
     ],
     expirationSecs: asExpirationSecs(expiration),
