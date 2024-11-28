@@ -84,7 +84,7 @@ pnpm add @piiano/forms
 ### CDN
 
 ```html
-<script src="https://cdn.piiano.com/pvault-forms-lib-v2.2.3.js"></script>
+<script src="https://cdn.piiano.com/pvault-forms-lib-v2.3.0.js"></script>
 ```
 
 > **Note**
