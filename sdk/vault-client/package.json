@@ -38,13 +38,13 @@
   "devDependencies": {
     "@piiano/openapi-typescript-codegen": "^0.29.1",
     "@piiano/testcontainers-vault": "^1.1.2",
-    "@types/chai": "^4.3.11",
+    "@types/chai": "^4.3.20",
     "@types/chai-as-promised": "^7.1.8",
-    "@types/mocha": "^10.0.9",
-    "@types/node": "^20.11.8",
-    "chai": "^4.4.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.17.9",
+    "chai": "^4.5.0",
     "chai-as-promised": "^7.1.1",
-    "mocha": "^10.2.0",
+    "mocha": "^10.8.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }
