@@ -22,7 +22,7 @@
     "@piiano/typeorm-encryption": "^1.0.44",
     "@piiano/vault-client": "^1.1.7",
     "express": "^4.18.2",
-    "reflect-metadata": "^0.2.1",
+    "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",
     "typeorm": "0.3.20"
   },
