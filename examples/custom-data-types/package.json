@@ -16,10 +16,10 @@
     "@piiano/vault-bundles": "^0.1.13",
     "@piiano/vault-client": "^1.1.7",
     "@types/chai": "^4.3.11",
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.10",
     "@types/node": "^20.17.9",
     "chai": "^4.4.1",
-    "mocha": "^10.2.0",
+    "mocha": "^10.8.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.2"
   }
