@@ -5,6 +5,8 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
   },
-  "include": ["test/**/*.ts"],
+  "include": [
+    "test/**/*.ts"
+  ],
   "exclude": ["node_modules", "dist", "src"]
 }
