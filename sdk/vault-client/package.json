@@ -30,7 +30,7 @@
     "pregenerate": "rm -rf ./src/generated",
     "generate": "openapi --postfixServices Client --useOptions --name VaultClient --indent 2 --useUnionTypes -i openapi.yaml -o ./src/generated -c fetch",
     "postgenerate": "git apply patches/*.patch",
-    "test": "TS_NODE_PROJECT=tsconfig.test.json mocha -c -r ts-node/register -r test/hooks.ts 'test/**/*.spec.ts'",
+    "test": "TS_NODE_PROJECT='./tsconfig.test.json' node --import tsx --import ./test/hooks.ts --experimental-test-isolation=none --test './test/**/*.spec.ts'",
     "tsc": "tsc -p tsconfig.build.json",
     "build": "pnpm run openapi && pnpm run generate && pnpm run tsc",
     "push": "pnpm publish --access public"
@@ -38,14 +38,8 @@
   "devDependencies": {
     "@piiano/openapi-typescript-codegen": "^0.29.1",
     "@piiano/testcontainers-vault": "^1.1.2",
-    "@types/chai": "^4.3.20",
-    "@types/chai-as-promised": "^7.1.8",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "^20.17.9",
-    "chai": "^4.5.0",
-    "chai-as-promised": "^7.1.1",
-    "mocha": "^10.8.2",
-    "ts-node": "^10.9.2",
+    "@types/node": "^22.10.1",
+    "tsx": "^4.19.2",
     "typescript": "^5.3.3"
   }
 }

@@ -1,87 +1,109 @@
-import {expect, use} from "chai";
-import {addTestCollection} from "./collections.spec";
-import {Reason, Collection} from "..";
-import * as chaiAsPromised from "chai-as-promised";
+import { addTestCollection } from "./collections.spec";
+import { VaultClient, Reason, Collection } from "..";
+import { describe, it, before, after } from "node:test";
+import assert from "node:assert";
 
-use(chaiAsPromised)
-
-describe('objects',  function () {
+describe("objects", function () {
+  let vaultClient: VaultClient;
+  before(() => {
+    vaultClient = new VaultClient({ vaultURL: process.env.VAULT_URL });
+  });
 
   const testCollection: Collection = {
-    name: 'test_objects_collection',
-    type: 'PERSONS',
+    name: "test_objects_collection",
+    type: "PERSONS",
     properties: [
-      { name: 'name', is_encrypted: true, data_type_name: 'NAME' },
-      { name: 'email', is_encrypted: true, data_type_name: 'EMAIL' },
-    ]
+      { name: "name", is_encrypted: true, data_type_name: "NAME" },
+      { name: "email", is_encrypted: true, data_type_name: "EMAIL" },
+    ],
   };
 
-  before(addTestCollection(testCollection));
+  before(() => addTestCollection(vaultClient, testCollection));
 
   after(async function () {
-    await this.vaultClient.collections.deleteCollection({
+    await vaultClient.collections.deleteCollection({
       collection: testCollection.name,
     });
   });
 
-  it('should be able work with objects', async function () {
-    const defaults: { collection: string, reason: Reason } = {
+  it("should be able work with objects", async function () {
+    const defaults: { collection: string; reason: Reason } = {
       collection: testCollection.name,
-      reason: 'AppFunctionality' as Reason,
-    }
+      reason: "AppFunctionality" as Reason,
+    };
 
-    const name = 'John Doe';
-    const email = 'johndoe@example.com';
+    const name = "John Doe";
+    const email = "johndoe@example.com";
     const objectToAdd = { name, email };
 
-    const { id } = await this.vaultClient.objects.addObject({ ...defaults, requestBody: objectToAdd });
-
-    expect(id).to.be.a('string').not.empty;
-
-    const getEntireObject = await this.vaultClient.objects.getObjectById({
-      ...defaults, id, options: ['unsafe', 'show_builtins'],
+    const { id } = await vaultClient.objects.addObject({
+      ...defaults,
+      requestBody: objectToAdd,
     });
 
-    expect(getEntireObject).to.have.property('id');
-    expect(getEntireObject).to.have.property('_creation_time');
-    expect(getEntireObject.name).to.equal(objectToAdd.name);
-    expect(getEntireObject.email).to.equal(objectToAdd.email);
-    expect(Date.parse(getEntireObject._creation_time!)).to.be.within(Date.now() - 1000, Date.now());
-    expect(Date.parse(getEntireObject._modification_time!)).to.be.within(Date.now() - 1000, Date.now());
+    assert.ok(typeof id === "string");
+    assert.ok(id);
 
+    const getEntireObject = await vaultClient.objects.getObjectById({
+      ...defaults,
+      id,
+      options: ["unsafe", "show_builtins"],
+    });
 
-    const newEmail = 'john@example.com';
+    assert.ok(getEntireObject);
+    assert.ok("id" in getEntireObject);
+    assert.ok("_creation_time" in getEntireObject);
+    assert.equal(typeof getEntireObject._creation_time, "string");
+    assert.ok("name" in getEntireObject);
+    assert.equal(getEntireObject.name, objectToAdd.name);
+    assert.ok("email" in getEntireObject);
+    assert.equal(getEntireObject.email, objectToAdd.email);
+    const creationTime = Date.parse(getEntireObject._creation_time);
+    assert.ok(creationTime > Date.now() - 1000 && creationTime < Date.now());
+    const modificationTime = Date.parse(getEntireObject._modification_time);
+    assert.ok(
+      modificationTime > Date.now() - 1000 && modificationTime < Date.now(),
+    );
 
-    await this.vaultClient.objects.updateObjectById({
-      ...defaults, id,
+    const newEmail = "john@example.com";
+
+    await vaultClient.objects.updateObjectById({
+      ...defaults,
+      id,
       requestBody: {
         email: newEmail,
-      }
+      },
     });
 
-    const updatedObject = await this.vaultClient.objects.getObjectById({
-      ...defaults, id,
-      options: ['unsafe'],
+    const updatedObject = await vaultClient.objects.getObjectById({
+      ...defaults,
+      id,
+      options: ["unsafe"],
     });
 
-    expect(updatedObject).to.deep.equal({ id, name, email: newEmail });
+    assert.deepEqual(updatedObject, { id, name, email: newEmail });
 
-    await this.vaultClient.objects.deleteObjectById({...defaults, id });
+    await vaultClient.objects.deleteObjectById({ ...defaults, id });
 
-    const getObjectPromise = this.vaultClient.objects.getObjectById({...defaults, id, options: ['unsafe'] });
+    const getObjectPromise = vaultClient.objects.getObjectById({
+      ...defaults,
+      id,
+      options: ["unsafe"],
+    });
 
-    await expect(getObjectPromise).to.be.rejected;
+    await assert.rejects(getObjectPromise);
 
-    const error = await getObjectPromise.catch(e => e);
+    const error = await getObjectPromise.catch((e) => e);
 
     // access the Vault error response
-    expect(error).to.have.property('body').deep.equal({
-      error_code: 'PV3005',
-      error_url: 'https://docs.piiano.com/api/error-codes#PV3005',
+    assert.ok("body" in error);
+    assert.deepEqual(error.body, {
+      error_code: "PV3005",
+      error_url: "https://docs.piiano.com/api/error-codes#PV3005",
       message: `One or more Objects is not found: ${id}. For more details, view the logs.`,
       context: {
         ids: id,
-      }
+      },
     });
   });
 });

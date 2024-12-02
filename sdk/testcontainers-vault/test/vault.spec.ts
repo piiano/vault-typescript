@@ -1,118 +1,141 @@
-import {expect, use} from 'chai'
-import {Vault} from "..";
+import { Vault } from "..";
 import axios from "axios";
-import chaiAsPromised from 'chai-as-promised';
-
-use(chaiAsPromised)
+import { describe, it } from "node:test";
+import assert from "node:assert";
 
 const testVaultConfig = {
-  ...(process.env.VAULT_VERSION ? {version: process.env.VAULT_VERSION} : {}),
+  ...(process.env.VAULT_VERSION ? { version: process.env.VAULT_VERSION } : {}),
   env: {
     PVAULT_SENTRY_ENABLE: false,
-    PVAULT_LOG_DATADOG_ENABLE: 'none',
-  }
-}
+    PVAULT_LOG_DATADOG_ENABLE: "none",
+  },
+};
 
-describe('testcontainers-vault', function () {
-  // Long timeout to allow for the image to be pulled
-  this.slow(25000)
-  this.timeout(30000)
-
-  it('should be able to start and stop vault', async () => {
-    const vault = new Vault(testVaultConfig)
-    const port = await vault.start()
+describe("testcontainers-vault", { timeout: 30000 }, function () {
+  it("should be able to start and stop vault", async () => {
+    const vault = new Vault(testVaultConfig);
+    const port = await vault.start();
 
     // verify that the Vault is started on a random port and not the default
-    expect(port).to.not.equal(8123)
+    assert.notEqual(port, 8123);
 
-    const controlStatus = await axios.get(`http://localhost:${port}/api/pvlt/1.0/ctl/info/health`)
-    const dataStatus = await axios.get(`http://localhost:${port}/api/pvlt/1.0/data/info/health`)
+    const controlStatus = await axios.get(
+      `http://localhost:${port}/api/pvlt/1.0/ctl/info/health`,
+    );
+    const dataStatus = await axios.get(
+      `http://localhost:${port}/api/pvlt/1.0/data/info/health`,
+    );
 
-    expect(controlStatus.status).to.equal(200)
-    expect(dataStatus.status).to.equal(200)
-    expect(controlStatus.data).to.deep.equal({status: 'pass'})
-    expect(dataStatus.data).to.deep.equal({status: 'pass'})
+    assert.equal(controlStatus.status, 200);
+    assert.equal(dataStatus.status, 200);
+    assert.deepEqual(controlStatus.data, { status: "pass" });
+    assert.deepEqual(dataStatus.data, { status: "pass" });
 
-    await vault.stop()
+    await vault.stop();
 
-    await expect(axios.get(`http://localhost:${port}/api/pvlt/1.0/data/info/health`)).to.be.rejected
-    await expect(axios.get(`http://localhost:${port}/api/pvlt/1.0/ctl/info/health`)).to.be.rejected
-  })
+    await assert.rejects(
+      axios.get(`http://localhost:${port}/api/pvlt/1.0/data/info/health`),
+    );
 
-  it('should be able to start vault on specific port', async () => {
-    const port = 57384
-    const vault = new Vault({ port, ...testVaultConfig })
-    const actualPort = await vault.start()
+    await assert.rejects(
+      axios.get(`http://localhost:${port}/api/pvlt/1.0/ctl/info/health`),
+    );
+  });
 
-    expect(actualPort).to.equal(port)
+  it("should be able to start vault on specific port", async () => {
+    const port = 57384;
+    const vault = new Vault({ port, ...testVaultConfig });
+    const actualPort = await vault.start();
 
-    const controlStatus = await axios.get(`http://localhost:${port}/api/pvlt/1.0/ctl/info/health`)
-    const dataStatus = await axios.get(`http://localhost:${port}/api/pvlt/1.0/data/info/health`)
+    assert.equal(actualPort, port);
 
-    expect(controlStatus.status).to.equal(200)
-    expect(dataStatus.status).to.equal(200)
-    expect(controlStatus.data).to.deep.equal({status: 'pass'})
-    expect(dataStatus.data).to.deep.equal({status: 'pass'})
+    const controlStatus = await axios.get(
+      `http://localhost:${port}/api/pvlt/1.0/ctl/info/health`,
+    );
+    const dataStatus = await axios.get(
+      `http://localhost:${port}/api/pvlt/1.0/data/info/health`,
+    );
 
-    await vault.stop()
-  })
+    assert.equal(controlStatus.status, 200);
+    assert.equal(dataStatus.status, 200);
+    assert.deepEqual(controlStatus.data, { status: "pass" });
+    assert.deepEqual(dataStatus.data, { status: "pass" });
 
-  it('should be able to start vault and exec commands', async () => {
-    const vault = new Vault(testVaultConfig)
-    await vault.start()
+    await vault.stop();
+  });
 
-    const { output } = await vault.exec('pvault', 'status')
-    expect(output).to.equal(`
+  it("should be able to start vault and exec commands", async () => {
+    const vault = new Vault(testVaultConfig);
+    await vault.start();
+
+    const { output } = await vault.exec("pvault", "status");
+    assert.equal(
+      output,
+      `
 +------+---------+
 | data | control |
 +------+---------+
 | pass | pass    |
 +------+---------+
-`.trimStart())
+`.trimStart(),
+    );
 
-    await vault.stop()
-  })
+    await vault.stop();
+  });
 
-  it('should be able to start vault and exec commands with mount binding', async () => {
+  it("should be able to start vault and exec commands with mount binding", async () => {
     const vault = new Vault({
       ...testVaultConfig,
-      bindMounts: [{
+      bindMounts: [
+        {
           source: `${__dirname}/resources`,
-          target: '/resources',
-          mode: 'ro'
-      }]
-    })
-    await vault.start()
+          target: "/resources",
+          mode: "ro",
+        },
+      ],
+    });
+    await vault.start();
 
-    const { exitCode } = await vault.exec('pvault', 'collection', 'add',
-      '--collection-pvschema', '@/resources/test-collection.pvschema')
-    expect(exitCode).to.equal(0)
+    const { exitCode } = await vault.exec(
+      "pvault",
+      "collection",
+      "add",
+      "--collection-pvschema",
+      "@/resources/test-collection.pvschema",
+    );
+    assert.equal(exitCode, 0);
 
-    const { output } = await vault.exec('pvault', 'collection', 'list', '--json')
+    const { output } = await vault.exec(
+      "pvault",
+      "collection",
+      "list",
+      "--json",
+    );
 
-    expect(JSON.parse(output)).to.have.lengthOf(1)
+    assert.equal(JSON.parse(output).length, 1);
 
-    await vault.stop()
-  })
+    await vault.stop();
+  });
 
-  it('should be able to start vault with custom environment variables', async () => {
-    const customAdminAPIKey = 'customAdminAPIKey';
+  it("should be able to start vault with custom environment variables", async () => {
+    const customAdminAPIKey = "customAdminAPIKey";
     const vault = new Vault({
       ...testVaultConfig,
       env: {
         ...testVaultConfig.env,
-        PVAULT_SERVICE_ADMIN_API_KEY: customAdminAPIKey
-      }
-    })
-    const port = await vault.start()
+        PVAULT_SERVICE_ADMIN_API_KEY: customAdminAPIKey,
+      },
+    });
+    const port = await vault.start();
 
-    const callWithKey = (key: string) => axios.get(`http://localhost:${port}/api/pvlt/1.0/system/info/version`, {
-      headers: {
-        Authorization: `Bearer ${key}`
-      }
-    })
+    const callWithKey = (key: string) =>
+      axios.get(`http://localhost:${port}/api/pvlt/1.0/system/info/version`, {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      });
 
-    await expect(callWithKey('pvaultauth')).to.be.rejected;
-    await expect(callWithKey(customAdminAPIKey)).to.be.fulfilled;
-  })
-})
+    await assert.rejects(callWithKey("pvaultauth"));
+    await assert.doesNotReject(callWithKey(customAdminAPIKey));
+  });
+});

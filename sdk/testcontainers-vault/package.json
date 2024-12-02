@@ -23,7 +23,7 @@
   "repository": "git://github.com/piiano/vault-typescript.git",
   "homepage": "https://github.com/piiano/vault-typescript#readme",
   "scripts": {
-    "test": "TS_NODE_PROJECT='./tsconfig.test.json' mocha -c -p -r ts-node/register 'test/**/*.spec.ts'",
+    "test": "TS_NODE_PROJECT='./tsconfig.test.json' node --import tsx --test ./**/*.spec.ts",
     "build": "tsc -p tsconfig.build.json",
     "tsc": "tsc",
     "push": "pnpm publish --access public"
@@ -32,15 +32,9 @@
     "testcontainers": "^10.6.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.3.20",
-    "@types/chai-as-promised": "^7.1.8",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "^20.17.9",
+    "@types/node": "^22.10.1",
     "axios": "^1.6.7",
-    "chai": "^4.5.0",
-    "chai-as-promised": "^7.1.1",
-    "mocha": "^10.8.2",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.3.3"
   }
 }
