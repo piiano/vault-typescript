@@ -1,78 +1,88 @@
-import {expect} from "chai";
-import {AsyncFunc, Context} from "mocha";
-import {Collection} from "..";
+import { VaultClient, Collection } from "..";
+import { describe, it, beforeEach, afterEach, before } from "node:test";
+import assert from "node:assert";
 
-describe('collections',  function () {
+describe("collections", function () {
+  let vaultClient: VaultClient;
+  before(async () => {
+    vaultClient = new VaultClient({ vaultURL: process.env.VAULT_URL });
+  });
+
   const testCollection: Collection = {
-    name: 'test_collection',
-    type: 'PERSONS',
+    name: "test_collection",
+    type: "PERSONS",
     properties: [
-      { name: 'name', is_encrypted: true, data_type_name: 'NAME' },
-      { name: 'email', is_encrypted: true, data_type_name: 'EMAIL' },
-    ]
+      { name: "name", is_encrypted: true, data_type_name: "NAME" },
+      { name: "email", is_encrypted: true, data_type_name: "EMAIL" },
+    ],
   };
 
-  beforeEach(addTestCollection(testCollection));
+  beforeEach(() => addTestCollection(vaultClient, testCollection));
 
-  afterEach(async function () {
-    await this.vaultClient.collections.deleteCollection({
-      collection: testCollection.name
+  afterEach(async function (t) {
+    await vaultClient.collections.deleteCollection({
+      collection: testCollection.name,
     });
   });
 
-
-  it('should be able to get a collection', async function () {
-    const collection = await this.vaultClient.collections.getCollection({
-      collection: testCollection.name
+  it("should be able to get a collection", async function (t) {
+    const collection = await vaultClient.collections.getCollection({
+      collection: testCollection.name,
     });
 
-    expect(collection.name).to.equal(testCollection.name);
-    expect(collection.type).to.equal('PERSONS');
-    expect(collection.properties).to.have.lengthOf(2);
+    assert.equal(collection.name, testCollection.name);
+    assert.equal(collection.type, "PERSONS");
+    assert.equal(collection.properties.length, 2);
   });
 
-  it('should be able to list collections', async function () {
-    const collections = await this.vaultClient.collections.listCollections({});
-    expect(collections).to.have.lengthOf(1);
-    expect(collections[0].name).to.equal(testCollection.name);
-    expect(collections[0].type).to.equal('PERSONS');
-    expect(collections[0].properties).to.have.lengthOf(2);
+  it("should be able to list collections", async function (t) {
+    const collections = await vaultClient.collections.listCollections({});
+    assert.equal(collections.length, 1);
+    assert.equal(collections[0].name, testCollection.name);
+    assert.equal(collections[0].type, "PERSONS");
+    assert.equal(collections[0].properties.length, 2);
   });
 
-  it('should be able to update a collection', async function () {
-    await this.vaultClient.collections.updateCollection({
+  it("should be able to update a collection", async function (t) {
+    await vaultClient.collections.updateCollection({
       collection: testCollection.name,
       requestBody: {
         name: testCollection.name,
-        type: 'PERSONS',
+        type: "PERSONS",
         properties: [
           {
-            name: 'phone',
+            name: "phone",
             is_encrypted: true,
-            data_type_name: 'PHONE_NUMBER',
-          }
-        ]
-      }
+            data_type_name: "PHONE_NUMBER",
+          },
+        ],
+      },
     });
 
-    const collection = await this.vaultClient.collections.getCollection({
-      collection: testCollection.name
+    const collection = await vaultClient.collections.getCollection({
+      collection: testCollection.name,
     });
 
-    expect(collection.name).to.equal(testCollection.name);
-    expect(collection.type).to.equal('PERSONS');
-    expect(collection.properties).to.have.lengthOf(3);
+    assert.equal(collection.name, testCollection.name);
+    assert.equal(collection.type, "PERSONS");
+    assert.equal(collection.properties.length, 3);
   });
-
 });
 
-export function addTestCollection(collection: Collection): AsyncFunc {
-  return async function (this: Context) {
-    const newCollection = await this.vaultClient.collections.addCollection({
-      requestBody: collection
-    });
+export async function addTestCollection(
+  vaultClient: VaultClient,
+  collection: Collection,
+) {
+  const newCollection = await vaultClient.collections.addCollection({
+    requestBody: collection,
+  });
 
-    expect(Date.parse(newCollection.creation_time!)).to.be.within(Date.now() - 1000, Date.now());
-    expect(Date.parse(newCollection.modification_time!)).to.be.within(Date.now() - 1000, Date.now());
-  };
+  console.assert("creation_time" in newCollection);
+  console.assert("modification_time" in newCollection);
+  const creationTime = Date.parse(newCollection.creation_time!);
+  assert.ok(creationTime > Date.now() - 1000 && creationTime < Date.now());
+  const modificationTime = Date.parse(newCollection.modification_time!);
+  assert.ok(
+    modificationTime > Date.now() - 1000 && modificationTime < Date.now(),
+  );
 }

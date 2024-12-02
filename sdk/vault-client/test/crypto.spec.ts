@@ -1,85 +1,97 @@
-import {expect} from "chai";
-import {addTestCollection} from "./collections.spec";
-import {Reason, Collection} from "..";
+import { addTestCollection } from "./collections.spec";
+import { VaultClient, Reason, Collection } from "..";
+import { describe, it, before, after } from "node:test";
+import assert from "node:assert";
 
-describe('crypto',  function () {
+describe("crypto", function () {
+  let vaultClient: VaultClient;
+  before(() => {
+    vaultClient = new VaultClient({ vaultURL: process.env.VAULT_URL });
+  });
 
   const testCollection: Collection = {
-    name: 'test_objects_collection',
-    type: 'PERSONS',
+    name: "test_objects_collection",
+    type: "PERSONS",
     properties: [
-      { name: 'name', is_encrypted: true, data_type_name: 'NAME' },
-      { name: 'email', is_encrypted: true, data_type_name: 'EMAIL' },
-    ]
+      { name: "name", is_encrypted: true, data_type_name: "NAME" },
+      { name: "email", is_encrypted: true, data_type_name: "EMAIL" },
+    ],
   };
 
-  before(addTestCollection(testCollection));
+  before(() => addTestCollection(vaultClient, testCollection));
 
-  after(async function () {
-    await this.vaultClient.collections.deleteCollection({
+  after(async function (t) {
+    await vaultClient.collections.deleteCollection({
       collection: testCollection.name,
     });
   });
 
-  it('should be able encrypt and decrypt', async function () {
-    const defaults: { collection: string, reason: Reason } = {
+  it("should be able encrypt and decrypt", async function (t) {
+    const defaults: { collection: string; reason: Reason } = {
       collection: testCollection.name,
-      reason: 'AppFunctionality',
-    }
-
-    const objectToEncrypt = {
-      name: 'John Doe',
-      email: 'johndoe@example.com',
+      reason: "AppFunctionality",
     };
 
-    const encryptedObjects = await this.vaultClient.crypto.encrypt({
+    const objectToEncrypt = {
+      name: "John Doe",
+      email: "johndoe@example.com",
+    };
+
+    const encryptedObjects = await vaultClient.crypto.encrypt({
       ...defaults,
-      requestBody: [{
-        object: {
-          fields: objectToEncrypt,
-        }
-      }]
-    })
+      requestBody: [
+        {
+          object: {
+            fields: objectToEncrypt,
+          },
+        },
+      ],
+    });
 
-    expect(encryptedObjects).to.have.lengthOf(1);
-    expect(encryptedObjects[0]).to.have.a.property('ciphertext').not.empty;
+    assert.equal(encryptedObjects.length, 1);
+    assert.equal(typeof encryptedObjects[0].ciphertext, "string");
 
-    const decryptedObject = await this.vaultClient.crypto.decrypt({
+    const decryptedObject = await vaultClient.crypto.decrypt({
       ...defaults,
       requestBody: [
         {
           encrypted_object: encryptedObjects[0],
-          props: ['name'],
-        }
-      ]
-    })
-
-    expect(decryptedObject).to.deep.equal([ { fields: { name: objectToEncrypt.name } } ]);
-
-    const newEmail = 'john@example.com';
-    const updateEncryptedObjects = await this.vaultClient.crypto.updateEncrypted({
-      ...defaults,
-      requestBody: [{
-        fields: {
-          email: newEmail,
+          props: ["name"],
         },
-        encrypted_object: encryptedObjects[0],
-      }]
+      ],
     });
 
-    expect(updateEncryptedObjects).to.have.lengthOf(1);
-    expect(updateEncryptedObjects[0]).to.have.a.property('ciphertext').not.empty;
+    assert.deepEqual(decryptedObject, [
+      { fields: { name: objectToEncrypt.name } },
+    ]);
 
-    const decryptedUpdatedObject = await this.vaultClient.crypto.decrypt({
+    const newEmail = "john@example.com";
+    const updateEncryptedObjects = await vaultClient.crypto.updateEncrypted({
+      ...defaults,
+      requestBody: [
+        {
+          fields: {
+            email: newEmail,
+          },
+          encrypted_object: encryptedObjects[0],
+        },
+      ],
+    });
+
+    assert.equal(updateEncryptedObjects.length, 1);
+    assert.equal(typeof updateEncryptedObjects[0].ciphertext, "string");
+
+    const decryptedUpdatedObject = await vaultClient.crypto.decrypt({
       ...defaults,
       requestBody: [
         {
           encrypted_object: updateEncryptedObjects[0],
-        }
-      ]
+        },
+      ],
     });
 
-    expect(decryptedUpdatedObject).to.deep.equal([ { fields: { name: objectToEncrypt.name, email: newEmail } } ]);
+    assert.deepEqual(decryptedUpdatedObject, [
+      { fields: { name: objectToEncrypt.name, email: newEmail } },
+    ]);
   });
 });
-

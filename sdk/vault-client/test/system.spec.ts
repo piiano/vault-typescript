@@ -1,22 +1,26 @@
-import {expect} from "chai";
+import { before, describe, it } from "node:test";
+import assert from "node:assert";
+import { VaultClient } from "..";
 
-describe('system',  function () {
-
-  it('check vault health', async function () {
-    const dataHealth = await this.vaultClient.system.dataHealth()
-    const controlHealth = await this.vaultClient.system.controlHealth()
-
-    expect(dataHealth.status).to.equal("pass")
-    expect(controlHealth.status).to.equal("pass")
+describe("system", function () {
+  let vaultClient: VaultClient;
+  before(() => {
+    vaultClient = new VaultClient({ vaultURL: process.env.VAULT_URL });
   });
 
-  it('get vault version', async function () {
-    const version = await this.vaultClient.system.getVaultVersion()
+  it("check vault health", async function (t) {
+    const dataHealth = await vaultClient.system.dataHealth();
+    const controlHealth = await vaultClient.system.controlHealth();
 
-    expect(version).to.have.property("vault_id")
-    expect(version).to.have.property("vault_version")
-    expect(version).to.have.property("db_schema_version")
+    assert.equal(dataHealth.status, "pass");
+    assert.equal(controlHealth.status, "pass");
   });
 
+  it("get vault version", async function (t) {
+    const version = await vaultClient.system.getVaultVersion();
+
+    assert.ok("vault_id" in version);
+    assert.ok("vault_version" in version);
+    assert.ok("db_schema_version" in version);
+  });
 });
-

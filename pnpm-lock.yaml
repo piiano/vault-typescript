@@ -295,30 +295,12 @@ importers:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2
         version: 1.1.2
-      '@types/chai':
-        specifier: ^5.0.1
-        version: 5.0.1
-      '@types/chai-as-promised':
-        specifier: ^8.0.1
-        version: 8.0.1
-      '@types/mocha':
-        specifier: ^10.0.10
-        version: 10.0.10
       '@types/node':
         specifier: ^22.10.1
         version: 22.10.1
-      chai:
-        specifier: ^5.1.2
-        version: 5.1.2
-      chai-as-promised:
-        specifier: ^8.0.1
-        version: 8.0.1(chai@5.1.2)
-      mocha:
-        specifier: ^10.8.2
-        version: 10.8.2
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@22.10.1)(typescript@5.6.3)
+      tsx:
+        specifier: ^4.19.2
+        version: 4.19.2
       typescript:
         specifier: ^5.3.3
         version: 5.6.3
@@ -850,9 +832,6 @@ packages:
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
 
-  '@types/chai-as-promised@8.0.1':
-    resolution: {integrity: sha512-dAlDhLjJlABwAVYObo9TPWYTRg9NaQM5CXeaeJYcYAkvzUf0JRLIiog88ao2Wqy/20WUnhbbUZcgvngEbJ3YXQ==}
-
   '@types/chai@5.0.1':
     resolution: {integrity: sha512-5T8ajsg3M/FOncpLYW7sdOcD6yf4+722sze/tc4KQV0P8Z2rAr3SAuHCIkYmYpt8VbcQlnz8SxlOlPQYefe4cA==}
 
@@ -1225,11 +1204,6 @@ packages:
   camelcase@6.3.0:
     resolution: {integrity: sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==}
     engines: {node: '>=10'}
-
-  chai-as-promised@8.0.1:
-    resolution: {integrity: sha512-OIEJtOL8xxJSH8JJWbIoRjybbzR52iFuDHuF8eb+nTPD6tgXLjRqsgnUGqQfFODxYvq5QdirT0pN9dZ0+Gz6rA==}
-    peerDependencies:
-      chai: '>= 2.1.2 < 6'
 
   chai@4.5.0:
     resolution: {integrity: sha512-RITGBfijLkBddZvnn8jdqoTypxvqbOLYQkGGxXzeFjVHvudaPw0HNFD9x928/eUwYWd2dPCugVqspGALTZZQKw==}
@@ -3362,10 +3336,6 @@ snapshots:
       '@types/connect': 3.4.38
       '@types/node': 22.10.1
 
-  '@types/chai-as-promised@8.0.1':
-    dependencies:
-      '@types/chai': 5.0.1
-
   '@types/chai@5.0.1':
     dependencies:
       '@types/deep-eql': 4.0.2
@@ -3839,11 +3809,6 @@ snapshots:
   callsites@3.1.0: {}
 
   camelcase@6.3.0: {}
-
-  chai-as-promised@8.0.1(chai@5.1.2):
-    dependencies:
-      chai: 5.1.2
-      check-error: 2.1.1
 
   chai@4.5.0:
     dependencies:
