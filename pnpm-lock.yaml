@@ -74,24 +74,12 @@ importers:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2
         version: 1.1.2
-      '@types/chai':
-        specifier: ^5.0.1
-        version: 5.0.1
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
-      '@types/mocha':
-        specifier: ^10.0.10
-        version: 10.0.10
       '@types/node':
         specifier: ^22.10.1
         version: 22.10.1
-      chai:
-        specifier: 5.1.2
-        version: 5.1.2
-      mocha:
-        specifier: ^10.8.2
-        version: 10.8.2
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.10.1)(typescript@4.9.5)
