@@ -43,7 +43,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.17.9",
     "chai": "^4.5.0",
-    "chai-as-promised": "^7.1.1",
+    "chai-as-promised": "^8.0.1",
     "mocha": "^10.8.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
