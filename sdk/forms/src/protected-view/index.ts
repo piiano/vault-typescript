@@ -7,9 +7,24 @@ import { ViewInitOptionsValidator } from '../common/models';
 
 export type { Theme, Style, Variables, Field } from '../common/models';
 
+/**
+ * A view that handle to interact with the protected view iframe programmatically.
+ */
 export type View = {
+  /**
+   * Destroy the view and remove it from the DOM safely.
+   */
   destroy: () => void;
+  /**
+   * Update the view with new options.
+   * Note: the dynamic flag must be true to allow updates.
+   */
   update: (options: ProtectedViewOptions) => void;
+  /**
+   * Copy the value of the specified field path to the clipboard.
+   * If triggered as result of a keyboard event originated from within the view an additional trustedEventKey can be provided to prevent a confirmation dialog.
+   */
+  copy: (params: { path: string; trustedEventKey?: string }) => Promise<void>;
 };
 
 export function createProtectedView(
@@ -76,6 +91,11 @@ export function createProtectedView(
       hooks = newHooks;
       sendToIframe('update', options);
     },
+    async copy({ path, trustedEventKey }) {
+      await ready;
+      iframe.contentWindow?.focus();
+      sendToIframe('copy', { path, trustedEventKey });
+    },
   };
 }
 
@@ -118,6 +138,14 @@ function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ProtectedV
         case 'mouseleave':
           hooks?.onMouseLeave?.(payload);
           break;
+        case 'keydown':
+        case 'keyup':
+        case 'keypress': {
+          const keyboardEvent: KeyboardEvent & { trustedEventKey?: string } = new KeyboardEvent(event, payload);
+          keyboardEvent['trustedEventKey'] = payload.trustedEventKey;
+          iframe.dispatchEvent(keyboardEvent);
+          break;
+        }
       }
     };
   });
