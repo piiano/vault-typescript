@@ -350,5 +350,18 @@ export const ViewIframeEventValidator = oneOf(
     event: literal('container-size'),
     payload: SizeValidator,
   }),
+  /**
+   * Trigger a copy event on a field.
+   * Notice this event will also move the focus to the view.
+   */
+  object({
+    event: literal('copy'),
+    payload: object({
+      /**
+       * The field path to copy.
+       */
+      path: string(),
+    }),
+  }),
 );
 export type ViewIframeEvent = Infer<typeof ViewInitOptionsValidator>;

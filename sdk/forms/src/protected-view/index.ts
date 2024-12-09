@@ -7,9 +7,23 @@ import { ViewInitOptionsValidator } from '../common/models';
 
 export type { Theme, Style, Variables, Field } from '../common/models';
 
+/**
+ * A view that handle to interact with the protected view iframe programmatically.
+ */
 export type View = {
+  /**
+   * Destroy the view and remove it from the DOM safely.
+   */
   destroy: () => void;
+  /**
+   * Update the view with new options.
+   * Note: the dynamic flag must be true to allow updates.
+   */
   update: (options: ProtectedViewOptions) => void;
+  /**
+   * Copy the value of the specified field path to the clipboard.
+   */
+  copy: (path: string) => Promise<void>;
 };
 
 export function createProtectedView(
@@ -76,6 +90,11 @@ export function createProtectedView(
       hooks = newHooks;
       sendToIframe('update', options);
     },
+    async copy(path: string) {
+      await ready;
+      iframe.contentWindow?.focus();
+      sendToIframe('copy', { path });
+    },
   };
 }
 
@@ -117,6 +136,11 @@ function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ProtectedV
           break;
         case 'mouseleave':
           hooks?.onMouseLeave?.(payload);
+          break;
+        case 'keydown':
+        case 'keyup':
+        case 'keypress':
+          iframe.dispatchEvent(new KeyboardEvent(event, payload));
           break;
       }
     };

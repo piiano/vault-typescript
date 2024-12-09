@@ -239,12 +239,17 @@ When `onClick`, `onMouseEnter`, or `onMouseLeave` hooks are called, the event ob
   - `mouseY`: y coordinate of the mouse pointer during the event.
   - `rect`: A [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect) element representing the bounding rectangle of the value element that received the event.
 
+###### KeyboardEvent
+
+For convenience sack, when a keyboard event (`keydown`, `keyup`, or `keypress`) occurs in the view, the event object is serialized and dispatched to the hosting page as a regular keyboard event so keybindings defined on the page can be triggered even when the view is focused.
+
 ##### Returned Object
 
 The `createProtectedView` function returns a View object that has the following methods:
 
 - `destroy()`: Removes the view instance from the DOM.
 - `update(options)`: Updates the view’s configuration. For the `update` method to work, the `dynamic` option must be set to `true` in the initial configuration.
+- `copy(path)`: Copies the value of the field at the specified path to the clipboard.
 
 ##### Usage Example
 

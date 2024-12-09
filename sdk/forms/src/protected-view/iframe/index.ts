@@ -4,10 +4,14 @@ import { newSenderToSource, type Sender } from '../../common/events';
 import { InvokeActionStrategyOptions, ReadObjectStrategyOptions, ViewIframeEventValidator } from '../../common/models';
 import { ObjectFields, VaultClient } from '@piiano/vault-client';
 import { ViewIframeOptions } from '../../options';
+import { copy } from './components/view';
+import { followPath } from '../../common/paths';
 
 export type Result =
   | { strategy: 'read-objects'; objects: ObjectFields[] }
   | { strategy: 'invoke-action'; response: unknown };
+
+const keyboardEvents = ['keydown', 'keyup', 'keypress'] as const;
 
 let allowUpdates = false;
 let fetchObjectsOptions: Omit<ViewIframeOptions, 'debug' | 'dynamic' | 'style'> | undefined = undefined;
@@ -17,6 +21,11 @@ let ready: Promise<void> | undefined = undefined;
 
 let sendToParent: Sender = () => {};
 let log: Logger = () => {};
+
+window.addEventListener('keydown', (e) => {
+  // prevent the browser from saving the iframe on ctrl+s
+  if (e.metaKey && e.key === 's') e.preventDefault();
+});
 
 window.onmessage = ({ source, data }) => {
   // TODO: when the iframe will be loaded from the vault then we should allow users to configure the allowed origins.
@@ -55,6 +64,21 @@ window.onmessage = ({ source, data }) => {
       ready = render(data.payload)
         .then(() => {
           sendToParent('ready');
+
+          for (const keyEvent of keyboardEvents) {
+            window.addEventListener(keyEvent, (e) => {
+              const clonedEvent: Record<string, unknown> = {};
+              for (const k in e) {
+                const v = e[k as keyof KeyboardEvent];
+                // skip some properties that are not serializable
+                if (v instanceof Node) continue;
+                if (v instanceof Window) continue;
+                if (k === 'sourceCapabilities') continue;
+                clonedEvent[k] = v;
+              }
+              sendToParent(keyEvent, JSON.parse(JSON.stringify(clonedEvent)));
+            });
+          }
         })
         .catch((error) => {
           log(error);
@@ -73,6 +97,13 @@ window.onmessage = ({ source, data }) => {
         });
       });
       break;
+    case 'copy': {
+      result.then((r) => {
+        const value = followPath(r.strategy === 'invoke-action' ? r.response : r.objects, data.payload.path);
+        copy(String(value));
+      });
+      break;
+    }
     case 'container-size':
       document.body.style.height = data.payload.height + 'px';
       document.body.style.width = data.payload.width + 'px';

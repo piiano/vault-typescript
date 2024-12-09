@@ -74,7 +74,7 @@ const DisplayValue = component(
         children.push(span);
         break;
       }
-      case 'object':
+      case 'object': {
         if (value === null) break;
 
         if (Array.isArray(value)) {
@@ -93,6 +93,7 @@ const DisplayValue = component(
           ),
         );
         children.push(object);
+      }
     }
 
     container.replaceChildren(...children);
@@ -110,7 +111,7 @@ const Label = component((_, { label }: { label: string }) => {
   return labelElement;
 });
 
-function copy(value: string) {
+export function copy(value: string) {
   if ('clipboard' in navigator && 'writeText' in navigator.clipboard) {
     navigator.clipboard.writeText(value).catch(() => void 0);
     return;
