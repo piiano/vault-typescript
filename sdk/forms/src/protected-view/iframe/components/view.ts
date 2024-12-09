@@ -135,7 +135,7 @@ export function copy(value: string) {
   document.body.removeChild(input);
 }
 
-function formatValue(value: string | number | boolean, format?: string): string {
+export function formatValue(value: string | number | boolean, format?: string): string {
   const stringValue = String(value);
   if (!format) return stringValue;
 

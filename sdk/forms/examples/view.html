@@ -117,12 +117,12 @@ For production use, please refer to the official documentation or consult with a
         if (!reveal) revealCard();
       });
 
-      window.addEventListener('keydown', (e) => {
+      window.addEventListener('keydown', async (e) => {
         if (e.key !== 's' || !e.metaKey) return;
 
         e.preventDefault();
+        await view.copy({ path: '[0].card_number', trustedEventKey: e.trustedEventKey });
         revealCard();
-        view.copy('[0].card_number');
       });
     </script>
     <style>

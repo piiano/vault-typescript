@@ -22,8 +22,9 @@ export type View = {
   update: (options: ProtectedViewOptions) => void;
   /**
    * Copy the value of the specified field path to the clipboard.
+   * If triggered as result of a keyboard event originated from within the view an additional trustedEventKey can be provided to prevent a confirmation dialog.
    */
-  copy: (path: string) => Promise<void>;
+  copy: (params: { path: string; trustedEventKey?: string }) => Promise<void>;
 };
 
 export function createProtectedView(
@@ -90,10 +91,10 @@ export function createProtectedView(
       hooks = newHooks;
       sendToIframe('update', options);
     },
-    async copy(path: string) {
+    async copy({ path, trustedEventKey }) {
       await ready;
       iframe.contentWindow?.focus();
-      sendToIframe('copy', { path });
+      sendToIframe('copy', { path, trustedEventKey });
     },
   };
 }
@@ -139,9 +140,12 @@ function registerHooks(log: Logger, iframe: HTMLIFrameElement, hooks: ProtectedV
           break;
         case 'keydown':
         case 'keyup':
-        case 'keypress':
-          iframe.dispatchEvent(new KeyboardEvent(event, payload));
+        case 'keypress': {
+          const keyboardEvent: KeyboardEvent & { trustedEventKey?: string } = new KeyboardEvent(event, payload);
+          keyboardEvent['trustedEventKey'] = payload.trustedEventKey;
+          iframe.dispatchEvent(keyboardEvent);
           break;
+        }
       }
     };
   });

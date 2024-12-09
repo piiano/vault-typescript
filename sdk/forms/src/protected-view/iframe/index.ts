@@ -4,7 +4,7 @@ import { newSenderToSource, type Sender } from '../../common/events';
 import { InvokeActionStrategyOptions, ReadObjectStrategyOptions, ViewIframeEventValidator } from '../../common/models';
 import { ObjectFields, VaultClient } from '@piiano/vault-client';
 import { ViewIframeOptions } from '../../options';
-import { copy } from './components/view';
+import { copy, formatValue } from './components/view';
 import { followPath } from '../../common/paths';
 
 export type Result =
@@ -18,6 +18,8 @@ let fetchObjectsOptions: Omit<ViewIframeOptions, 'debug' | 'dynamic' | 'style'> 
 let initialized = false;
 let result: Promise<Result>;
 let ready: Promise<void> | undefined = undefined;
+let displayOptions: ViewIframeOptions['display'] | undefined = undefined;
+const trustedEventKeys = new Map<string, number>();
 
 let sendToParent: Sender = () => {};
 let log: Logger = () => {};
@@ -60,25 +62,12 @@ window.onmessage = ({ source, data }) => {
 
       if (initialized) return sendToParent('error', { type: 'initialization', message: 'View already initialized' });
       initialized = true;
+      displayOptions = data.payload.display;
 
       ready = render(data.payload)
         .then(() => {
           sendToParent('ready');
-
-          for (const keyEvent of keyboardEvents) {
-            window.addEventListener(keyEvent, (e) => {
-              const clonedEvent: Record<string, unknown> = {};
-              for (const k in e) {
-                const v = e[k as keyof KeyboardEvent];
-                // skip some properties that are not serializable
-                if (v instanceof Node) continue;
-                if (v instanceof Window) continue;
-                if (k === 'sourceCapabilities') continue;
-                clonedEvent[k] = v;
-              }
-              sendToParent(keyEvent, JSON.parse(JSON.stringify(clonedEvent)));
-            });
-          }
+          attachEventListeners();
         })
         .catch((error) => {
           log(error);
@@ -86,6 +75,8 @@ window.onmessage = ({ source, data }) => {
         });
       return;
     case 'update':
+      displayOptions = data.payload.display;
+
       ready?.then(() => {
         if (!initialized) return sendToParent('error', { type: 'initialization', message: 'View not initialized' });
 
@@ -99,7 +90,18 @@ window.onmessage = ({ source, data }) => {
       break;
     case 'copy': {
       result.then((r) => {
+        const field = displayOptions?.find((field) => field.path === data.payload.path);
+        if (!field) return;
+
         const value = followPath(r.strategy === 'invoke-action' ? r.response : r.objects, data.payload.path);
+
+        if (((trustedEventKeys.get(data.payload.trustedEventKey ?? '') as number) ?? -Infinity) < Date.now()) {
+          const formatedValue = formatValue(String(value), field?.format);
+          const confirmed = confirm(`Allow copying sensitive data "${formatedValue}" to clipboard?`);
+          if (!confirmed) return;
+        }
+
+        trustedEventKeys.delete(data.payload.trustedEventKey ?? '');
         copy(String(value));
       });
       break;
@@ -212,4 +214,28 @@ async function fetchObjects(
       }),
     ),
   );
+}
+
+function attachEventListeners() {
+  keyboardEvents.forEach((keyEvent) => {
+    window.addEventListener(keyEvent, (e) => {
+      if (!e.isTrusted) return;
+      const trustedEventKey = crypto.randomUUID();
+      trustedEventKeys.set(trustedEventKey, Date.now() + 1000);
+
+      const clonedEvent: Record<string, unknown> = {};
+      clonedEvent.trustedEventKey = trustedEventKey;
+
+      for (const k in e) {
+        const v = e[k as keyof KeyboardEvent];
+        // skip some properties that are not serializable
+        if (v instanceof Node) continue;
+        if (v instanceof Window) continue;
+        if (k === 'sourceCapabilities') continue;
+        clonedEvent[k] = v;
+      }
+
+      sendToParent(keyEvent, JSON.parse(JSON.stringify(clonedEvent)));
+    });
+  });
 }

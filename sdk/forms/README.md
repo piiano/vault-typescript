@@ -241,7 +241,7 @@ When `onClick`, `onMouseEnter`, or `onMouseLeave` hooks are called, the event ob
 
 ###### KeyboardEvent
 
-For convenience sack, when a keyboard event (`keydown`, `keyup`, or `keypress`) occurs in the view, the event object is serialized and dispatched to the hosting page as a regular keyboard event so keybindings defined on the page can be triggered even when the view is focused.
+For convenience sack, when a keyboard event (`keydown`, `keyup`, or `keypress`) occurs in the view, the event object is serialized and dispatched to the hosting page as a regular keyboard event so keybindings defined on the page can be triggered even when the view is focused. The view also adds a `trustedEventKey` property to the event object. This property can be used with the `copy` method to ensure to tell the view that the event was triggered by a trusted source and skip showing the confirmation dialog.
 
 ##### Returned Object
 
@@ -249,7 +249,9 @@ The `createProtectedView` function returns a View object that has the following 
 
 - `destroy()`: Removes the view instance from the DOM.
 - `update(options)`: Updates the view’s configuration. For the `update` method to work, the `dynamic` option must be set to `true` in the initial configuration.
-- `copy(path)`: Copies the value of the field at the specified path to the clipboard.
+- `copy(params)`: Copies the value of a specified field to the clipboard. The `params` object should contain the following properties:
+  - `path` (string): Path to the field in the view to copy using JSON path syntax similar to the `display` configuration.
+  - `trustedEventKey` (optional string): A key that indicates the event is trusted and should not show the confirmation dialog. This key should match the `trustedEventKey` property in the event object dispatched by the view on keyboard events. For security reasons, the view will show a confirmation dialog for any other programmatic invocation.
 
 ##### Usage Example
 

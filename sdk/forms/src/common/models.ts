@@ -361,6 +361,11 @@ export const ViewIframeEventValidator = oneOf(
        * The field path to copy.
        */
       path: string(),
+
+      /**
+       * For security reasons, the event key must be provided to allow the copy event.
+       */
+      trustedEventKey: string().optional(),
     }),
   }),
 );
