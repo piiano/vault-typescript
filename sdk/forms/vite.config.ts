@@ -11,7 +11,7 @@ const config: UserConfigFnPromise = async ({ mode }): Promise<UserConfig> => {
   const example = {
     form: '/examples/form.html',
     view: '/examples/view.html',
-  }[process.env.EXAMPLE ?? 'view.html'];
+  }[process.env.EXAMPLE ?? 'view'];
 
   if (mode === 'dev') {
     if (!example) throw new Error('Invalid EXAMPLE env variable');

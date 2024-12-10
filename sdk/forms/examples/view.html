@@ -107,12 +107,22 @@ For production use, please refer to the official documentation or consult with a
       }
 
       const view = createProtectedView('#view-container', getOptions());
+      function revealCard() {
+        reveal = true;
+        card.classList.add('reveal');
+        view.update(getOptions());
+      }
+
       card.addEventListener('click', () => {
-        if (!reveal) {
-          reveal = true;
-          card.classList.add('reveal');
-          view.update(getOptions());
-        }
+        if (!reveal) revealCard();
+      });
+
+      window.addEventListener('keydown', async (e) => {
+        if (e.key !== 's' || !e.metaKey) return;
+
+        e.preventDefault();
+        await view.copy({ path: '[0].card_number', trustedEventKey: e.trustedEventKey });
+        revealCard();
       });
     </script>
     <style>
