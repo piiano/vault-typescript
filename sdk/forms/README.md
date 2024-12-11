@@ -117,7 +117,7 @@ Use `createProtectedForm` when you need to securely collect and process sensitiv
 - `selector`: A CSS selector or an HTML container element where the form will be rendered.
 - `options`: An object containing configuration options:
   - `vaultURL` (string): The URL of the Piiano Vault instance.
-  - `apiKey` (string): API key for interacting with the Vault.
+  - `apiKey` (string): API key for interacting with the Vault. Since this key is placed in a public page it is highly recommended to [limit its scope](#recommended-vault-authorization-techniques).
   - `collection` (string): Name of the collection where the data will be stored.
   - `fields` (array): Field definitions specifying field names, labels, data types, etc.
   - `strategy` (optional string): Strategy for handling data:
@@ -189,7 +189,7 @@ Use `createProtectedView` when you need to securely display sensitive data on th
 - `selector`: A CSS selector or an HTML container element where the view will be rendered.
 - `options`: Configuration options:
   - `vaultURL` (string): The URL of the Piiano Vault instance.
-  - `apiKey` (string): API key for accessing the Vault.
+  - `apiKey` (string): API key for accessing the Vault. Since this key is placed in a public page it is highly recommended to [limit its scope](#recommended-vault-authorization-techniques).
   - `strategy` (object): Strategy options for getting data from the Vault:
     - `type` (string): Type of the strategy. Can be either `"read-objects"` or `"invoke-action"`.
       The rest of the configuration depends on the strategy type:
@@ -293,7 +293,7 @@ Use `controlForm` to add secure handling to an existing form without redesigning
 - `formOrSelector`: A CSS selector or an HTML form element to control.
 - `options`: Configuration options:
   - `vaultURL` (string): URL of the Piiano Vault instance.
-  - `apiKey` (string): API key for interacting with the Vault.
+  - `apiKey` (string): API key for interacting with the Vault. Since this key is placed in a public page it is highly recommended to [limit its scope](#recommended-vault-authorization-techniques).
   - `collection` (string): Name of the collection where the data will be stored.
   - `strategy` (optional string): Strategy for handling data:
     - `"tokenize-object"`: Tokenize the entire object and return a single token.
