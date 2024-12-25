@@ -10,7 +10,7 @@ index 15fe546..1e1c504 100644
 +import {VaultClientOptions} from "../options";
  import { FetchHttpRequest } from './core/FetchHttpRequest';
  import { ActionsClient } from './services/ActionsClient';
- import { BundlesClient } from './services/BundlesClient';
+ import { AnalysisClient } from './services/AnalysisClient';
 @@ -16,7 +16,6 @@ import { IamClient } from './services/IamClient';
  import { ObjectsClient } from './services/ObjectsClient';
  import { SystemClient } from './services/SystemClient';
@@ -18,7 +18,7 @@ index 15fe546..1e1c504 100644
 -type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
  export class VaultClient {
    public readonly actions: ActionsClient;
-   public readonly bundles: BundlesClient;
+   public readonly analysis: AnalysisClient;
 @@ -30,17 +29,13 @@ export class VaultClient {
    public readonly system: SystemClient;
    public readonly tokens: TokensClient;
@@ -43,4 +43,4 @@ index 15fe546..1e1c504 100644
 +      TOKEN: config?.apiKey ?? 'pvaultauth',
      });
      this.actions = new ActionsClient(this.request);
-     this.bundles = new BundlesClient(this.request);
+     this.analysis = new AnalysisClient(this.request);
