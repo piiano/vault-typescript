@@ -103,8 +103,8 @@ importers:
   sdk/forms:
     dependencies:
       '@piiano/vault-client':
-        specifier: ^1.1.7
-        version: 1.1.7
+        specifier: ^1.1.9
+        version: 1.1.9
     devDependencies:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2

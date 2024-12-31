@@ -1,6 +1,6 @@
 {
   "name": "@piiano/forms",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Piiano Forms SDK",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
   "type": "module",
@@ -40,7 +40,7 @@
     "lint": "eslint --ext .ts src --max-warnings 0"
   },
   "dependencies": {
-    "@piiano/vault-client": "^1.1.7"
+    "@piiano/vault-client": "^1.1.9"
   },
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.1.2",
