@@ -1,6 +1,6 @@
 {
   "name": "@piiano/react-forms",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Piiano Forms SDK for React",
   "author": "Ori Shalom <ori.shalom@piiano.com>",
   "type": "module",
@@ -35,7 +35,7 @@
     "lint": "eslint --ext .ts src --max-warnings 0"
   },
   "dependencies": {
-    "@piiano/forms": "^2.3.0"
+    "@piiano/forms": "^2.4.1"
   },
   "peerDependencies": {
     "react": "^18.2.0",
