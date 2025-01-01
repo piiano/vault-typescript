@@ -16,16 +16,17 @@
   "scripts": {
     "tsc": "tsc",
     "build": "pnpm run tsc",
-    "cleanup": "ts-node --esm src/cleanup.ts",
-    "test::ssn": "ts-node --esm src/ssn.ts",
-    "test::encrypt": "ts-node --esm src/encrypt.ts",
-    "test::store": "ts-node --esm src/store.ts"
+    "cleanup": "tsx src/cleanup.ts",
+    "test::ssn": "tsx src/ssn.ts",
+    "test::encrypt": "tsx src/encrypt.ts",
+    "test::store": "tsx src/store.ts",
+    "test::store-bulk-and-search": "tsx src/store-bulk-and-search.ts"
   },
   "dependencies": {
     "@piiano/vault-client": "^1.1.7"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
     "typescript": "^5.3.3"
   }
 }
