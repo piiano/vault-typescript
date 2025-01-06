@@ -19,7 +19,7 @@
     "start": "ts-node --project tsconfig.build.json src/start.ts"
   },
   "dependencies": {
-    "@piiano/typeorm-encryption": "^1.0.44",
+    "@piiano/typeorm-encryption": "^1.0.45",
     "@piiano/vault-client": "^1.1.7",
     "express": "^5.0.1",
     "reflect-metadata": "^0.2.2",
