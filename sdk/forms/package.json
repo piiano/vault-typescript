@@ -38,7 +38,7 @@
     "push:cdn-invalidate-cache": "aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
     "push:cdn-lib-js": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-*.js'",
     "push:cdn-form-html": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-forms-iframe-*.html' --metadata $(cat dist/pvault-forms-iframe-*.html.metadata.json)",
-    "push:cdn-viwe-html": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-view-iframe-*.html' --metadata $(cat dist/pvault-view-iframe-*.html.metadata.json)",
+    "push:cdn-view-html": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-view-iframe-*.html' --metadata $(cat dist/pvault-view-iframe-*.html.metadata.json)",
     "push": "pnpm run push:module && pnpm run push:cdn",
     "format": "prettier . --write",
     "lint": "eslint --ext .ts src --max-warnings 0"
