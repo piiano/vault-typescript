@@ -14,8 +14,16 @@ export async function mockCDN(page: Page, vaultURL: URL, webPageURL: URL) {
   await page.route(`${cdnBaseURL}**`, async (route) => {
     const file = route.request().url().replace(cdnBaseURL, '');
     const ext = file.split('.').pop();
+    const fileContent = await fs.readFile(resolve(rootDir, 'dist', file), 'utf-8');
+    const scriptsSha256 = [] as string[];
+    if (ext === 'html') {
+      const metadataFile = await fs.readFile(resolve(rootDir, 'dist', `${file}.metadata.json`), 'utf-8');
+      const metadata = JSON.parse(metadataFile);
+      scriptsSha256.push(...metadata['scripts-sha256'].split(','));
+    }
+
     await route.fulfill({
-      body: await fs.readFile(resolve(rootDir, 'dist', file), 'utf-8'),
+      body: fileContent,
       headers: {
         Host: 'cdn.piiano.com',
         'Content-Type': ext === 'html' ? 'text/html' : 'application/javascript',
@@ -24,11 +32,11 @@ export async function mockCDN(page: Page, vaultURL: URL, webPageURL: URL) {
               // CSP header that should reflect the CSP headers returned by the CDN in prod for the iframe html file.
               'Content-Security-Policy': [
                 'sandbox allow-forms allow-same-origin allow-scripts', // define the iframe sandbox
-                `frame-ancestors ${webPageURL.origin}`, // allow only the web page origin to load the iframe
                 `default-src 'none'`, // by default block all requests
                 `img-src data:`, // allow data urls for images
-                `script-src 'unsafe-inline'`, // allow our own inline scripts
-                `style-src 'unsafe-inline'`, // allow our own inline styles
+                `script-src ${scriptsSha256.map((sha) => `'sha256-${sha}'`).join(' ')}`, // allow our scripts with matching sha256
+                `style-src 'unsafe-inline'`, // allow custom css to be set by the user
+                `frame-ancestors ${webPageURL.origin}`, // allow only the web page origin to load the iframe
                 `connect-src ${vaultURL.origin}`, // allow requests to the vault
               ].join('; '),
             }

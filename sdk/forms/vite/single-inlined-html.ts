@@ -1,5 +1,6 @@
 import { Plugin } from 'vite';
 import { OutputAsset, OutputChunk } from 'rollup';
+import { hash } from 'node:crypto';
 
 export function singleInlinedHtml(): Plugin {
   return {
@@ -21,11 +22,14 @@ export function singleInlinedHtml(): Plugin {
       const htmlFile = htmlFiles[0];
       const htmlChunk = bundle[htmlFile] as OutputAsset;
       let replacedHtml = htmlChunk.source as string;
+      const scriptsSha256 = [] as string[];
       for (const jsName of jsAssets) {
         const jsChunk = bundle[jsName] as OutputChunk;
         if (jsChunk.code != null) {
           bundlesToDelete.push(jsName);
-          replacedHtml = replaceScript(replacedHtml, jsChunk.fileName, jsChunk.code);
+          const { html, sha256 } = replaceScript(replacedHtml, jsChunk.fileName, jsChunk.code);
+          replacedHtml = html;
+          scriptsSha256.push(sha256);
         }
       }
       for (const cssName of cssAssets) {
@@ -37,13 +41,23 @@ export function singleInlinedHtml(): Plugin {
       for (const name of bundlesToDelete) {
         delete bundle[name];
       }
+      bundle[`${htmlFile}.metadata.json`] = {
+        fileName: `${htmlFile}.metadata.json`,
+        type: 'asset',
+        source: JSON.stringify({ 'scripts-sha256': scriptsSha256.join(',') }),
+      } as OutputAsset;
     },
   };
 }
 
-function replaceScript(html: string, scriptFilename: string, scriptCode: string): string {
+function replaceScript(html: string, scriptFilename: string, scriptCode: string) {
   const reScript = new RegExp(`<script([^>]*) src="[./]*${scriptFilename}"([^>]*)></script>`);
-  return html.replace(reScript, `<script type="module">\n${scriptCode}</script>`);
+  const content = `\n${scriptCode}`;
+  const sha256 = hash('sha256', content, 'base64');
+  return {
+    html: html.replace(reScript, `<script type="module">${content}</script>`),
+    sha256,
+  };
 }
 
 function replaceCss(html: string, scriptFilename: string, cssCode: string): string {
