@@ -34,7 +34,7 @@
     "test:unit": "vitest --dir src --run",
     "test:e2e": "playwright install --with-deps chromium && playwright test",
     "push:module": "pnpm publish --access public",
-    "push:cdn": "pnpm run push:cdn-lib-js && pnpm run push:cdn-form-html && pnpm run push:cdn-viwe-html && pnpm run push:cdn-invalidate-cache",
+    "push:cdn": "pnpm run push:cdn-lib-js && pnpm run push:cdn-form-html && pnpm run push:cdn-view-html && pnpm run push:cdn-invalidate-cache",
     "push:cdn-invalidate-cache": "aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
     "push:cdn-lib-js": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-*.js'",
     "push:cdn-form-html": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-forms-iframe-*.html' --metadata $(cat dist/pvault-forms-iframe-*.html.metadata.json)",
