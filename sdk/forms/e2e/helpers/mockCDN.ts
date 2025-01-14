@@ -32,6 +32,8 @@ export async function mockCDN(page: Page, vaultURL: URL, webPageURL: URL) {
               // CSP header that should reflect the CSP headers returned by the CDN in prod for the iframe html file.
               'Content-Security-Policy': [
                 'sandbox allow-forms allow-same-origin allow-scripts', // define the iframe sandbox
+                `require-trusted-types-for 'script'`,
+                `trusted-types 'none'`,
                 `default-src 'none'`, // by default block all requests
                 `img-src data:`, // allow data urls for images
                 `script-src ${scriptsSha256.map((sha) => `'sha256-${sha}'`).join(' ')}`, // allow our scripts with matching sha256
