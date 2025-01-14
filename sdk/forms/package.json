@@ -34,7 +34,11 @@
     "test:unit": "vitest --dir src --run",
     "test:e2e": "playwright install --with-deps chromium && playwright test",
     "push:module": "pnpm publish --access public",
-    "push:cdn": "aws s3 sync dist/ s3://vault-saas-prod-cdn/ && aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
+    "push:cdn": "pnpm run push:cdn-lib-js && pnpm run push:cdn-form-html && pnpm run push:cdn-view-html && pnpm run push:cdn-invalidate-cache",
+    "push:cdn-invalidate-cache": "aws cloudfront create-invalidation --distribution-id E1WSTX4MG0UEPA --paths '/*'",
+    "push:cdn-lib-js": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-*.js'",
+    "push:cdn-form-html": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-forms-iframe-*.html' --metadata $(cat dist/pvault-forms-iframe-*.html.metadata.json)",
+    "push:cdn-view-html": "aws s3 cp dist/ s3://vault-saas-prod-cdn/ --recursive --exclude '*' --include 'pvault-view-iframe-*.html' --metadata $(cat dist/pvault-view-iframe-*.html.metadata.json)",
     "push": "pnpm run push:module && pnpm run push:cdn",
     "format": "prettier . --write",
     "lint": "eslint --ext .ts src --max-warnings 0"
