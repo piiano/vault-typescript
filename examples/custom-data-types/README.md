@@ -1,18 +1,18 @@
 # @piiano/custom-data-types
 
-This example demonstrates how to define custom data types using a bundle defined with the `@piiano/vault-bundles` package.
+This example demonstrates how to create a custom data type using a bundle defined with the `@piiano/vault-bundles` package.
 
 ## Overview
 
-- `src/index.ts` - This is the example bundle to be tested, written in TypeScript.
+- `src/index.ts` - This is the example bundle to test, written in TypeScript.
 - `test`
   - `hooks.ts` - Defines global hooks for the test to start a local Dev edition of Vault and stop it at the end of the test.
-  - `custom-data-types.spec.ts`- A test that adds the bundle to the vault, creates a custom data type, creates a collection that uses it, and tests adding objects with a property that uses the custom data type (passing validations) and reading the normalized & transformed version of the property.
+  - `custom-data-types.spec.ts`- A test that adds the bundle to the vault, creates a custom data type, creates a collection that uses it, and tests adding objects with a property that uses the custom data type (passing validations) and reading the normalized and transformed version of the property.
   - `package.json`- Defines the dependencies for compiling the bundle and scripts for testing and building the bundle.
 
 ## Running the example
 
-To run the example, please follow these steps:
+To run the example:
 
 1. Clone the repository and navigate to this directory.
    ```bash
@@ -30,28 +30,28 @@ To run the example, please follow these steps:
    ```bash
     pnpm run build
     ```
-5. Run the [custom-data-types.spec.ts](./test/custom-data-types.spec.ts) that shows how to define a custom data type using the bundle and how to use it.
+5. Run [custom-data-types.spec.ts](./test/custom-data-types.spec.ts), this shows how to define a custom data type using the bundle and how to use it.
    ```bash
     pnpm run test
     ```
 
 ## About Piiano Vault
 
-Piiano Vault is the secure home for sensitive personal data. It allows you to safely store sensitive personal data in your own cloud environment with automated compliance controls.
+Piiano Vault is the secure home for sensitive personal data. It enables you to safely store sensitive personal data in your cloud environment with automated compliance controls.
 
-Vault is deployed within your own architecture, next to other DBs used by the applications, and should be used to store the most critical sensitive personal data, such as credit cards and bank account numbers, names, emails, national IDs (e.g. SSN), phone numbers, etc.
+Vault is deployed within your architecture, next to other databases used by the applications, and is used to store the most critical sensitive personal data, such as credit cards and bank account numbers, names, emails, national IDs (e.g., SSN), phone numbers, etc.
 
 The main benefits are:
 
-- Field level encryption, including key rotation.
-- Searchability is allowed over the encrypted data.
+- Field-level encryption, including key rotation.
+- Search within the encrypted data.
 - Full audit log for all data accesses.
 - Granular access controls.
 - Easy masking and tokenization of data.
-- Out of the box privacy compliance functionality.
+- Out-of-the-box privacy compliance functionality.
 
 More details can be found [on our website](https://piiano.com/pii-data-privacy-vault/) and on the [developers portal](https://docs.piiano.com/).
 
 ## Issues and Feedback
 
-If you encounter any issues or have feedback, please feel free to open an issue on this GitHub repository. We appreciate your contributions and suggestions for improvement!
+If you encounter any issues or have feedback, open an issue on this GitHub repository. We appreciate your contributions and suggestions for improvement.
