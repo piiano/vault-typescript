@@ -208,8 +208,8 @@ importers:
   sdk/typeorm-encryption:
     dependencies:
       '@piiano/vault-client':
-        specifier: ^1.1.9
-        version: 1.1.9
+        specifier: ^1.1.10
+        version: 1.1.10
     devDependencies:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2
@@ -651,6 +651,10 @@ packages:
 
   '@piiano/vault-bundles@1.0.4':
     resolution: {integrity: sha512-ly4guD4/e8FK3vD+AgjVa0qJiJQrdEH0bnZpiypK+nG+Z6QfYn1Dz5InYzFOpiBH6Z9JXW4wLS+e4euYYAQy4Q==}
+
+  '@piiano/vault-client@1.1.10':
+    resolution: {integrity: sha512-Av2XVZsC3hjVag2xCrbVWkfzkjvLCIfbew6NgX5GwUp0g5GMat7dfQy0p25szGcwhPoRzpdZNwFvI61DE0Nbqg==}
+    engines: {node: '>=18'}
 
   '@piiano/vault-client@1.1.7':
     resolution: {integrity: sha512-vAAvq2SGC1doMokPsOzUd2vCsehqqOMQgKxV+tXnbqc8xCXwcZbOAEIGP483Z/ZuzzWk0gnc/AizaYL4brWl7g==}
@@ -3113,7 +3117,7 @@ snapshots:
 
   '@piiano/forms@2.4.1':
     dependencies:
-      '@piiano/vault-client': 1.1.9
+      '@piiano/vault-client': 1.1.10
 
   '@piiano/openapi-typescript-codegen@0.29.1':
     dependencies:
@@ -3137,6 +3141,8 @@ snapshots:
   '@piiano/vault-bundles@0.1.13': {}
 
   '@piiano/vault-bundles@1.0.4': {}
+
+  '@piiano/vault-client@1.1.10': {}
 
   '@piiano/vault-client@1.1.7': {}
 
