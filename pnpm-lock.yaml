@@ -103,8 +103,8 @@ importers:
   sdk/forms:
     dependencies:
       '@piiano/vault-client':
-        specifier: ^1.1.9
-        version: 1.1.9
+        specifier: ^1.1.10
+        version: 1.1.10
     devDependencies:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2
@@ -658,10 +658,6 @@ packages:
 
   '@piiano/vault-client@1.1.7':
     resolution: {integrity: sha512-vAAvq2SGC1doMokPsOzUd2vCsehqqOMQgKxV+tXnbqc8xCXwcZbOAEIGP483Z/ZuzzWk0gnc/AizaYL4brWl7g==}
-    engines: {node: '>=18'}
-
-  '@piiano/vault-client@1.1.9':
-    resolution: {integrity: sha512-hZEAeVA2pgGQEAeHZ9yzZGFnKrFXdkP989VPHnNa4Zl6WU+NEkCv8XSqGD+Pch9V8jyGMxLN1+LC2szKiPtb6Q==}
     engines: {node: '>=18'}
 
   '@pkgjs/parseargs@0.11.0':
@@ -3145,8 +3141,6 @@ snapshots:
   '@piiano/vault-client@1.1.10': {}
 
   '@piiano/vault-client@1.1.7': {}
-
-  '@piiano/vault-client@1.1.9': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
