@@ -103,8 +103,8 @@ importers:
   sdk/forms:
     dependencies:
       '@piiano/vault-client':
-        specifier: ^1.1.9
-        version: 1.1.9
+        specifier: ^1.1.10
+        version: 1.1.10
     devDependencies:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2
@@ -143,8 +143,8 @@ importers:
   sdk/react-forms:
     dependencies:
       '@piiano/forms':
-        specifier: ^2.4.1
-        version: 2.4.1
+        specifier: ^2.4.2
+        version: 2.4.2
     devDependencies:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2
@@ -208,8 +208,8 @@ importers:
   sdk/typeorm-encryption:
     dependencies:
       '@piiano/vault-client':
-        specifier: ^1.1.9
-        version: 1.1.9
+        specifier: ^1.1.10
+        version: 1.1.10
     devDependencies:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2
@@ -631,8 +631,8 @@ packages:
     engines: {node: '>=10'}
     deprecated: This functionality has been moved to @npmcli/fs
 
-  '@piiano/forms@2.4.1':
-    resolution: {integrity: sha512-yYcdauVqsDaD84s3BHYLaw1qq8UBvEIR6CTQ+IDIe0CqhG+Rh3GyYQ18eKc8BQ8YcfC2xWtshcAqHD163kY4Nw==}
+  '@piiano/forms@2.4.2':
+    resolution: {integrity: sha512-YMQZpX8FxJKEPaJ+635nYFzxhiRGlF3iNFCjWN28pZsbAcFG+zTbscb+TKQNq7GIng52VAmdXBWQO2uNid6FQQ==}
 
   '@piiano/openapi-typescript-codegen@0.29.1':
     resolution: {integrity: sha512-6UOehlqK7TSkKT9jvxpU9BiHKLa7bbAY51Gqo0Xjld6A1PzHluzCqR9Mp1j9xDP/nidz9j8kdboJh0STFb73uw==}
@@ -652,12 +652,12 @@ packages:
   '@piiano/vault-bundles@1.0.4':
     resolution: {integrity: sha512-ly4guD4/e8FK3vD+AgjVa0qJiJQrdEH0bnZpiypK+nG+Z6QfYn1Dz5InYzFOpiBH6Z9JXW4wLS+e4euYYAQy4Q==}
 
-  '@piiano/vault-client@1.1.7':
-    resolution: {integrity: sha512-vAAvq2SGC1doMokPsOzUd2vCsehqqOMQgKxV+tXnbqc8xCXwcZbOAEIGP483Z/ZuzzWk0gnc/AizaYL4brWl7g==}
+  '@piiano/vault-client@1.1.10':
+    resolution: {integrity: sha512-Av2XVZsC3hjVag2xCrbVWkfzkjvLCIfbew6NgX5GwUp0g5GMat7dfQy0p25szGcwhPoRzpdZNwFvI61DE0Nbqg==}
     engines: {node: '>=18'}
 
-  '@piiano/vault-client@1.1.9':
-    resolution: {integrity: sha512-hZEAeVA2pgGQEAeHZ9yzZGFnKrFXdkP989VPHnNa4Zl6WU+NEkCv8XSqGD+Pch9V8jyGMxLN1+LC2szKiPtb6Q==}
+  '@piiano/vault-client@1.1.7':
+    resolution: {integrity: sha512-vAAvq2SGC1doMokPsOzUd2vCsehqqOMQgKxV+tXnbqc8xCXwcZbOAEIGP483Z/ZuzzWk0gnc/AizaYL4brWl7g==}
     engines: {node: '>=18'}
 
   '@pkgjs/parseargs@0.11.0':
@@ -3111,9 +3111,9 @@ snapshots:
       rimraf: 3.0.2
     optional: true
 
-  '@piiano/forms@2.4.1':
+  '@piiano/forms@2.4.2':
     dependencies:
-      '@piiano/vault-client': 1.1.9
+      '@piiano/vault-client': 1.1.10
 
   '@piiano/openapi-typescript-codegen@0.29.1':
     dependencies:
@@ -3138,9 +3138,9 @@ snapshots:
 
   '@piiano/vault-bundles@1.0.4': {}
 
-  '@piiano/vault-client@1.1.7': {}
+  '@piiano/vault-client@1.1.10': {}
 
-  '@piiano/vault-client@1.1.9': {}
+  '@piiano/vault-client@1.1.7': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
