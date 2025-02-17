@@ -29,7 +29,7 @@
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.1.2",
     "@types/express": "^5.0.0",
-    "@types/node": "^22.10.1",
+    "@types/node": "^22.13.4",
     "ts-node": "^10.9.2",
     "typescript": "^4.9.5"
   }
