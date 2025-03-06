@@ -143,8 +143,8 @@ importers:
   sdk/react-forms:
     dependencies:
       '@piiano/forms':
-        specifier: ^2.4.2
-        version: 2.4.2
+        specifier: ^2.4.3
+        version: 2.4.3
     devDependencies:
       '@piiano/testcontainers-vault':
         specifier: ^1.1.2
@@ -631,8 +631,8 @@ packages:
     engines: {node: '>=10'}
     deprecated: This functionality has been moved to @npmcli/fs
 
-  '@piiano/forms@2.4.2':
-    resolution: {integrity: sha512-YMQZpX8FxJKEPaJ+635nYFzxhiRGlF3iNFCjWN28pZsbAcFG+zTbscb+TKQNq7GIng52VAmdXBWQO2uNid6FQQ==}
+  '@piiano/forms@2.4.3':
+    resolution: {integrity: sha512-/oIz4i1kXsK//J2/PQWSu0Yx+RXJzNrbUGd2Fk11mF6Lr05lUXbwhP0CWOUtM3QYkyxPYMOrH1BVhLwbd3azpA==}
 
   '@piiano/openapi-typescript-codegen@0.29.1':
     resolution: {integrity: sha512-6UOehlqK7TSkKT9jvxpU9BiHKLa7bbAY51Gqo0Xjld6A1PzHluzCqR9Mp1j9xDP/nidz9j8kdboJh0STFb73uw==}
@@ -3111,7 +3111,7 @@ snapshots:
       rimraf: 3.0.2
     optional: true
 
-  '@piiano/forms@2.4.2':
+  '@piiano/forms@2.4.3':
     dependencies:
       '@piiano/vault-client': 1.1.11
 
