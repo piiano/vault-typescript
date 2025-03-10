@@ -24,7 +24,7 @@
     "express": "^5.0.1",
     "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",
-    "typeorm": "0.3.20"
+    "typeorm": "0.3.21"
   },
   "devDependencies": {
     "@piiano/testcontainers-vault": "^1.1.2",
